@@ -13,7 +13,10 @@ import {
   RiCheckboxCircleLine,
   RiBuilding2Line,
   RiMapPinLine,
-  RiLockLine
+  RiLockLine,
+  RiSearchLine,
+  RiWhatsappLine,
+  RiCloseLine
 } from 'react-icons/ri'
 import { collection, getDocs, addDoc, query, where } from 'firebase/firestore'
 import { signInWithPopup, signOut } from 'firebase/auth'
@@ -27,6 +30,12 @@ export default function Dealers() {
   const [isRegistered, setIsRegistered] = useState(false)
   const [registeredDetails, setRegisteredDetails] = useState(null)
   const [loading, setLoading] = useState(true)
+  
+  // Public directory states
+  const [dealersList, setDealersList] = useState([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedDealer, setSelectedDealer] = useState(null)
+  const [loadingDirectory, setLoadingDirectory] = useState(true)
   
   // Registration form state
   const [newDealer, setNewDealer] = useState({
@@ -58,8 +67,33 @@ export default function Dealers() {
       setLoading(false)
     }) : () => { setLoading(false) }
 
+    fetchPublicDealers()
     return () => unsubscribe()
   }, [])
+
+  const fetchPublicDealers = async () => {
+    if (!db) {
+      setDealersList([])
+      setLoadingDirectory(false)
+      return
+    }
+    try {
+      setLoadingDirectory(true)
+      const snap = await getDocs(collection(db, 'dealers'))
+      const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      // Sort so verified dealers appear first
+      const sorted = data.sort((a, b) => {
+        if (a.status === 'Verified' && b.status !== 'Verified') return -1;
+        if (a.status !== 'Verified' && b.status === 'Verified') return 1;
+        return 0;
+      });
+      setDealersList(sorted)
+    } catch (error) {
+      console.error("Error loading dealers for directory:", error)
+    } finally {
+      setLoadingDirectory(false)
+    }
+  }
 
   const checkRegistrationStatus = async (email) => {
     if (!db) return
@@ -131,11 +165,22 @@ export default function Dealers() {
       setIsRegistered(true)
       setRegisteredDetails(dealerPayload)
       toast.success('Your dealership registration is completed successfully!')
+      // Refresh the public directory list so they appear immediately!
+      fetchPublicDealers()
     } catch (error) {
       console.error(error)
       toast.error('Failed to submit application. Please contact admin.')
     }
   }
+
+  // Filter public dealers by search criteria
+  const filteredPublicDealers = dealersList.filter(dealer => {
+    const matchesSearch = 
+      (dealer.name && dealer.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (dealer.address && dealer.address.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (dealer.type && dealer.type.toLowerCase().includes(searchQuery.toLowerCase()))
+    return matchesSearch
+  })
 
   const benefits = [
     { 
@@ -176,9 +221,9 @@ export default function Dealers() {
   return (
     <div className="font-sans pt-32 pb-20 relative overflow-hidden bg-slate-50 min-h-screen text-slate-800">
       <SEO 
-        title="Authorized Dealers Portal | Savaxa Bio-Agri Sciences"
-        description="Become a verified Savaxa crop protection channel partner. Sign in with Google to register your pesticide depot, unlock wholesale margins, and connect with local growers."
-        keywords="apply pesticide dealership, agricultural chemicals distributor, pesticide franchise india, savaxa retail partners"
+        title="Authorized Dealers Portal & Directory | Savaxa Bio-Agri Sciences"
+        description="Connect with authorized Savaxa crop protection dealers across India. Sign in with Google to register your pesticide depot, unlock wholesale margins, or locate regional stockists."
+        keywords="apply pesticide dealership, agricultural chemicals distributor, pesticide franchise india, find pesticide stores, savaxa retail partners"
       />
       <Toaster position="top-right" />
       
@@ -207,14 +252,14 @@ export default function Dealers() {
           </h1>
           <p className="text-slate-500 text-sm md:text-base font-light leading-relaxed">
             {t(
-              "Partner with India's pioneering agrochemical innovator. Register your distribution depot or retail store to unlock high-efficacy stock margins.",
-              "భారతదేశపు ప్రముఖ ఆగ్రో-కెమికల్ బ్రాండ్‌తో భాగస్వామ్యం అవ్వండి. మీ దుకాణం వివరాలు నమోదు చేసి హోల్‌సేల్ మార్జిన్లు మరియు బుకింగ్ సదుపాయాలు పొందండి."
+              "Partner with India's pioneering agrochemical innovator. Register your distribution depot or retail store, or discover authorized channel partners in your area.",
+              "భారతదేశపు ప్రముఖ ఆగ్రో-కెమికల్ బ్రాండ్‌తో భాగస్వామ్యం అవ్వండి. మీ దుకాణం వివరాలు నమోదు చేయండి లేదా మీ ప్రాంతంలోని అధికారిక డీలర్లను కనుగొనండి."
             )}
           </p>
         </div>
 
         {/* Dynamic Interactive Dashboard & Registration Panel */}
-        <div className="max-w-4xl mx-auto mb-20">
+        <div className="max-w-4xl mx-auto mb-24">
           <div className="glass-panel rounded-[32px] border border-slate-200/80 shadow-lg overflow-hidden bg-white/80 backdrop-blur-md">
             
             {/* Top branding bar */}
@@ -245,7 +290,7 @@ export default function Dealers() {
                       {t("Secure Agribusiness Registry", "డీలర్స్ నెట్‌వర్క్‌లో చేరండి")}
                     </h2>
                     <p className="text-slate-500 text-xs md:text-sm leading-relaxed font-light">
-                      To complete your dealership registration, request digital price catalogs, or link with local agronomists, please sign in securely with your Google business/personal account.
+                      Are you a Savaxa crop protection dealer? Sign in with your Google business/personal account to complete your digital profile and request factory wholesale stock catalogs.
                     </p>
                   </div>
 
@@ -468,8 +513,92 @@ export default function Dealers() {
           </div>
         </div>
 
+        {/* PUBLIC DIRECTORY SECTION */}
+        <div className="mb-24 space-y-10">
+          <div className="text-center space-y-4 max-w-2xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 font-display uppercase">
+              {t("AUTHORIZED SAVAXA PARTNER DIRECTORY", "అధికారిక డీలర్ల నెట్‌వర్క్")}
+            </h2>
+            <p className="text-slate-500 text-xs md:text-sm font-light leading-relaxed">
+              Locate verified regional crop protection partners, certified chemical depots, and agricultural stockists near you. Search and connect directly via WhatsApp.
+            </p>
+            
+            {/* Search Box */}
+            <div className="relative max-w-md mx-auto mt-6">
+              <RiSearchLine className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
+              <input
+                type="text"
+                placeholder={t("Search by name, address, or tier...", "పేరు లేదా చిరునామా ద్వారా వెతకండి...")}
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="w-full bg-white border border-slate-250/80 rounded-2xl pl-12 pr-4 py-3 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition duration-300 shadow-sm"
+              />
+            </div>
+          </div>
+
+          {loadingDirectory ? (
+            <div className="py-16 text-center space-y-3">
+              <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto" />
+              <p className="text-xs text-slate-400 font-mono">Loading distributor directories...</p>
+            </div>
+          ) : filteredPublicDealers.length === 0 ? (
+            <div className="bg-white border border-slate-200 rounded-[24px] p-12 text-center text-slate-400 flex flex-col items-center">
+              <RiFileTextLine className="text-4xl text-slate-350 mb-2" />
+              <p className="text-xs font-mono">No matching partners found in this region.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredPublicDealers.map((dealer) => (
+                <div 
+                  key={dealer.id}
+                  onClick={() => setSelectedDealer(dealer)}
+                  className="p-6 bg-white border border-slate-200/80 rounded-[28px] space-y-4 hover:border-emerald-500/30 transition duration-300 shadow-sm cursor-pointer hover:shadow-md relative group flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex justify-between items-start">
+                      <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-lg">
+                        {dealer.name ? dealer.name.charAt(0).toUpperCase() : 'D'}
+                      </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="text-[7px] font-mono tracking-widest text-emerald-600 bg-emerald-50 border border-emerald-200/40 px-2 py-0.5 rounded-full uppercase font-bold">
+                          {dealer.type || 'Platinum Hub'}
+                        </span>
+                        {dealer.status === 'Verified' && (
+                          <span className="text-[6px] font-mono tracking-widest text-emerald-700 bg-emerald-100/60 px-1.5 py-0.5 rounded uppercase font-bold">
+                            ✓ Verified
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <h4 className="text-md font-bold text-slate-800 mt-3 font-display uppercase tracking-wide line-clamp-1">{dealer.name}</h4>
+                    
+                    {dealer.address && (
+                      <p className="text-xs text-slate-400 line-clamp-2 mt-1.5 flex items-start gap-1 font-light leading-relaxed">
+                        <RiMapPinLine className="mt-0.5 text-emerald-600 flex-shrink-0" />
+                        {dealer.address}
+                      </p>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      const cleanedPhone = dealer.phone.replace(/[^0-9]/g, '')
+                      window.open(`https://wa.me/${cleanedPhone}?text=Hi%2C%20I%20am%20interested%20in%20Savaxa%20crop%2520care%20products.`, '_blank')
+                    }}
+                    className="w-full mt-3 py-2.5 bg-emerald-650 hover:bg-emerald-600 text-white font-bold text-[10px] uppercase rounded-xl tracking-wider transition duration-300 flex items-center justify-center gap-2 shadow-inner"
+                  >
+                    <RiWhatsappLine className="text-base" /> {t("Contact on WhatsApp", "వాట్సాప్ ద్వారా సంప్రదించండి")}
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* Benefits Section */}
-        <div className="space-y-12">
+        <div className="space-y-12 mb-24">
           <div className="text-center space-y-3">
             <h2 className="text-2xl font-bold text-slate-800 font-display uppercase">
               {t("DISTRIBUTOR BENCHMARKS", "డిస్ట్రిబ్యూటర్ భాగస్వామ్య ప్రయోజనాలు")}
@@ -495,7 +624,7 @@ export default function Dealers() {
         </div>
 
         {/* Stepper Process Section */}
-        <div className="mt-24 space-y-12">
+        <div className="space-y-12">
           <div className="text-center space-y-3">
             <h2 className="text-2xl font-bold text-slate-800 font-display uppercase">
               {t("ONBOARDING TIMELINE", "డీలర్ ఆన్‌బోర్డింగ్ విధానం")}
@@ -523,6 +652,94 @@ export default function Dealers() {
         </div>
 
       </div>
+
+      {/* Dealer Info / Interactive Window Modal */}
+      <AnimatePresence>
+        {selectedDealer && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4"
+            onClick={() => setSelectedDealer(null)}
+          >
+            <motion.div 
+              initial={{ scale: 0.95, y: 15 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 15 }}
+              transition={{ type: "spring", duration: 0.4 }}
+              className="bg-white border border-slate-200 rounded-[32px] p-8 w-full max-w-md shadow-2xl relative"
+              onClick={e => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setSelectedDealer(null)}
+                className="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition font-bold text-xl flex items-center justify-center"
+              >
+                <RiCloseLine className="text-2xl" />
+              </button>
+
+              <div className="flex flex-col items-center text-center space-y-4 mt-2">
+                <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 font-bold text-3xl shadow-inner">
+                  {selectedDealer.name ? selectedDealer.name.charAt(0).toUpperCase() : 'D'}
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-bold text-slate-800 uppercase tracking-wide font-display">{selectedDealer.name}</h3>
+                  <div className="flex items-center justify-center gap-1.5 mt-2">
+                    <span className="text-[8px] font-mono tracking-widest text-emerald-600 bg-emerald-50 border border-emerald-250/20 px-3 py-1 rounded-full uppercase font-bold">
+                      {selectedDealer.type || 'Platinum Hub'}
+                    </span>
+                    {selectedDealer.status === 'Verified' && (
+                      <span className="text-[7px] font-mono tracking-widest text-emerald-800 bg-emerald-100/60 px-2 py-0.5 rounded uppercase font-bold">
+                        ✓ Verified Partner
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="w-full py-5 border-t border-b border-slate-100 text-left space-y-3.5 text-xs text-slate-650">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400 uppercase font-bold text-[9px] font-mono">Email:</span>
+                    <span className="font-mono text-slate-700">{selectedDealer.email}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400 uppercase font-bold text-[9px] font-mono">Phone:</span>
+                    <span className="font-semibold text-slate-700">{selectedDealer.phone}</span>
+                  </div>
+                  {selectedDealer.warehouseSize && (
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400 uppercase font-bold text-[9px] font-mono">Depot Size:</span>
+                      <span className="text-slate-700 font-medium">{selectedDealer.warehouseSize} Sq Ft</span>
+                    </div>
+                  )}
+                  {selectedDealer.license && (
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400 uppercase font-bold text-[9px] font-mono">License Key:</span>
+                      <span className="font-mono text-slate-700">{selectedDealer.license}</span>
+                    </div>
+                  )}
+                  {selectedDealer.address && (
+                    <div className="flex flex-col gap-1 pt-2 border-t border-slate-50">
+                      <span className="text-slate-400 uppercase font-bold text-[9px] font-mono">Physical Address:</span>
+                      <span className="text-slate-600 leading-relaxed font-light">{selectedDealer.address}</span>
+                    </div>
+                  )}
+                </div>
+
+                <button
+                  onClick={() => {
+                    const cleanedPhone = selectedDealer.phone.replace(/[^0-9]/g, '')
+                    window.open(`https://wa.me/${cleanedPhone}?text=Hi%2C%20I%2520am%2520interested%2520in%2520Savaxa%2520crop%2520care%2520products.`, '_blank')
+                  }}
+                  className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition duration-300 flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(16,185,129,0.15)]"
+                >
+                  <RiWhatsappLine className="text-lg" /> Connect via WhatsApp
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
