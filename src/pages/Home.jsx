@@ -167,7 +167,7 @@ export default function Home() {
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-slate-950">
         <video 
           ref={videoRef}
-          src="/savaxa-1.mp4" 
+          src="/savaxa-2.mp4" 
           autoPlay 
           muted 
           loop 
