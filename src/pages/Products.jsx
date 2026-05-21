@@ -1,0 +1,212 @@
+import { useState, useEffect } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+import { RiSearchLine, RiArrowRightLine, RiFilterLine, RiSeedlingLine, RiFlaskLine, RiShieldLine, RiPlantLine } from 'react-icons/ri'
+
+export default function Products() {
+  const [searchParams] = useSearchParams()
+  const categoryParam = searchParams.get('category')
+
+  const [searchQuery, setSearchQuery] = useState('')
+  const [activeCategory, setActiveCategory] = useState('all')
+
+  useEffect(() => {
+    if (categoryParam) {
+      setActiveCategory(categoryParam.toLowerCase())
+    } else {
+      setActiveCategory('all')
+    }
+  }, [categoryParam])
+
+  const productsList = [
+    {
+      id: "sav-ultra-1",
+      name: "Shield-Ultra Insecticide",
+      category: "insecticides",
+      desc: "High-kill contact and systemic insecticide formulated to defeat leaf bolls, cotton bollworms, thrips, and aphids.",
+      pack: "100ml, 250ml, 500ml, 1 Litre",
+      crops: "Cotton, Paddy, Tomato, Chili, Maize",
+      img: "https://images.unsplash.com/photo-1595348020949-87cdfbd44174?auto=format&fit=crop&w=400&q=80",
+      featured: true
+    },
+    {
+      id: "sav-weed-2",
+      name: "Vanquish-X Herbicide",
+      category: "herbicides",
+      desc: "Selective pre and post emergence herbicide designed to suppress grassy weeds and broadleaf sedges in wet rice paddy fields.",
+      pack: "250ml, 500ml, 1 Litre",
+      crops: "Transplanted Paddy & Direct Seeded Rice",
+      img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=400&q=80",
+      featured: true
+    },
+    {
+      id: "sav-fung-3",
+      name: "BioRoot Fungicide",
+      category: "fungicides",
+      desc: "Protective and systemic fungicide shielding seedling nursery beds from Pythium root rot, leaf blights, and mildews.",
+      pack: "250g, 500g, 1kg powder bags",
+      crops: "Tomato, Chili, Nursery Seedlings, Potato",
+      img: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=400&q=80",
+      featured: true
+    },
+    {
+      id: "sav-stim-4",
+      name: "SOLVO Biostimulant",
+      category: "biostimulants",
+      desc: "Premium organic seaweed extract growth catalyst that increases tillering, panicle formation, and flower density.",
+      pack: "250ml, 500ml, 1 Litre",
+      crops: "Paddy, Cotton, Tomato, Cucurbits, Fruit Crops",
+      img: "https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&w=400&q=80",
+      featured: false
+    }
+  ]
+
+  const filteredProducts = productsList.filter(prod => {
+    const matchesCategory = activeCategory === 'all' || prod.category === activeCategory
+    const matchesSearch = prod.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          prod.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          prod.crops.toLowerCase().includes(searchQuery.toLowerCase())
+    return matchesCategory && matchesSearch
+  })
+
+  return (
+    <div className="font-sans pt-32 pb-20 relative overflow-hidden bg-slate-50">
+      {/* Beautiful Subtle Agrochemical Product Backdrop Watermark */}
+      <div className="absolute top-0 left-0 w-full h-[120vh] -z-20 pointer-events-none overflow-hidden">
+        <img 
+          src="https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=1920&q=80" 
+          alt=" Vibe Crop Pattern Watermark" 
+          className="w-full h-full object-cover opacity-[0.09] mix-blend-overlay filter saturate-75 contrast-125"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-50/0 via-slate-50/70 to-slate-50" />
+      </div>
+
+      {/* Soft natural green/blue background overlays */}
+      <div className="absolute top-[10%] left-0 w-96 h-96 bg-emerald-100/30 rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute top-[45%] right-0 w-[500px] h-[500px] bg-teal-100/30 rounded-full blur-[150px] pointer-events-none" />
+
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
+        
+        {/* Header Block */}
+        <div className="text-center max-w-2xl mx-auto space-y-4 mb-12">
+          <p className="text-xs font-mono tracking-widest text-emerald-650 uppercase font-bold">SAVAXA CROP CARE PORTFOLIO</p>
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-display">
+            OUR PRODUCTS
+          </h1>
+          <p className="text-slate-500 text-sm leading-relaxed font-light">
+            Browse our range of high-efficacy pesticides, selective weedicides, protective fungicides, and premium organic biostimulants.
+          </p>
+        </div>
+
+        {/* Filter & Search Bar */}
+        <div className="glass-panel p-4 rounded-3xl border border-slate-200/60 flex flex-col md:flex-row gap-4 items-center justify-between mb-12 shadow-sm bg-white/70">
+          <div className="flex gap-2 w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-none pb-2 md:pb-0">
+            {[
+              { id: 'all', name: 'All Crop Protection' },
+              { id: 'insecticides', name: 'Insecticides' },
+              { id: 'herbicides', name: 'Herbicides' },
+              { id: 'fungicides', name: 'Fungicides' },
+              { id: 'biostimulants', name: 'Biostimulants' }
+            ].map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`px-4 py-2.5 rounded-xl text-xs tracking-wider uppercase font-bold transition duration-300 border ${
+                  activeCategory === cat.id
+                    ? 'bg-emerald-600 text-white border-emerald-600 font-bold shadow-sm'
+                    : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100 border-slate-200/60'
+                }`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
+
+          <div className="relative w-full md:w-80">
+            <RiSearchLine className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search target crops, pests..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-slate-50 border border-slate-200/60 rounded-xl pl-11 pr-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 transition duration-300 shadow-inner"
+            />
+          </div>
+        </div>
+
+        {/* Products Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <AnimatePresence mode="popLayout">
+            {filteredProducts.map((prod) => (
+              <motion.div
+                layout
+                key={prod.id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.35 }}
+                className="glass-card border border-slate-200/60 rounded-3xl overflow-hidden flex flex-col justify-between p-5 space-y-6 group shadow-sm hover:border-slate-300 transition duration-300"
+              >
+                <div className="space-y-4">
+                  {/* Photo with metadata category tab */}
+                  <div className="h-52 rounded-2xl overflow-hidden relative">
+                    <img src={prod.img} alt={prod.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                    <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[8px] font-mono tracking-widest font-extrabold border border-emerald-200 px-2.5 py-0.5 rounded-full text-emerald-600 uppercase">
+                      {prod.category}
+                    </span>
+                  </div>
+
+                  {/* Title & description */}
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-800 font-display group-hover:text-emerald-600 transition duration-200 leading-snug">
+                      {prod.name}
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-2 leading-relaxed font-light font-sans line-clamp-3">
+                      {prod.desc}
+                    </p>
+                  </div>
+
+                  {/* Product quick specs */}
+                  <div className="space-y-2 pt-2 border-t border-slate-100 text-[11px] font-mono">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 uppercase font-bold">Target Crops:</span>
+                      <span className="text-slate-700 font-sans font-bold">{prod.crops}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 uppercase font-bold">Available Pack:</span>
+                      <span className="text-slate-700 font-bold">{prod.pack}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <Link
+                  to={`/products/details?id=${prod.id}`}
+                  className="w-full py-3 bg-slate-50 hover:bg-emerald-600 border border-slate-200 hover:border-emerald-500 text-slate-700 hover:text-white font-bold text-xs tracking-widest uppercase rounded-xl transition duration-300 flex items-center justify-center gap-1.5 shadow-inner"
+                >
+                  View Application Guide <RiArrowRightLine />
+                </Link>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+
+        {/* Empty State */}
+        {filteredProducts.length === 0 && (
+          <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-slate-200 space-y-4 shadow-sm">
+            <h3 className="text-lg font-bold text-slate-800 font-display">NO PRODUCTS FOUND</h3>
+            <p className="text-slate-500 text-xs font-light max-w-sm mx-auto">
+              We couldn't find any Savaxa products matching your specific query. Try clearing filters or altering search keywords.
+            </p>
+            <button
+              onClick={() => { setActiveCategory('all'); setSearchQuery(''); }}
+              className="bg-emerald-600 hover:bg-emerald-550 text-white px-5 py-2.5 rounded-xl font-bold text-[10px] tracking-widest uppercase shadow-sm transition duration-300"
+            >
+              Reset Products Filter
+            </button>
+          </div>
+        )}
+
+      </div>
+    </div>
+  )
+}
