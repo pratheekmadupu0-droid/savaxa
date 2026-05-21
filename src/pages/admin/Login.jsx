@@ -29,7 +29,15 @@ export default function Login() {
       // AdminLayout will automatically redirect to /admin via router
     } catch (err) {
       console.error(err);
-      setError('Failed to log in. Please try again.');
+      let errorMsg = 'Failed to log in. Please try again.';
+      if (err.code === 'auth/operation-not-allowed') {
+        errorMsg = 'Google Sign-in is not enabled in your Firebase Console. Go to Build > Authentication > Sign-in method and enable Google.';
+      } else if (err.code === 'auth/unauthorized-domain') {
+        errorMsg = 'This domain is not authorized in your Firebase Console. Go to Authentication > Settings > Authorized domains and add this domain.';
+      } else {
+        errorMsg = `Error: ${err.message}`;
+      }
+      setError(errorMsg);
       toast.error('Login failed');
     } finally {
       setLoading(false);
