@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLanguage } from '../context/LanguageContext'
 import { 
   RiMailLine, 
   RiPhoneLine, 
@@ -10,6 +11,7 @@ import {
 } from 'react-icons/ri'
 
 export default function Contact() {
+  const { t } = useLanguage()
   const [formSubmitted, setFormSubmitted] = useState(false)
 
   const handleSubmit = (e) => {
@@ -36,12 +38,17 @@ export default function Contact() {
         
         {/* Header Block */}
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
-          <p className="text-xs font-mono tracking-widest text-emerald-650 uppercase font-bold">SAVAXA CONNECT DESK</p>
+          <p className="text-xs font-mono tracking-widest text-emerald-655 uppercase font-bold">
+            {t("SAVAXA CONNECT DESK", "సవాక్సా సహాయ కేంద్రం")}
+          </p>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-display">
-            GET IN TOUCH
+            {t("GET IN TOUCH", "మమ్మల్ని సంప్రదించండి")}
           </h1>
           <p className="text-slate-500 text-sm leading-relaxed font-light">
-            Consult our agricultural sales teams or register your crop stressors with our direct agronomy helpline.
+            {t(
+              "Consult our agricultural sales teams or register your crop stressors with our direct agronomy helpline.",
+              "మా వ్యవసాయ సేల్స్ బృందాన్ని సంప్రదించండి లేదా మీ పంటల తెగుళ్ల నివారణకు నేరుగా వ్యవసాయ హెల్ప్‌లైన్‌ను సంప్రదించండి."
+            )}
           </p>
         </div>
 
@@ -52,9 +59,9 @@ export default function Contact() {
           <div className="space-y-6 flex flex-col justify-between">
             <div className="space-y-6">
               {[
-                { title: "Direct Agronomy Desk", value: "1800-833-2888 (Toll-Free)", label: "TOLL FREE HELPLINE", icon: <RiPhoneLine className="text-emerald-600 text-xl" /> },
-                { title: "Chemical Registry Email", value: "info@savaxa.com", label: "GENERAL ENQUIRIES", icon: <RiMailLine className="text-emerald-600 text-xl" /> },
-                { title: "Headquarters Coordinates", value: "Plot 120, Sector 1, Industrial Development Area, Uppal, Hyderabad, TG 500039", label: "MAIN OFFICE & LABS", icon: <RiMapPinLine className="text-emerald-600 text-xl" /> }
+                { title: t("Direct Agronomy Desk", "ప్రత్యక్ష వ్యవసాయ సహాయ కేంద్రం"), value: t("1800-833-2888 (Toll-Free)", "1800-833-2888 (ఉచిత హెల్ప్‌లైన్)"), label: t("TOLL FREE HELPLINE", "టోల్ ఫ్రీ హెల్ప్‌లైన్"), icon: <RiPhoneLine className="text-emerald-600 text-xl" /> },
+                { title: t("Chemical Registry Email", "కార్పొరేట్ ఈమెయిల్"), value: "info@savaxa.com", label: t("GENERAL ENQUIRIES", "సాధారణ విచారణలు"), icon: <RiMailLine className="text-emerald-600 text-xl" /> },
+                { title: t("Headquarters Coordinates", "ప్రధాన కార్యాలయం చిరునామా"), value: t("Plot 120, Sector 1, Industrial Development Area, Uppal, Hyderabad, TG 500039", "ప్లాట్ నం. 120, సెక్టార్ 1, ఇండస్ట్రియల్ ఏరియా, ఉప్పల్, హైదరాబాద్, తెలంగాణ 500039"), label: t("MAIN OFFICE & LABS", "ప్రధాన కార్యాలయం & పరిశోధన శాలలు"), icon: <RiMapPinLine className="text-emerald-600 text-xl" /> }
               ].map((card, idx) => (
                 <div key={idx} className="glass-panel p-5 rounded-2xl border border-slate-200/60 flex gap-4 hover:border-emerald-500/20 transition duration-300 shadow-sm bg-white/70">
                   <div className="w-11 h-11 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0 shadow-inner">
@@ -84,11 +91,14 @@ export default function Contact() {
           {/* Contact Form Panel */}
           <div className="glass-panel p-8 rounded-3xl border border-slate-200/60 space-y-6 shadow-sm bg-white/70">
             <h3 className="text-xl font-bold text-slate-800 tracking-wider font-display uppercase border-l-2 border-emerald-600 pl-3">
-              Agronomy Scientific Inquiry
+              {t("Agronomy Scientific Inquiry", "వ్యవసాయ సాంకేతిక విచారణ")}
             </h3>
 
             <p className="text-slate-550 text-xs leading-relaxed font-light">
-              Submit your specific crop issues or dealership query below. Our state team will revert back shortly.
+              {t(
+                "Submit your specific crop issues or dealership query below. Our state team will revert back shortly.",
+                "మీ పంటల సమస్యలు లేదా డీలర్‌షిప్ విచారణలను క్రింద సమర్పించండి. మా నిపుణుల బృందం త్వరలోనే మిమ్మల్ని సంప్రదిస్తుంది."
+              )}
             </p>
 
             <AnimatePresence mode="wait">
@@ -103,7 +113,9 @@ export default function Contact() {
                 >
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">Full Name</label>
+                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">
+                        {t("Full Name", "పూర్తి పేరు")}
+                      </label>
                       <input
                         type="text"
                         required
@@ -111,18 +123,22 @@ export default function Contact() {
                       />
                     </div>
                     <div>
-                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">Grower / Partner</label>
-                      <select className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-500 focus:outline-none focus:border-emerald-650">
-                        <option value="farmer">Commercial Grower</option>
-                        <option value="dealer">Authorized Dealer</option>
-                        <option value="agronomist">Agricultural Chemist</option>
+                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">
+                        {t("Grower / Partner", "పాత్ర (Grower/Partner)")}
+                      </label>
+                      <select className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-500 focus:outline-none focus:border-emerald-655">
+                        <option value="farmer">{t("Commercial Grower", "రైతు / సాగుదారు")}</option>
+                        <option value="dealer">{t("Authorized Dealer", "అధికారిక డీలర్")}</option>
+                        <option value="agronomist">{t("Agricultural Chemist", "వ్యవసాయ రసాయన శాస్త్రవేత్త")}</option>
                       </select>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">Email Address</label>
+                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">
+                        {t("Email Address", "ఈమెయిల్ చిరునామా")}
+                      </label>
                       <input
                         type="email"
                         required
@@ -130,7 +146,9 @@ export default function Contact() {
                       />
                     </div>
                     <div>
-                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">Contact Phone</label>
+                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">
+                        {t("Contact Phone", "ఫోన్ నంబర్")}
+                      </label>
                       <input
                         type="text"
                         required
@@ -140,21 +158,25 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">Subject Matter</label>
+                    <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">
+                      {t("Subject Matter", "విషయం (Subject)")}
+                    </label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Bollworm infestation in cotton, dealership inquiry"
+                      placeholder={t("e.g. Bollworm infestation in cotton, dealership inquiry", "ఉదా: పత్తిలో కాయతొలిచే పురుగు ఉధృతి, డీలర్‌షిప్ విచారణ")}
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-650"
                     />
                   </div>
 
                   <div>
-                    <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">Inquiry Message</label>
+                    <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">
+                      {t("Inquiry Message", "విచారణ సందేశం (Message)")}
+                    </label>
                     <textarea
                       rows="4"
                       required
-                      placeholder="Describe target crops, symptoms, acreage, or retail license details..."
+                      placeholder={t("Describe target crops, symptoms, acreage, or retail license details...", "మీ పంటలు, తెగుళ్ల లక్షణాలు, ఎకరాల విస్తీర్ణం మొదలైన వివరాలను రాయండి...")}
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-650"
                     />
                   </div>
@@ -163,7 +185,7 @@ export default function Contact() {
                     type="submit"
                     className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs tracking-widest uppercase rounded-xl transition duration-300 flex items-center justify-center gap-1.5 shadow-[0_4px_15px_rgba(16,185,129,0.15)] hover:scale-[1.01]"
                   >
-                    Transmit Scientific Inquiry <RiSendPlaneFill />
+                    {t("Transmit Scientific Inquiry", "విచారణను సమర్పించండి")} <RiSendPlaneFill />
                   </button>
                 </motion.form>
               ) : (
@@ -174,15 +196,20 @@ export default function Contact() {
                   className="p-8 bg-emerald-50 border border-emerald-250 rounded-2xl text-center space-y-4 shadow-sm"
                 >
                   <RiShieldCheckLine className="text-emerald-600 text-5xl mx-auto" />
-                  <h4 className="text-lg font-bold text-slate-800 font-display">INQUIRY SUCCESSFULLY TRANSMITTED</h4>
+                  <h4 className="text-lg font-bold text-slate-800 font-display">
+                    {t("INQUIRY SUCCESSFULLY TRANSMITTED", "విచారణ విజయవంతంగా సమర్పించబడింది")}
+                  </h4>
                   <p className="text-xs text-slate-650 leading-relaxed font-light">
-                    Our foliar trials laboratory and sales desks have received your crop data packet. An agronomist will review the case profile and contact you within 24 hours.
+                    {t(
+                      "Our foliar trials laboratory and sales desks have received your crop data packet. An agronomist will review the case profile and contact you within 24 hours.",
+                      "మా వ్యవసాయ నిపుణుల బృందానికి మీ వివరాలు అందాయి. వారు మీ సమస్యను పరిశీలించి 24 గంటలలోగా మిమ్మల్ని సంప్రదిస్తారు."
+                    )}
                   </p>
                   <button
                     onClick={() => setFormSubmitted(false)}
                     className="bg-emerald-600 hover:bg-emerald-550 text-white px-5 py-2.5 rounded-xl font-bold text-[10px] tracking-widest uppercase transition duration-200 shadow-sm"
                   >
-                    Send another query
+                    {t("Send another query", "మరొక విచారణ పంపండి")}
                   </button>
                 </motion.div>
               )}

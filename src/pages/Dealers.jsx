@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLanguage } from '../context/LanguageContext'
 import { 
   RiMapPinLine, 
   RiFileTextLine, 
@@ -11,12 +12,14 @@ import {
 } from 'react-icons/ri'
 
 export default function Dealers() {
+  const { t } = useLanguage()
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [locatorQuery, setLocatorQuery] = useState('')
+  
   const [dealersList, setDealersList] = useState([
-    { name: "Apex Agro Solutions", state: "Telangana", city: "Hyderabad", address: "Pedda Amberpet Road, Bhuvaneshwari Nagar", phone: "+91 93987 88328", type: "Platinum Hub" },
-    { name: "Sri Rama Agronomy Services", state: "Andhra Pradesh", city: "Guntur", address: "Mirchi Yard Road, Main Market Complex", phone: "+91 94402 12345", type: "Gold Partner" },
-    { name: "Kalyani Crop Protection Ltd", state: "Maharashtra", city: "Pune", address: "Market Yard Complex, Gultekdi", phone: "+91 98230 56789", type: "Certified Stockist" }
+    { name: t("Apex Agro Solutions", "అపెక్స్ ఆగ్రో సొల్యూషన్స్ (Apex Agro Solutions)"), state: t("Telangana", "తెలంగాణ"), city: t("Hyderabad", "హైదరాబాద్"), address: t("Pedda Amberpet Road, Bhuvaneshwari Nagar", "పెద్ద అంబర్‌పేట్ రోడ్, భువనేశ్వరి నగర్"), phone: "+91 93987 88328", type: t("Platinum Hub", "ప్లాటినం హబ్ (Platinum Hub)") },
+    { name: t("Sri Rama Agronomy Services", "శ్రీ రామ అగ్రోనమీ సర్వీసెస్ (Sri Rama Agronomy)"), state: t("Andhra Pradesh", "ఆంధ్రప్రదేశ్"), city: t("Guntur", "గుంటూరు"), address: t("Mirchi Yard Road, Main Market Complex", "మిర్చి యార్డ్ రోడ్, మెయిన్ మార్కెట్ కాంప్లెక్స్"), phone: "+91 94402 12345", type: t("Gold Partner", "గోల్డ్ పార్ట్నర్ (Gold Partner)") },
+    { name: t("Kalyani Crop Protection Ltd", "కళ్యాణి క్రాప్ ప్రొటెక్షన్ లిమిటెడ్ (Kalyani)"), state: t("Maharashtra", "మహారాష్ట్ర"), city: t("Pune", "పూణే"), address: t("Market Yard Complex, Gultekdi", "మార్కెట్ యార్డ్ కాంప్లెక్స్, గుల్తేక్డి"), phone: "+91 98230 56789", type: t("Certified Stockist", "ధృవీకరించబడిన స్టాకిస్ట్") }
   ])
 
   const [filteredDealers, setFilteredDealers] = useState(dealersList)
@@ -42,9 +45,9 @@ export default function Dealers() {
   }
 
   const benefits = [
-    { title: "High-Margin Trade", desc: "Enjoy highly competitive pricing structures with annual performance discounts.", icon: <RiPercentLine className="text-emerald-600" /> },
-    { title: "Direct Logistics Dispatch", desc: "Our network ensures that products arrive at your pesticide depot within 48-72 hours.", icon: <RiTruckLine className="text-emerald-600" /> },
-    { title: "Technical Agronomist Desk", desc: "Direct phone support lines linking your dealer staff to our agronomists.", icon: <RiCustomerService2Line className="text-emerald-600" /> }
+    { title: t("High-Margin Trade", "అధిక వ్యాపార లాభాలు"), desc: t("Enjoy highly competitive pricing structures with annual performance discounts.", "సంవత్సరాంతపు డిస్కౌంట్లు మరియు అత్యంత పోటీతత్వ ధరలతో అధిక లాభాలను పొందండి."), icon: <RiPercentLine className="text-emerald-600" /> },
+    { title: t("Direct Logistics Dispatch", "నేరుగా వేగవంతమైన రవాణా"), desc: t("Our network ensures that products arrive at your pesticide depot within 48-72 hours.", "మా రవాణా నెట్‌వర్క్ ద్వారా 48-72 గంటలలోగా మీ దుకాణానికి సరుకు చేరుతుంది."), icon: <RiTruckLine className="text-emerald-600" /> },
+    { title: t("Technical Agronomist Desk", "సాంకేతిక వ్యవసాయ సహాయం"), desc: t("Direct phone support lines linking your dealer staff to our agronomists.", "మీ సిబ్బందిని నేరుగా మా వ్యవసాయ శాస్త్రవేత్తలతో అనుసంధానించే ప్రత్యక్ష ఫోన్ లైన్లు."), icon: <RiCustomerService2Line className="text-emerald-600" /> }
   ]
 
   return (
@@ -66,12 +69,17 @@ export default function Dealers() {
         
         {/* Header Block */}
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
-          <p className="text-xs font-mono tracking-widest text-emerald-650 uppercase font-bold">SAVAXA RETAIL NETWORKS</p>
+          <p className="text-xs font-mono tracking-widest text-emerald-650 uppercase font-bold">
+            {t("SAVAXA RETAIL NETWORKS", "సవాక్సా భాగస్వామ్య నెట్‌వర్క్")}
+          </p>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-display">
-            DEALERS PORTAL
+            {t("DEALERS PORTAL", "డీలర్స్ పోర్టల్")}
           </h1>
           <p className="text-slate-500 text-sm leading-relaxed font-light">
-            Become an authorized partner or locate our verified regional crop protection dealers.
+            {t(
+              "Become an authorized partner or locate our verified regional crop protection dealers.",
+              "సవాక్సా అధికారిక భాగస్వామిగా చేరండి లేదా మా ధృవీకరించబడిన ప్రాంతీయ డీలర్లను ఇక్కడ కనుగొనండి."
+            )}
           </p>
         </div>
 
@@ -83,7 +91,7 @@ export default function Dealers() {
                 {b.icon}
               </div>
               <h3 className="text-lg font-bold text-slate-800 tracking-wider font-display uppercase">{b.title}</h3>
-              <p className="text-xs md:text-sm text-slate-500 leading-relaxed font-light">
+              <p className="text-xs md:text-sm text-slate-550 leading-relaxed font-light">
                 {b.desc}
               </p>
             </div>
@@ -97,17 +105,22 @@ export default function Dealers() {
           <div className="glass-panel p-8 rounded-3xl border border-slate-200/60 space-y-6 shadow-sm bg-white/70">
             <div className="flex items-center gap-2 mb-2">
               <RiMapPinLine className="text-emerald-600 text-2xl" />
-              <h3 className="text-xl font-bold text-slate-800 font-display uppercase">Regional Dealer Locator</h3>
+              <h3 className="text-xl font-bold text-slate-800 font-display uppercase">
+                {t("Regional Dealer Locator", "ప్రాంతీయ డీలర్ లొకేటర్")}
+              </h3>
             </div>
 
             <p className="text-slate-500 text-xs leading-relaxed font-light">
-              Enter your state or city keyword to search our laboratory-registered dealer networks.
+              {t(
+                "Enter your state or city keyword to search our laboratory-registered dealer networks.",
+                "మా రిజిస్టర్డ్ డీలర్ నెట్‌వర్క్‌లను శోధించడానికి మీ రాష్ట్రం లేదా నగరం పేరును నమోదు చేయండి."
+              )}
             </p>
 
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search State, City, or Dealer name..."
+                placeholder={t("Search State, City, or Dealer name...", "రాష్ట్రం, నగరం లేదా డీలర్ పేరుతో వెతకండి...")}
                 value={locatorQuery}
                 onChange={handleSearch}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 transition duration-300 shadow-inner"
@@ -124,11 +137,13 @@ export default function Dealers() {
                     </span>
                   </div>
                   <p className="text-xs text-slate-500 font-light">{d.address}, {d.city}, {d.state}</p>
-                  <p className="text-xs text-slate-400 font-mono">PH: {d.phone}</p>
+                  <p className="text-xs text-slate-400 font-mono">{t("PH:", "ఫోన్:")} {d.phone}</p>
                 </div>
               ))}
               {filteredDealers.length === 0 && (
-                <p className="text-xs text-slate-400 text-center py-6 font-mono">No depots match your search query</p>
+                <p className="text-xs text-slate-400 text-center py-6 font-mono">
+                  {t("No depots match your search query", "మీ శోధనకు సరిపోయే దుకాణాలు ఏవీ లేవు")}
+                </p>
               )}
             </div>
 
@@ -148,11 +163,16 @@ export default function Dealers() {
           <div className="glass-panel p-8 rounded-3xl border border-slate-200/60 space-y-6 shadow-sm bg-white/70">
             <div className="flex items-center gap-2 mb-2">
               <RiFileTextLine className="text-emerald-600 text-2xl" />
-              <h3 className="text-xl font-bold text-slate-800 font-display uppercase">Dealer Registration Form</h3>
+              <h3 className="text-xl font-bold text-slate-800 font-display uppercase">
+                {t("Dealer Registration Form", "డీలర్ రిజిస్ట్రేషన్ ఫారం")}
+              </h3>
             </div>
 
-            <p className="text-slate-500 text-xs leading-relaxed font-light">
-              Submit your credentials below. Savaxa compliance boards inspect applications and call back within 5 working days.
+            <p className="text-slate-550 text-xs leading-relaxed font-light">
+              {t(
+                "Submit your credentials below. Savaxa compliance boards inspect applications and call back within 5 working days.",
+                "మీ వివరాలను క్రింద సమర్పించండి. మా బృందం మీ దరఖాస్తును పరిశీలించి 5 పనిదినాలలో మిమ్మల్ని సంప్రదిస్తుంది."
+              )}
             </p>
 
             <AnimatePresence mode="wait">
@@ -167,7 +187,9 @@ export default function Dealers() {
                 >
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">Firm Legal Name</label>
+                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">
+                        {t("Firm Legal Name", "సంస్థ పేరు (Legal Name)")}
+                      </label>
                       <input
                         type="text"
                         required
@@ -175,7 +197,9 @@ export default function Dealers() {
                       />
                     </div>
                     <div>
-                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">Owner / Manager</label>
+                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">
+                        {t("Owner / Manager", "యజమాని / మేనేజర్ పేరు")}
+                      </label>
                       <input
                         type="text"
                         required
@@ -186,7 +210,9 @@ export default function Dealers() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">Business Email</label>
+                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">
+                        {t("Business Email", "వ్యాపార ఈమెయిల్")}
+                      </label>
                       <input
                         type="email"
                         required
@@ -194,7 +220,9 @@ export default function Dealers() {
                       />
                     </div>
                     <div>
-                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">Contact Phone</label>
+                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">
+                        {t("Contact Phone", "ఫోన్ నంబర్")}
+                      </label>
                       <input
                         type="text"
                         required
@@ -205,7 +233,9 @@ export default function Dealers() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">Warehouse Size (Sq Ft)</label>
+                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">
+                        {t("Warehouse Size (Sq Ft)", "గోడౌన్ వైశాల్యం (Sq Ft)")}
+                      </label>
                       <input
                         type="number"
                         required
@@ -213,7 +243,9 @@ export default function Dealers() {
                       />
                     </div>
                     <div>
-                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">Seed/Pesticide Licence</label>
+                      <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">
+                        {t("Seed/Pesticide Licence", "విత్తన/పురుగుమందుల లైసెన్స్")}
+                      </label>
                       <input
                         type="text"
                         required
@@ -223,11 +255,13 @@ export default function Dealers() {
                   </div>
 
                   <div>
-                    <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">Location / District / State</label>
+                    <label className="text-[10px] text-slate-400 uppercase tracking-widest block mb-1 font-mono font-bold">
+                      {t("Location / District / State", "ప్రాంతం / జిల్లా / రాష్ట్రం")}
+                    </label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Guntur, Andhra Pradesh"
+                      placeholder={t("e.g. Guntur, Andhra Pradesh", "ఉదా: గుంటూరు, ఆంధ్రప్రదేశ్")}
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-600"
                     />
                   </div>
@@ -236,7 +270,7 @@ export default function Dealers() {
                     type="submit"
                     className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs tracking-widest uppercase rounded-xl transition duration-300 flex items-center justify-center gap-1.5 shadow-[0_4px_15px_rgba(16,185,129,0.15)] hover:scale-[1.01]"
                   >
-                    Submit Credentials Registry <RiSendPlaneFill />
+                    {t("Submit Credentials Registry", "వివరాలను సమర్పించండి")} <RiSendPlaneFill />
                   </button>
                 </motion.form>
               ) : (
@@ -244,18 +278,23 @@ export default function Dealers() {
                   key="success"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="p-8 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-4 shadow-sm"
+                  className="p-8 bg-emerald-50 border border-emerald-250 rounded-2xl text-center space-y-4 shadow-sm"
                 >
                   <RiShieldCheckLine className="text-emerald-600 text-5xl mx-auto" />
-                  <h4 className="text-lg font-bold text-slate-800 font-display">APPLICATION SUCCESSFULLY LOGGED</h4>
+                  <h4 className="text-lg font-bold text-slate-800 font-display">
+                    {t("APPLICATION SUCCESSFULLY LOGGED", "దరఖాస్తు విజయవంతంగా నమోదైంది")}
+                  </h4>
                   <p className="text-xs text-slate-600 leading-relaxed font-light">
-                    Our compliance systems have parsed your license data. A regional partnership desk will contact your registered phone number shortly.
+                    {t(
+                      "Our compliance systems have parsed your license data. A regional partnership desk will contact your registered phone number shortly.",
+                      "మా విభాగం మీ లైసెన్స్ వివరాలను ధృవీకరించింది. ప్రాంతీయ भागస్వామ్య ప్రతినిధి త్వరలోనే మిమ్మల్ని సంప్రదిస్తారు."
+                    )}
                   </p>
                   <button
                     onClick={() => setFormSubmitted(false)}
-                    className="bg-emerald-600 hover:bg-emerald-550 text-white px-5 py-2.5 rounded-xl font-bold text-[10px] tracking-widest uppercase transition duration-200 shadow-sm"
+                    className="bg-emerald-600 hover:bg-emerald-555 text-white px-5 py-2.5 rounded-xl font-bold text-[10px] tracking-widest uppercase transition duration-200 shadow-sm"
                   >
-                    Apply for another location
+                    {t("Apply for another location", "మరొక ప్రాంతానికి దరఖాస్తు చేయండి")}
                   </button>
                 </motion.div>
               )}

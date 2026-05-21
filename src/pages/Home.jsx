@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useInView } from 'react-intersection-observer'
+import { useLanguage } from '../context/LanguageContext'
 import { 
   RiShieldCheckLine, 
   RiSeedlingFill, 
@@ -48,6 +49,7 @@ function Counter({ value, duration = 2, suffix = "" }) {
 }
 
 export default function Home() {
+  const { language, t } = useLanguage()
   const [activeLayer, setActiveLayer] = useState('insecticides')
   const videoRef = useRef(null)
 
@@ -78,43 +80,43 @@ export default function Home() {
   const categories = [
     {
       id: 'insecticides',
-      title: 'High-Efficacy Insecticides',
-      desc: 'Formulated to target chewing and sucking crop pests (thrips, aphids, whiteflies, and bollworms). Delivers rapid insect knockdown with excellent residual control, preserving leaf structure and cotton bolls.',
-      targetPests: 'Thrips, Aphids, Whiteflies, Bollworms',
-      dosage: '1.5 ml per Litre of water',
+      title: t('High-Efficacy Insecticides', 'కీటకనాశకాలు (Insecticides)'),
+      desc: t('Formulated to target chewing and sucking crop pests (thrips, aphids, whiteflies, and bollworms). Delivers rapid insect knockdown with excellent residual control, preserving leaf structure and cotton bolls.', 'నమిలే మరియు పీల్చే పురుగులను (తామర పురుగులు, పేనుబంక, తెల్లదోమ మరియు కాయతొలిచే పురుగులు) నివారించడానికి ప్రత్యేకంగా తయారు చేయబడింది.'),
+      targetPests: t('Thrips, Aphids, Whiteflies, Bollworms', 'తామర పురుగులు, పేనుబంక, తెల్లదోమ, కాయతొలిచే పురుగులు'),
+      dosage: t('1.5 ml per Litre of water', 'లీటరు నీటికి 1.5 మి.లీ'),
       icon: <RiShieldCheckLine className="text-emerald-600 text-3xl" />,
       color: 'from-emerald-500/10 to-teal-500/10',
-      tag: 'Insect Pest Protection System'
+      tag: t('Insect Pest Protection System', 'కీటక నివారణ రక్షణ వ్యవస్థ')
     },
     {
       id: 'herbicides',
-      title: 'Selective Herbicides',
-      desc: 'Highly effective pre and post-emergence weed control. Selectively eliminates unwanted broadleaf weeds and wild grasses in wet paddy and commercial crop fields without affecting crop foliage health.',
-      targetPests: 'Barnyard Grass, Sedges, Broadleaf Weeds',
-      dosage: '80 - 100 ml per Acre',
+      title: t('Selective Herbicides', 'కలుపు సంహారకాలు (Herbicides)'),
+      desc: t('Highly effective pre and post-emergence weed control. Selectively eliminates unwanted broadleaf weeds and wild grasses in wet paddy and commercial crop fields without affecting crop foliage health.', 'వరి మరియు వాణిజ్య పంట పొలాలలో అవాంఛిత కలుపు మొక్కలను మరియు అడవి గడ్డిని సమర్థవంతంగా నివారిస్తుంది.'),
+      targetPests: t('Barnyard Grass, Sedges, Broadleaf Weeds', 'తుంగ గడ్డి, వెడల్పాటి ఆకు కలుపు, గడ్డి జాతి కలుపు'),
+      dosage: t('80 - 100 ml per Acre', 'ఎకరానికి 80 - 100 మి.లీ'),
       icon: <RiPlantLine className="text-cyan-600 text-3xl" />,
       color: 'from-cyan-500/10 to-blue-500/10',
-      tag: 'Selective Weed Control Matrix'
+      tag: t('Selective Weed Control Matrix', 'కలుపు నివారణ ప్రత్యేక వ్యవస్థ')
     },
     {
       id: 'fungicides',
-      title: 'Protective Fungicides',
-      desc: 'Shields agricultural crops against pathogenic leaf rusts, blights, powdery mildews, and nursery damping-off. Encourages healthy root systems and prevents fungal spore multiplication.',
-      targetPests: 'Root Rot, Powdery Mildew, Early Blight',
-      dosage: '1.5 to 2.0 grams per Litre',
+      title: t('Protective Fungicides', 'శిలీంద్ర నాశకాలు (Fungicides)'),
+      desc: t('Shields agricultural crops against pathogenic leaf rusts, blights, powdery mildews, and nursery damping-off. Encourages healthy root systems and prevents fungal spore multiplication.', 'పంటలను ఆకుమచ్చ తెగులు, బూడిద తెగులు, మరియు నారు కుళ్లు తెగులు నుండి రక్షించి వేరు వ్యవస్థను బలోపేతం చేస్తుంది.'),
+      targetPests: t('Root Rot, Powdery Mildew, Early Blight', 'వేరు కుళ్లు తెగులు, బూడిద తెగులు, ఆకుమచ్చ తెగులు'),
+      dosage: t('1.5 to 2.0 grams per Litre', 'లీటరు నీటికి 1.5 నుండి 2.0 గ్రాములు'),
       icon: <RiFlaskLine className="text-blue-600 text-3xl" />,
       color: 'from-blue-500/10 to-sky-500/10',
-      tag: 'Anti-Fungal Crop Shield'
+      tag: t('Anti-Fungal Crop Shield', 'శిలీంద్ర నివారణ పంట రక్షణ')
     },
     {
       id: 'biostimulants',
-      title: 'Organic Biostimulants',
-      desc: 'Enriched with premium seaweed extracts, amino acids, and vital nutrients. Naturally boosts crop tillering, accelerates flowering, improves chlorophyll levels, and strengthens stress tolerance.',
-      targetPests: 'Stunted Growth, Low Flowering, Weather Stress',
-      dosage: '250 ml per Acre (Foliar spray)',
+      title: t('Organic Biostimulants', 'సేంద్రీయ ఉత్ప్రేరకాలు (Biostimulants)'),
+      desc: t('Enriched with premium seaweed extracts, amino acids, and vital nutrients. Naturally boosts crop tillering, accelerates flowering, improves chlorophyll levels, and strengthens stress tolerance.', 'సముద్రపు నాచు సారం, అమైనో ఆమ్లాలు మరియు పోషకాలతో సమృద్ధిగా ఉండి పంట పెరుగుదలను, పూతను మరియు అధిక దిగుబడిని ప్రోత్సహిస్తుంది.'),
+      targetPests: t('Stunted Growth, Low Flowering, Weather Stress', 'తక్కువ ఎదుగుదల, తక్కువ పూత, వాతావరణ ఒత్తిడి'),
+      dosage: t('250 ml per Acre (Foliar spray)', 'ఎకరానికి 250 మి.లీ (పిచికారీ ద్వారా)'),
       icon: <RiSeedlingFill className="text-emerald-600 text-3xl" />,
       color: 'from-emerald-500/10 to-green-500/10',
-      tag: 'Yield Booster & Growth Catalyst'
+      tag: t('Yield Booster & Growth Catalyst', 'అధిక దిగుబడి మరియు ఎదుగుదల ఉత్ప్రేరకం')
     }
   ]
 
@@ -127,7 +129,7 @@ export default function Home() {
       category: 'Insecticides',
       desc: 'Premium insecticide with fast knockdown action targeting destructive bollworms and sucking pests.',
       tag: 'Farmer Trusted',
-      img: 'https://images.unsplash.com/photo-1595348020949-87cdfbd44174?auto=format&fit=crop&w=400&q=80'
+      img: '/cotton_solution.png'
     },
     {
       id: 'sav-weed-2',
@@ -135,7 +137,7 @@ export default function Home() {
       category: 'Herbicides',
       desc: 'Highly selective weedicide designed to eradicate stubborn grassy weeds in wet rice fields.',
       tag: 'High Efficacy',
-      img: 'https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=400&q=80'
+      img: '/rice_solution.png'
     },
     {
       id: 'sav-fung-3',
@@ -143,7 +145,7 @@ export default function Home() {
       category: 'Fungicides',
       desc: 'High CFU bio-fungicide powder to shield nursery beds from Pythium and damp-off rot.',
       tag: 'Eco-Friendly Spores',
-      img: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=400&q=80'
+      img: '/tomato_solution.png'
     }
   ]
 
@@ -199,25 +201,28 @@ export default function Home() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80">
               <RiShieldCheckLine className="text-emerald-600 text-sm" />
               <span className="text-[10px] md:text-xs tracking-widest uppercase font-mono text-emerald-700 font-bold">
-                Target-Specific Formulations
+                {t("Target-Specific Formulations", "లక్ష్య-ఆధారిత ప్రత్యేక రసాయనాలు")}
               </span>
             </div>
 
             <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight font-display uppercase text-slate-900">
-              PIONEERING THE FUTURE OF <span className="text-gradient">CROP PROTECTION</span>
+              {t("PIONEERING THE FUTURE OF", "పంటల రక్షణలో")} <span className="text-gradient">{t("CROP PROTECTION", "నూతన విప్లవం")}</span>
             </h2>
 
             <p className="text-slate-655 text-base md:text-lg leading-relaxed font-light max-w-xl">
-              Savaxa Bio-Agri Sciences manufactures world-class pesticide formulations, selective herbicides, protective fungicides, and bio-stimulants designed to secure harvests and increase farming profitability.
+              {t(
+                "Savaxa Bio-Agri Sciences manufactures world-class pesticide formulations, selective herbicides, protective fungicides, and bio-stimulants designed to secure harvests and increase farming profitability.",
+                "సవాక్సా బయో-ఆగ్రి సైన్సెస్ అత్యుత్తమ నాణ్యత కలిగిన కీటకనాశకాలు, కలుపు సంహారకాలు, శిలీంద్ర నాశకాలు మరియు సేంద్రీయ ఉత్ప్రేరకాలతో రైతుల పంట రక్షణకు, అధిక లాభాలకు తోడ్పడుతుంది."
+              )}
             </p>
 
             {/* Agrochemical Trust Marks */}
             <div className="flex flex-wrap gap-4 pt-2">
               <div className="flex items-center gap-2 text-xs text-slate-700 bg-white/80 backdrop-blur px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm font-bold">
-                <RiAwardLine className="text-emerald-600 text-lg" /> CIB&RC Registered Formulations
+                <RiAwardLine className="text-emerald-600 text-lg" /> {t("CIB&RC Registered Formulations", "CIB&RC గుర్తింపు పొందినవి")}
               </div>
               <div className="flex items-center gap-2 text-xs text-slate-700 bg-white/80 backdrop-blur px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm font-bold">
-                <RiShieldCheckLine className="text-emerald-600 text-lg" /> ISO 9001:2015 Certified Mfg.
+                <RiShieldCheckLine className="text-emerald-600 text-lg" /> {t("ISO 9001:2015 Certified Mfg.", "ISO 9001:2015 ధృవీకృత తయారీ")}
               </div>
             </div>
 
@@ -226,14 +231,14 @@ export default function Home() {
                 to="/products"
                 className="btn-premium font-bold text-sm tracking-wider uppercase px-8 py-4 rounded-2xl flex items-center justify-center gap-2 group transition duration-300"
               >
-                Browse Pesticides Catalog
+                {t("Browse Pesticides Catalog", "ఉత్పత్తుల కేటలాగ్ చూడండి")}
                 <RiArrowRightLine className="group-hover:translate-x-1.5 transition duration-300" />
               </Link>
               <Link 
                 to="/contact"
                 className="bg-white/80 backdrop-blur hover:bg-slate-50 border border-slate-200 text-slate-800 font-bold text-sm tracking-wider uppercase px-8 py-4 rounded-2xl transition duration-300 flex items-center justify-center hover:scale-[1.02] shadow-sm"
               >
-                Consult Agri-Experts
+                {t("Consult Agri-Experts", "నిపుణుల సలహాలు పొందండి")}
               </Link>
             </div>
 
@@ -375,25 +380,25 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             {
-              title: "High-Kill Insecticides",
+              title: "High-Efficacy Insecticides",
               desc: "Eradicates sucking and chewing lepidoptera pests (thrips, aphids, bollworms) while ensuring outstanding crop safety.",
               route: "/products?category=insecticides",
-              color: "border-emerald-200 hover:border-emerald-400 shadow-sm",
-              img: "https://images.unsplash.com/photo-1595348020949-87cdfbd44174?auto=format&fit=crop&w=600&q=80"
+              color: "border-emerald-250 hover:border-emerald-450 shadow-sm",
+              img: "/cotton_solution.png"
             },
             {
               title: "Selective Herbicides",
               desc: "Broad-spectrum weedicides targeting wild weeds and grasses in wet rice paddy fields with zero crop foliage yellowing.",
               route: "/products?category=herbicides",
-              color: "border-cyan-200 hover:border-cyan-400 shadow-sm",
-              img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=600&q=80"
+              color: "border-cyan-250 hover:border-cyan-455 shadow-sm",
+              img: "/rice_solution.png"
             },
             {
               title: "Protective Fungicides",
               desc: "High-performance fungicides shielding crops from powdery mildew, leaf rust, damping-off, and fungal pathogens.",
               route: "/products?category=fungicides",
-              color: "border-blue-200 hover:border-blue-400 shadow-sm",
-              img: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80"
+              color: "border-blue-250 hover:border-blue-455 shadow-sm",
+              img: "/tomato_solution.png"
             }
           ].map((cat, index) => (
             <motion.div

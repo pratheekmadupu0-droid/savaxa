@@ -36,8 +36,6 @@ export default function App() {
       {/* Premium UI/UX Additions */}
       <LenisScroll />
       <ScrollProgress />
-      <CustomCursor />
-      {location.pathname !== '/' && <ThreeCanvas />}
 
       {/* Primary Layout */}
       <Navbar />

@@ -1,48 +1,51 @@
 import { motion } from 'framer-motion'
 import { RiFilePdfLine, RiDownloadLine, RiFolderZipLine, RiShieldCheckLine } from 'react-icons/ri'
+import { useLanguage } from '../context/LanguageContext'
 
 export default function Downloads() {
+  const { t } = useLanguage()
+
   const downloadItems = [
     {
-      title: "Savaxa Product Catalog 2026",
-      desc: "Full product catalog containing crop protection specs, host crops, and dosage matrices.",
+      title: t("Savaxa Product Catalog 2026", "సవాక్సా ప్రొడక్ట్ క్యాటలాగ్ 2026"),
+      desc: t("Full product catalog containing crop protection specs, host crops, and dosage matrices.", "సవాక్సా ఉత్పత్తుల సమాచారం, వాడాల్సిన పంటలు మరియు ఎకరా మోతాదుల పట్టికల పూర్తి సమాచార పత్రం."),
       size: "8.4 MB",
-      type: "Product Brochure (PDF)",
+      type: t("Product Brochure (PDF)", "ఉత్పత్తుల బ్రోచర్ (PDF)"),
       icon: <RiFilePdfLine className="text-emerald-600 text-3xl" />
     },
     {
-      title: "Shield-Ultra Safety SDS Sheet",
-      desc: "Material Safety Data Sheet (MSDS) guidelines, toxicology classification, and antidote directions.",
+      title: t("Shield-Ultra Safety SDS Sheet", "షీల్డ్-అల్ట్రా సేఫ్టీ SDS షీట్"),
+      desc: t("Material Safety Data Sheet (MSDS) guidelines, toxicology classification, and antidote directions.", "మెటీరియల్ సేఫ్టీ డాటా షీట్ (MSDS) సూచనలు, రసాయన వర్గీకరణ మరియు అత్యవసర చికిత్స పద్ధతులు."),
       size: "1.2 MB",
-      type: "Safety SDS Document (PDF)",
+      type: t("Safety SDS Document (PDF)", "సురక్షిత సమాచార పత్రం (PDF)"),
       icon: <RiFilePdfLine className="text-rose-500 text-3xl" />
     },
     {
-      title: "Bollgard-Zap SDS Document",
-      desc: "Occupational safety standards, protective suit requirements, and water body safety bounds.",
+      title: t("Bollgard-Zap SDS Document", "బోల్గార్డ్-జాప్ SDS డాక్యుమెంట్"),
+      desc: t("Occupational safety standards, protective suit requirements, and water body safety bounds.", "పనిచేసేటప్పుడు పాటించవలసిన భద్రతా ప్రమాణాలు, రక్షణ దుస్తుల వివరాలు మరియు పర్యావరణ సూచనలు."),
       size: "1.1 MB",
-      type: "Safety SDS Document (PDF)",
+      type: t("Safety SDS Document (PDF)", "సురక్షిత సమాచార పత్రం (PDF)"),
       icon: <RiFilePdfLine className="text-rose-500 text-3xl" />
     },
     {
-      title: "Vanquish-X Weed Spray SDS Sheet",
-      desc: "Post-emergent herbicide spraying intervals, soil degradation charts, and standing water safety.",
+      title: t("Vanquish-X Weed Spray SDS Sheet", "వాన్క్విష్-X కలుపునాశక పిచికారీ SDS షీట్"),
+      desc: t("Post-emergent herbicide spraying intervals, soil degradation charts, and standing water safety.", "మొలకెత్తిన తర్వాత కలుపు పిచికారీ సమయాలు, భూమి రక్షణ చార్టులు మరియు నీటి వాడకం భద్రతా సూచనలు."),
       size: "1.5 MB",
-      type: "Safety SDS Document (PDF)",
+      type: t("Safety SDS Document (PDF)", "సురక్షిత సమాచార పత్రం (PDF)"),
       icon: <RiFilePdfLine className="text-rose-500 text-3xl" />
     },
     {
-      title: "Organic Bio-Inoculants Manual",
-      desc: "Application guide for BioRoot Protect Trichoderma spores in vegetable nurseries.",
+      title: t("Organic Bio-Inoculants Manual", "సేంద్రీయ జీవ రసాయనాల గైడ్"),
+      desc: t("Application guide for BioRoot Protect Trichoderma spores in vegetable nurseries.", "కూరగాయల నారుమడులలో బయోరూట్ ట్రైకోడెర్మా స్పోర్స్ ఉపయోగించే పద్ధతుల పూర్తి గైడ్."),
       size: "4.2 MB",
-      type: "Agronomy Handbook (PDF)",
+      type: t("Agronomy Handbook (PDF)", "వ్యవసాయ సాంకేతిక గైడ్ (PDF)"),
       icon: <RiFilePdfLine className="text-emerald-600 text-3xl" />
     },
     {
-      title: "Full Agronomy Safety Pack",
-      desc: "All safety sheets and dosage manuals packaged in a convenient digital ZIP folder.",
+      title: t("Full Agronomy Safety Pack", "పూర్తి వ్యవసాయ భద్రతా సమాచార ప్యాక్"),
+      desc: t("All safety sheets and dosage manuals packaged in a convenient digital ZIP folder.", "అన్ని భద్రతా పత్రాలు మరియు మోతాదు వివరాలు కలిగిన డిజిటల్ జిప్ (ZIP) ఫోల్డర్."),
       size: "14.8 MB",
-      type: "System Bundle (ZIP)",
+      type: t("System Bundle (ZIP)", "సిస్టమ్ బండిల్ (ZIP)"),
       icon: <RiFolderZipLine className="text-amber-500 text-3xl" />
     }
   ]
@@ -66,12 +69,17 @@ export default function Downloads() {
         
         {/* Header Block */}
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
-          <p className="text-xs font-mono tracking-widest text-emerald-650 uppercase font-bold">SAVAXA RESOURCE ARCHIVES</p>
+          <p className="text-xs font-mono tracking-widest text-emerald-650 uppercase font-bold">
+            {t("SAVAXA RESOURCE ARCHIVES", "సవాక్సా రిసోర్స్ ఫైల్స్")}
+          </p>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-display">
-            DOWNLOAD CENTER
+            {t("DOWNLOAD CENTER", "డౌన్‌లోడ్ సెంటర్")}
           </h1>
           <p className="text-slate-500 text-sm leading-relaxed font-light">
-            Access secure downloads of our pesticide safety data sheets (SDS), dosage charts, and full agronomist handbooks.
+            {t(
+              "Access secure downloads of our pesticide safety data sheets (SDS), dosage charts, and full agronomist handbooks.",
+              "పురుగుమందుల సేఫ్టీ డాటా షీట్లు (SDS), పంటల మోతాదు వివరాలు మరియు వ్యవసాయ సమాచార పుస్తకాలను ఇక్కడ డౌన్‌లోడ్ చేసుకోండి."
+            )}
           </p>
         </div>
 
@@ -101,9 +109,9 @@ export default function Downloads() {
 
               {/* download action bar */}
               <div className="flex justify-between items-center pt-4 border-t border-slate-100 text-[10px] font-mono">
-                <span className="text-slate-450 uppercase">File size: <strong className="text-slate-700 font-bold">{item.size}</strong></span>
+                <span className="text-slate-455 uppercase">{t("File size:", "ఫైల్ సైజు:")} <strong className="text-slate-700 font-bold">{item.size}</strong></span>
                 <button className="py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold tracking-widest uppercase rounded-xl transition duration-200 flex items-center gap-1.5 shadow-sm hover:scale-[1.01]">
-                  Download <RiDownloadLine />
+                  {t("Download", "డౌన్‌లోడ్")} <RiDownloadLine />
                 </button>
               </div>
 

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLanguage } from '../context/LanguageContext'
 import { RiSearchLine, RiArrowRightLine, RiFilterLine, RiSeedlingLine, RiFlaskLine, RiShieldLine, RiPlantLine } from 'react-icons/ri'
 
 export default function Products() {
+  const { t } = useLanguage()
   const [searchParams] = useSearchParams()
   const categoryParam = searchParams.get('category')
 
@@ -21,41 +23,41 @@ export default function Products() {
   const productsList = [
     {
       id: "sav-ultra-1",
-      name: "Shield-Ultra Insecticide",
+      name: t("Shield-Ultra Insecticide", "షీల్డ్-అల్ట్రా కీటకనాశని (Shield-Ultra)"),
       category: "insecticides",
-      desc: "High-kill contact and systemic insecticide formulated to defeat leaf bolls, cotton bollworms, thrips, and aphids.",
-      pack: "100ml, 250ml, 500ml, 1 Litre",
-      crops: "Cotton, Paddy, Tomato, Chili, Maize",
+      desc: t("High-kill contact and systemic insecticide formulated to defeat leaf bolls, cotton bollworms, thrips, and aphids.", "పత్తి, మిరప, టమోటా పంటల్లో కాయతొలిచే పురుగులు, తెల్లదోమ మరియు తామర పురుగుల నివారణకు అత్యుత్తమ కీటకనాశని."),
+      pack: t("100ml, 250ml, 500ml, 1 Litre", "100 మి.లీ, 250 మి.లీ, 500 మి.లీ, 1 లీటరు"),
+      crops: t("Cotton, Paddy, Tomato, Chili, Maize", "పత్తి, వరి, టమోటా, మిరప, మొక్కజొన్న"),
       img: "https://images.unsplash.com/photo-1595348020949-87cdfbd44174?auto=format&fit=crop&w=400&q=80",
       featured: true
     },
     {
       id: "sav-weed-2",
-      name: "Vanquish-X Herbicide",
+      name: t("Vanquish-X Herbicide", "వాన్క్విష్-X కలుపునాశని (Vanquish-X)"),
       category: "herbicides",
-      desc: "Selective pre and post emergence herbicide designed to suppress grassy weeds and broadleaf sedges in wet rice paddy fields.",
-      pack: "250ml, 500ml, 1 Litre",
-      crops: "Transplanted Paddy & Direct Seeded Rice",
+      desc: t("Selective pre and post emergence herbicide designed to suppress grassy weeds and broadleaf sedges in wet rice paddy fields.", "వరి పంటలో వెడల్పాటి ఆకు కలుపు, తుంగ మరియు గడ్డి జాతి కలుపును సమర్థవంతంగా నివారించే కలుపునాశని."),
+      pack: t("250ml, 500ml, 1 Litre", "250 మి.లీ, 500 మి.లీ, 1 లీటరు"),
+      crops: t("Transplanted Paddy & Direct Seeded Rice", "నాట్లు వేసిన వరి & నేరుగా విత్తిన వరి"),
       img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=400&q=80",
       featured: true
     },
     {
       id: "sav-fung-3",
-      name: "BioRoot Fungicide",
+      name: t("BioRoot Fungicide", "బయోరూట్ శిలీంద్రనాశని (BioRoot)"),
       category: "fungicides",
-      desc: "Protective and systemic fungicide shielding seedling nursery beds from Pythium root rot, leaf blights, and mildews.",
-      pack: "250g, 500g, 1kg powder bags",
-      crops: "Tomato, Chili, Nursery Seedlings, Potato",
+      desc: t("Protective and systemic fungicide shielding seedling nursery beds from Pythium root rot, leaf blights, and mildews.", "నారుమడులలో నారుకుళ్లు తెగులు, ఆకుమచ్చ తెగులు మరియు బూడిద తెగులు నుండి రక్షించే శిలీంద్రనాశని."),
+      pack: t("250g, 500g, 1kg powder bags", "250 గ్రా, 500 గ్రా, 1 కిలో పౌడర్ బ్యాగులు"),
+      crops: t("Tomato, Chili, Nursery Seedlings, Potato", "టమోటా, మిరప, పంట నారుమడులు, బంగాళాదుంప"),
       img: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=400&q=80",
       featured: true
     },
     {
       id: "sav-stim-4",
-      name: "SOLVO Biostimulant",
+      name: t("SOLVO Biostimulant", "సోల్వో బయో-ఉత్ప్రేరకం (SOLVO)"),
       category: "biostimulants",
-      desc: "Premium organic seaweed extract growth catalyst that increases tillering, panicle formation, and flower density.",
-      pack: "250ml, 500ml, 1 Litre",
-      crops: "Paddy, Cotton, Tomato, Cucurbits, Fruit Crops",
+      desc: t("Premium organic seaweed extract growth catalyst that increases tillering, panicle formation, and flower density.", "పంట పెరుగుదల, అధిక పూత, కాయల సైజు మరియు గరిష్ట దిగుబడిని పెంచే సేంద్రీయ బయో-ఉత్ప్రేరకం."),
+      pack: t("250ml, 500ml, 1 Litre", "250 మి.లీ, 500 మి.లీ, 1 లీటరు"),
+      crops: t("Paddy, Cotton, Tomato, Cucurbits, Fruit Crops", "వరి, పత్తి, టమోటా, గుమ్మడి జాతి, పండ్ల పంటలు"),
       img: "https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&w=400&q=80",
       featured: false
     }
@@ -89,12 +91,17 @@ export default function Products() {
         
         {/* Header Block */}
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-12">
-          <p className="text-xs font-mono tracking-widest text-emerald-650 uppercase font-bold">SAVAXA CROP CARE PORTFOLIO</p>
+          <p className="text-xs font-mono tracking-widest text-emerald-650 uppercase font-bold">
+            {t("SAVAXA CROP CARE PORTFOLIO", "సవాక్సా పంట రక్షణ శ్రేణి")}
+          </p>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-display">
-            OUR PRODUCTS
+            {t("OUR PRODUCTS", "మా ఉత్పత్తులు")}
           </h1>
           <p className="text-slate-500 text-sm leading-relaxed font-light">
-            Browse our range of high-efficacy pesticides, selective weedicides, protective fungicides, and premium organic biostimulants.
+            {t(
+              "Browse our range of high-efficacy pesticides, selective weedicides, protective fungicides, and premium organic biostimulants.",
+              "ఉత్తమ నాణ్యత కలిగిన పురుగుమందులు, కలుపునాశనులు, శిలీంద్రనాశనులు మరియు సేంద్రీయ ఉత్ప్రేరకాల శ్రేణిని ఇక్కడ చూడండి."
+            )}
           </p>
         </div>
 
@@ -102,11 +109,11 @@ export default function Products() {
         <div className="glass-panel p-4 rounded-3xl border border-slate-200/60 flex flex-col md:flex-row gap-4 items-center justify-between mb-12 shadow-sm bg-white/70">
           <div className="flex gap-2 w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-none pb-2 md:pb-0">
             {[
-              { id: 'all', name: 'All Crop Protection' },
-              { id: 'insecticides', name: 'Insecticides' },
-              { id: 'herbicides', name: 'Herbicides' },
-              { id: 'fungicides', name: 'Fungicides' },
-              { id: 'biostimulants', name: 'Biostimulants' }
+              { id: 'all', name: t('All Crop Protection', 'అన్ని ఉత్పత్తులు') },
+              { id: 'insecticides', name: t('Insecticides', 'కీటకనాశకాలు') },
+              { id: 'herbicides', name: t('Herbicides', 'కలుపునాశకాలు') },
+              { id: 'fungicides', name: t('Fungicides', 'శిలీంద్రనాశకాలు') },
+              { id: 'biostimulants', name: t('Biostimulants', 'బయో-ఉత్ప్రేరకాలు') }
             ].map(cat => (
               <button
                 key={cat.id}
@@ -126,7 +133,7 @@ export default function Products() {
             <RiSearchLine className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
-              placeholder="Search target crops, pests..."
+              placeholder={t("Search target crops, pests...", "పంటలు లేదా తెగుళ్ల కొరకు వెతకండి...")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-slate-50 border border-slate-200/60 rounded-xl pl-11 pr-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 transition duration-300 shadow-inner"
@@ -152,7 +159,7 @@ export default function Products() {
                   <div className="h-52 rounded-2xl overflow-hidden relative">
                     <img src={prod.img} alt={prod.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                     <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[8px] font-mono tracking-widest font-extrabold border border-emerald-200 px-2.5 py-0.5 rounded-full text-emerald-600 uppercase">
-                      {prod.category}
+                      {prod.category === 'insecticides' ? t('Insecticides', 'కీటకనాశని') : prod.category === 'herbicides' ? t('Herbicides', 'కలుపునాశని') : prod.category === 'fungicides' ? t('Fungicides', 'శిలీంద్రనాశని') : t('Biostimulants', 'బయో-ఉత్ప్రేరకం')}
                     </span>
                   </div>
 
@@ -169,11 +176,11 @@ export default function Products() {
                   {/* Product quick specs */}
                   <div className="space-y-2 pt-2 border-t border-slate-100 text-[11px] font-mono">
                     <div className="flex justify-between">
-                      <span className="text-slate-400 uppercase font-bold">Target Crops:</span>
+                      <span className="text-slate-400 uppercase font-bold">{t("Target Crops:", "ఆశించే పంటలు:")}</span>
                       <span className="text-slate-700 font-sans font-bold">{prod.crops}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-400 uppercase font-bold">Available Pack:</span>
+                      <span className="text-slate-400 uppercase font-bold">{t("Available Pack:", "లభించు ప్యాకింగ్:")}</span>
                       <span className="text-slate-700 font-bold">{prod.pack}</span>
                     </div>
                   </div>
@@ -183,7 +190,7 @@ export default function Products() {
                   to={`/products/details?id=${prod.id}`}
                   className="w-full py-3 bg-slate-50 hover:bg-emerald-600 border border-slate-200 hover:border-emerald-500 text-slate-700 hover:text-white font-bold text-xs tracking-widest uppercase rounded-xl transition duration-300 flex items-center justify-center gap-1.5 shadow-inner"
                 >
-                  View Application Guide <RiArrowRightLine />
+                  {t("View Application Guide", "వాడే పద్ధతులు చూడండి")} <RiArrowRightLine />
                 </Link>
               </motion.div>
             ))}
@@ -193,15 +200,20 @@ export default function Products() {
         {/* Empty State */}
         {filteredProducts.length === 0 && (
           <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-slate-200 space-y-4 shadow-sm">
-            <h3 className="text-lg font-bold text-slate-800 font-display">NO PRODUCTS FOUND</h3>
-            <p className="text-slate-500 text-xs font-light max-w-sm mx-auto">
-              We couldn't find any Savaxa products matching your specific query. Try clearing filters or altering search keywords.
+            <h3 className="text-lg font-bold text-slate-800 font-display">
+              {t("NO PRODUCTS FOUND", "ఉత్పత్తులేవీ లభించలేదు")}
+            </h3>
+            <p className="text-slate-550 text-xs font-light max-w-sm mx-auto">
+              {t(
+                "We couldn't find any Savaxa products matching your specific query. Try clearing filters or altering search keywords.",
+                "మీరు వెతికిన పదాలకు సరిపోయే సవాక్సా ఉత్పత్తులేవీ లేవు. దయచేసి వెతకడానికి వేరే పదాలను ఉపయోగించండి."
+              )}
             </p>
             <button
               onClick={() => { setActiveCategory('all'); setSearchQuery(''); }}
-              className="bg-emerald-600 hover:bg-emerald-550 text-white px-5 py-2.5 rounded-xl font-bold text-[10px] tracking-widest uppercase shadow-sm transition duration-300"
+              className="bg-emerald-600 hover:bg-emerald-555 text-white px-5 py-2.5 rounded-xl font-bold text-[10px] tracking-widest uppercase shadow-sm transition duration-300"
             >
-              Reset Products Filter
+              {t("Reset Products Filter", "ఫిల్టర్లను రీసెట్ చేయండి")}
             </button>
           </div>
         )}

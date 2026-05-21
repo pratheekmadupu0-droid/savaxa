@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useLanguage } from '../context/LanguageContext'
 import { 
   RiMenu3Line, 
   RiCloseFill, 
@@ -21,6 +22,7 @@ import {
 } from 'react-icons/ri'
 
 export default function Navbar() {
+  const { language, toggleLanguage, t } = useLanguage()
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [productsDropdownOpen, setProductsDropdownOpen] = useState(false)
@@ -46,64 +48,78 @@ export default function Navbar() {
   const navLinks = [
     { 
       name: 'Home', 
+      teluguName: 'హోమ్',
       path: '/',
       icon: <RiHome5Line className="text-emerald-600 text-base" />
     },
     { 
       name: 'About', 
+      teluguName: 'గురించి',
       path: '/about',
       icon: <RiInformationLine className="text-emerald-600 text-base" />
     },
     { 
       name: 'Products', 
+      teluguName: 'ఉత్పత్తులు',
       path: '/products', 
       icon: <RiSparkling2Line className="text-emerald-600 text-base" />,
       dropdown: [
         { 
           name: 'All Products', 
+          teluguName: 'అన్ని ఉత్పత్తులు',
           path: '/products', 
           desc: 'Complete portfolio of registered agrochemical crop products.', 
+          teluguDesc: 'వ్యవసాయ రసాయన పంట ఉత్పత్తుల పూర్తి శ్రేణి.',
           icon: <RiSparkling2Line className="text-emerald-600" /> 
         },
         { 
           name: 'Insecticides', 
+          teluguName: 'కీటకనాశకాలు',
           path: '/products?category=insecticides', 
           desc: 'High-efficacy targeting against chewing & sucking pests.', 
+          teluguDesc: 'నమిలే మరియు పీల్చే పురుగుల పై అధిక ప్రభావం చూపేవి.',
           icon: <RiBugLine className="text-teal-600" /> 
         },
         { 
           name: 'Herbicides', 
+          teluguName: 'కలుపు సంహారకాలు',
           path: '/products?category=herbicides', 
           desc: 'Selective weed blockades tailored for rich crop yields.', 
+          teluguDesc: 'అధిక పంట దిగుబడి కొరకు ప్రత్యేక కలుపు నివారణ మార్గాలు.',
           icon: <RiLeafLine className="text-emerald-600" /> 
         },
         { 
           name: 'Fungicides', 
+          teluguName: 'శిలీంద్ర నాశకాలు',
           path: '/products?category=fungicides', 
           desc: 'Advanced defense systems preventing severe fungal spreads.', 
+          teluguDesc: 'శిలీంద్ర వ్యాధుల వ్యాప్తిని నిరోధించే ఆధునిక రక్షణ వ్యవస్థలు.',
           icon: <RiFlaskLine className="text-sky-600" /> 
         },
       ]
     },
     { 
       name: 'Solutions', 
+      teluguName: 'పరిష్కారాలు',
       path: '/crop-solutions',
       icon: <RiLeafLine className="text-emerald-600 text-base" />
     },
     { 
       name: 'Dealers', 
+      teluguName: 'డీలర్లు',
       path: '/dealers',
       icon: <RiMapPinRangeLine className="text-emerald-600 text-base" />
     },
     { 
       name: 'Resources', 
+      teluguName: 'వనరులు',
       path: '/downloads',
       icon: <RiDownload2Line className="text-emerald-600 text-base" />,
       sublinks: [
-        { name: 'Downloads', path: '/downloads' },
-        { name: 'Certifications', path: '/certifications' },
-        { name: 'Pest Control', path: '/pest-control' },
-        { name: 'Blog', path: '/blog' }
+        { name: 'Downloads', teluguName: 'డౌన్‌లోడ్‌లు', path: '/downloads' },
+        { name: 'Certifications', teluguName: 'ధృవపత్రాలు', path: '/certifications' },
+        { name: 'Pest Control', teluguName: 'కీటక నియంత్రణ', path: '/pest-control' },
+        { name: 'Blog', teluguName: 'బ్లాగ్', path: '/blog' }
       ]
     }
   ]
@@ -164,7 +180,7 @@ export default function Navbar() {
                       isActive(link.path) ? 'text-emerald-700' : 'text-slate-650 hover:text-slate-900'
                     }`}
                   >
-                    <span>{link.name}</span>
+                    <span>{t(link.name, link.teluguName)}</span>
                     {link.dropdown && (
                       <RiArrowDownSLine className={`transition-transform duration-350 text-xs ${productsDropdownOpen ? 'rotate-180 text-emerald-600' : 'text-slate-400'}`} />
                     )}
@@ -197,7 +213,9 @@ export default function Navbar() {
                         >
                           {/* Dropdown Left side links grid */}
                           <div className="col-span-8 grid grid-cols-1 gap-2 border-r border-slate-100 pr-5">
-                            <p className="text-[9px] font-mono tracking-wider text-slate-400 uppercase font-bold mb-1">CATEGORIES</p>
+                            <p className="text-[9px] font-mono tracking-wider text-slate-400 uppercase font-bold mb-1">
+                              {t("CATEGORIES", "విభాగాలు")}
+                            </p>
                             {link.dropdown.map((subItem) => (
                               <Link
                                 key={subItem.name}
@@ -209,10 +227,10 @@ export default function Navbar() {
                                 </div>
                                 <div className="space-y-0.5">
                                   <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider group-hover:text-emerald-600 transition-colors">
-                                    {subItem.name}
+                                    {t(subItem.name, subItem.teluguName)}
                                   </h4>
                                   <p className="text-[10px] text-slate-450 leading-relaxed font-light font-sans">
-                                    {subItem.desc}
+                                    {t(subItem.desc, subItem.teluguDesc)}
                                   </p>
                                 </div>
                               </Link>
@@ -223,18 +241,23 @@ export default function Navbar() {
                           <div className="col-span-4 flex flex-col justify-between bg-gradient-to-br from-emerald-50/50 to-teal-50/20 p-4 rounded-xl border border-emerald-100/40 text-left">
                             <div className="space-y-2">
                               <span className="inline-block text-[8px] bg-emerald-600 text-white font-mono font-bold tracking-widest px-2 py-0.5 rounded-full uppercase">
-                                FEATURED
+                                {t("FEATURED", "ప్రముఖమైనవి")}
                               </span>
-                              <h4 className="text-xs font-bold text-slate-800 tracking-wide font-display uppercase mt-1">CIB REGISTERED</h4>
+                              <h4 className="text-xs font-bold text-slate-800 tracking-wide font-display uppercase mt-1">
+                                {t("CIB REGISTERED", "CIB&RC అనుమతి పొందినవి")}
+                              </h4>
                               <p className="text-[10px] text-slate-500 leading-relaxed font-light">
-                                75+ registered high-performance chemical blends formulated in state-of-the-art agronomy reactors.
+                                {t(
+                                  "75+ registered high-performance chemical blends formulated in state-of-the-art agronomy reactors.",
+                                  "అత్యంత నాణ్యమైన రియాక్టర్లలో తయారు చేయబడిన 75+ అనుమతి పొందిన రసాయన మిశ్రమాలు."
+                                )}
                               </p>
                             </div>
                             <Link 
                               to="/products"
                               className="group inline-flex items-center gap-1 text-[9px] font-extrabold uppercase text-emerald-600 tracking-widest hover:text-emerald-700 mt-4"
                             >
-                              Explore Catalog 
+                              {t("Explore Catalog", "ఉత్పత్తుల కేటలాగ్")}
                               <RiArrowRightUpLine className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition duration-200" />
                             </Link>
                           </div>
@@ -260,7 +283,7 @@ export default function Navbar() {
                               to={sub.path}
                               className="block px-4 py-2.5 text-[10px] tracking-wider uppercase font-bold text-slate-650 hover:text-emerald-600 hover:bg-slate-50 rounded-lg transition duration-200 text-left"
                             >
-                              {sub.name}
+                              {t(sub.name, sub.teluguName)}
                             </Link>
                           ))}
                         </motion.div>
@@ -282,11 +305,21 @@ export default function Navbar() {
 
             {/* CTA action button and menu triggers */}
             <div className="flex items-center gap-4">
+              {/* Language Selector Button */}
+              <button
+                onClick={toggleLanguage}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 bg-white/90 hover:bg-slate-550 text-slate-700 hover:text-slate-900 transition duration-300 text-[10.5px] font-extrabold tracking-widest uppercase cursor-pointer shadow-sm hover:shadow"
+                title={language === 'en' ? 'Switch to Telugu' : 'ఇంగ్లీషుకు మారండి'}
+              >
+                <span>🌐</span>
+                <span className="text-emerald-650 font-black">{language === 'en' ? 'TE' : 'EN'}</span>
+              </button>
+
               <Link 
                 to="/contact"
                 className="btn-premium font-bold px-5 py-2.5 rounded-xl text-[10.5px] tracking-widest uppercase transition duration-300 flex items-center gap-1.5 group shrink-0"
               >
-                <span>Get In Touch</span>
+                <span>{t("Get In Touch", "ಸಂಪರ್ಕಿಸಿ")}</span>
                 <RiArrowRightUpLine className="group-hover:translate-x-1 group-hover:-translate-y-1 transition duration-300 text-xs shrink-0" />
               </Link>
 
@@ -314,8 +347,18 @@ export default function Navbar() {
             className="fixed inset-0 z-40 bg-white flex flex-col justify-between p-8 xl:hidden border-r border-slate-200 font-sans"
           >
             <div className="space-y-8 mt-24">
-              <div className="border-b border-slate-100 pb-4">
-                <p className="text-[10px] text-emerald-600 tracking-widest uppercase font-mono font-bold">NAVIGATION MENU</p>
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <p className="text-[10px] text-emerald-600 tracking-widest uppercase font-mono font-bold">
+                  {t("NAVIGATION MENU", "నావిగేషన్ మెనూ")}
+                </p>
+                {/* Mobile Language Toggle */}
+                <button
+                  onClick={toggleLanguage}
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-700 text-[10px] font-bold uppercase cursor-pointer"
+                >
+                  <span>🌐</span>
+                  <span>{language === 'en' ? 'తెలుగు' : 'English'}</span>
+                </button>
               </div>
 
               <div className="grid grid-cols-2 gap-x-6 gap-y-4">
@@ -327,7 +370,7 @@ export default function Navbar() {
                           to="/products"
                           className="text-sm font-extrabold tracking-wider text-slate-850 hover:text-emerald-600 flex items-center gap-1.5 uppercase font-display"
                         >
-                          {link.name}
+                          {t(link.name, link.teluguName)}
                         </Link>
                         <div className="pl-4 grid grid-cols-2 gap-2">
                           {link.dropdown.slice(1).map((sub) => (
@@ -336,7 +379,7 @@ export default function Navbar() {
                               to={sub.path}
                               className="text-[11px] text-slate-500 hover:text-emerald-600 py-1 uppercase font-bold"
                             >
-                              {sub.name}
+                              {t(sub.name, sub.teluguName)}
                             </Link>
                           ))}
                         </div>
@@ -347,7 +390,7 @@ export default function Navbar() {
                     return (
                       <div key={link.name} className="col-span-2 space-y-2">
                         <span className="text-sm font-extrabold tracking-wider text-slate-850 uppercase font-display">
-                          {link.name}
+                          {t(link.name, link.teluguName)}
                         </span>
                         <div className="pl-4 grid grid-cols-2 gap-2">
                           {link.sublinks.map((sub) => (
@@ -356,7 +399,7 @@ export default function Navbar() {
                               to={sub.path}
                               className="text-[11px] text-slate-500 hover:text-emerald-600 py-1 uppercase font-bold"
                             >
-                              {sub.name}
+                              {t(sub.name, sub.teluguName)}
                             </Link>
                           ))}
                         </div>
@@ -371,7 +414,7 @@ export default function Navbar() {
                         isActive(link.path) ? 'text-emerald-600' : 'text-slate-650 hover:text-slate-850'
                       }`}
                     >
-                      {link.name}
+                      {t(link.name, link.teluguName)}
                     </Link>
                   )
                 })}
