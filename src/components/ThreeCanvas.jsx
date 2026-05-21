@@ -90,8 +90,9 @@ export default function ThreeCanvas() {
 
     const clock = new THREE.Clock()
 
+    let animationFrameId
     const animate = () => {
-      requestAnimationFrame(animate)
+      animationFrameId = requestAnimationFrame(animate)
 
       const elapsedTime = clock.getElapsedTime()
 
@@ -128,6 +129,7 @@ export default function ThreeCanvas() {
     window.addEventListener('resize', handleResize)
 
     return () => {
+      cancelAnimationFrame(animationFrameId)
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', handleResize)

@@ -175,9 +175,6 @@ export default function Home() {
           preload="auto"
           className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
           style={{ 
-            transform: 'translate3d(0, 0, 0) scale(1.02)', 
-            backfaceVisibility: 'hidden', 
-            willChange: 'transform',
             objectFit: 'cover'
           }}
         />

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { 
   RiShieldCheckLine, 
@@ -11,6 +12,29 @@ import {
 } from 'react-icons/ri'
 
 export default function About() {
+  const videoRef = useRef(null)
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true
+      videoRef.current.muted = true
+      videoRef.current.loop = true
+      
+      const playPromise = videoRef.current.play()
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          console.log("Crop video playing smoothly in loop")
+        }).catch(err => {
+          console.warn("Autoplay block bypass: ", err)
+          if (videoRef.current) {
+            videoRef.current.muted = true
+            videoRef.current.play().catch(e => console.error("Force play failure: ", e))
+          }
+        })
+      }
+    }
+  }, [])
+
   const visions = [
     { 
       title: "Sustainable Agronomy", 
@@ -107,13 +131,21 @@ export default function About() {
             </div>
           </div>
 
-          <div className="relative rounded-3xl overflow-hidden shadow-md border border-slate-200/60 aspect-[4/3]">
-            <img 
-              src="https://images.unsplash.com/photo-1595348020949-87cdfbd44174?auto=format&fit=crop&w=1000&q=80" 
-              alt="Scientific Crop Cultivation" 
-              className="w-full h-full object-cover"
+          <div className="relative rounded-3xl overflow-hidden shadow-md border border-slate-200/60 aspect-[4/3] bg-slate-950">
+            <video 
+              ref={videoRef}
+              src="/savaxa-crop.mp4" 
+              autoPlay 
+              muted 
+              loop 
+              playsInline
+              preload="auto"
+              className="w-full h-full object-cover pointer-events-none select-none"
+              style={{ 
+                objectFit: 'cover'
+              }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/30 to-transparent pointer-events-none" />
           </div>
         </div>
 

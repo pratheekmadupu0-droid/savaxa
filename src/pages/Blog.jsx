@@ -14,7 +14,7 @@ export default function Blog() {
       desc: "An in-depth review from Savaxa R&D labs detailing emerging insecticide resistances in corn crops and selective compound pathways.",
       date: "May 18, 2026",
       author: "Dr. Vikram Seth",
-      img: "https://images.unsplash.com/photo-1473081556163-2a17de81fc97?auto=format&fit=crop&w=600&q=80"
+      img: "/fall_armyworm.png"
     },
     {
       id: 2,
@@ -23,7 +23,7 @@ export default function Blog() {
       desc: "How Savaxa processes bio-stimulants at hyperbaric low temperatures, maintaining perfect viable spore counts for root colonization.",
       date: "May 02, 2026",
       author: "Sarah Jenkins",
-      img: "https://images.unsplash.com/photo-1532187643603-ba119ca4109e?auto=format&fit=crop&w=600&q=80"
+      img: "/biological_spores.png"
     },
     {
       id: 3,
@@ -32,7 +32,7 @@ export default function Blog() {
       desc: "Market diagnostics proving selective low-dosage pesticide chemical applications deliver 28% higher seasonal net margins for soybean farms.",
       date: "April 22, 2026",
       author: "Dr. Koji Takahashi",
-      img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=600&q=80"
+      img: "/fertilizer_efficiency.png"
     },
     {
       id: 4,
@@ -41,7 +41,7 @@ export default function Blog() {
       desc: "Guidelines for deploying selective pre and post emergence herbicides safely, and correct soil water flood timing protocols.",
       date: "April 08, 2026",
       author: "Amanda Sterling",
-      img: "https://images.unsplash.com/photo-1536630596251-b01c94d5d359?auto=format&fit=crop&w=600&q=80"
+      img: "/direct_seeded_rice.png"
     }
   ]
 

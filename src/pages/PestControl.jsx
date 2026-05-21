@@ -10,7 +10,7 @@ export default function PestControl() {
       crops: "Cotton, Maize, Pigeon pea, Chickpea, Tomato",
       symptoms: "Bores circular holes into cotton bolls and tomato fruits, feeding internally. Yield drops drastically.",
       control: "Chlorantraniliprole 18.5% SC (Bollgard-Zap Force)",
-      img: "https://images.unsplash.com/photo-1473186578172-c141e6798cf4?auto=format&fit=crop&w=600&q=80",
+      img: "/american_bollworm.png",
       risk: "Critical / High Destruction"
     },
     {
@@ -20,7 +20,7 @@ export default function PestControl() {
       crops: "Cotton, Chili, Brinjal, Tomato, Cucurbits",
       symptoms: "Sucks cellular sap from leaves underside. Leaves curl downwards. Secretes sticky honeydew forming black soot.",
       control: "Spirotetramat 15% + Imidacloprid 30% SC (Shield-Ultra)",
-      img: "https://images.unsplash.com/photo-1595348020949-87cdfbd44174?auto=format&fit=crop&w=600&q=80",
+      img: "/whiteflies.png",
       risk: "High / Curl Virus Vector"
     },
     {
@@ -30,7 +30,7 @@ export default function PestControl() {
       crops: "Paddy Rice (Direct seeded & Transplanted)",
       symptoms: "Chokes cash crops within early tillering weeks, stealing 60% of soil nitrogen nutrients and moisture.",
       control: "Bispyribac-sodium 10% SC (Vanquish-X)",
-      img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=600&q=80",
+      img: "/barnyard_grass.png",
       risk: "Severe Nutrient Theft"
     },
     {
@@ -40,7 +40,7 @@ export default function PestControl() {
       crops: "Tomato nursery beds, Chili, Pulses, Tobacco",
       symptoms: "Rotting and water-soaking of seedling stems at the ground soil level, leading to instant nursery collapse.",
       control: "Trichoderma viride bio-agent (BioRoot Protect)",
-      img: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&q=80",
+      img: "/damping_off.png",
       risk: "Severe Nursery Threat"
     },
     {
@@ -50,7 +50,7 @@ export default function PestControl() {
       crops: "Chili, Apple orchards, Onion, Peas, Mango",
       symptoms: "White powdery patches covering leaf and flower surfaces. Flower buds drop prematurely before fruit fertilization.",
       control: "Azoxystrobin + Tebuconazole (LeafRust Sentinel)",
-      img: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80",
+      img: "/powdery_mildew.png",
       risk: "Severe Canopy Damage"
     },
     {
@@ -60,7 +60,7 @@ export default function PestControl() {
       crops: "Chili, Tomato, Grapes, Rose, Citrus",
       symptoms: "Tears plant cells to suck fluid. Leaf tips dry, turn brown, and curl upwards forming typical boat shapes.",
       control: "Shield-Ultra Systemic SC formulations",
-      img: "https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&w=600&q=80",
+      img: "/sucking_thrips.png",
       risk: "High Foliage Scorch"
     }
   ]

@@ -14,7 +14,7 @@ export default function CropSolutions() {
       formula: "Shield-Ultra Insecticide & SOLVO Biostimulant",
       mixingRatio: "Shield-Ultra: 1.2 ml/L + SOLVO: 1.5 ml/L",
       sprayingInterval: "Apply at first square formation, repeat after 12 days if pest count exceeds 5 per branch.",
-      img: "https://images.unsplash.com/photo-1595348020949-87cdfbd44174?auto=format&fit=crop&w=600&q=80"
+      img: "/cotton_solution.png"
     },
     rice: {
       name: "Wet Paddy Rice Security",
@@ -24,7 +24,7 @@ export default function CropSolutions() {
       formula: "Vanquish-X Herbicide System",
       mixingRatio: "Vanquish-X: 80 - 100 ml per Acre in 150L water",
       sprayingInterval: "Post-emergence foliar spray 10-15 days after transplanting when weeds are in 2-4 leaf stage.",
-      img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=600&q=80"
+      img: "/rice_solution.png"
     },
     tomato: {
       name: "Solanaceous Tomato Defense",
@@ -34,7 +34,7 @@ export default function CropSolutions() {
       formula: "BioRoot Spore Inoculant",
       mixingRatio: "BioRoot: 2.0 kg per Acre mixed with organic manure",
       sprayingInterval: "Apply in seed beds during soil preparation, repeat as drench 15 days after transplanting.",
-      img: "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80"
+      img: "/tomato_solution.png"
     },
     chili: {
       name: "Chili Crops Protection",
@@ -44,7 +44,7 @@ export default function CropSolutions() {
       formula: "Shield-Ultra systemic spray & BioRoot",
       mixingRatio: "Shield-Ultra: 150 ml/Acre + BioRoot: 1.5 kg/Acre",
       sprayingInterval: "Spray Shield-Ultra at flowering onset, drench roots with BioRoot to secure soil spores.",
-      img: "https://images.unsplash.com/photo-1592417817098-8f3d6eb19675?auto=format&fit=crop&w=600&q=80"
+      img: "/chili_solution.png"
     }
   }
 
