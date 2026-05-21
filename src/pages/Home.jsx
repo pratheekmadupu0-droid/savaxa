@@ -172,7 +172,6 @@ export default function Home() {
           muted 
           loop 
           playsInline
-          webkitPlaysInline={true}
           preload="auto"
           className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
           style={{ 
