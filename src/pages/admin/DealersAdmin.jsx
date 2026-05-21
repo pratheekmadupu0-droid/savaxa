@@ -30,6 +30,7 @@ export default function DealersAdmin() {
     status: 'Verified'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchDealers();
@@ -42,11 +43,13 @@ export default function DealersAdmin() {
       return;
     }
     try {
+      setError(null);
       const snap = await getDocs(collection(db, 'dealers'));
       const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setDealers(data);
-    } catch (error) {
-      console.warn(error);
+    } catch (err) {
+      console.warn(err);
+      setError(err.message || 'Error connecting to Firestore database');
       toast.error('Failed to load registered dealers');
     } finally {
       setLoading(false);
@@ -134,6 +137,20 @@ export default function DealersAdmin() {
           <FiPlus className="mr-2 text-sm" /> Add New Hub
         </button>
       </div>
+
+      {error && (
+        <div className="mb-8 bg-amber-500/10 border border-amber-500/20 p-5 rounded-2xl text-amber-400 text-xs space-y-2">
+          <h4 className="font-extrabold text-sm flex items-center gap-1.5 uppercase">
+            <FiClock /> Database Connectivity Diagnostics
+          </h4>
+          <p className="leading-relaxed">
+            There was an issue connecting to your Firestore database. Detail: <code className="bg-amber-950 px-1.5 py-0.5 rounded font-mono text-[10px] text-amber-200">{error}</code>
+          </p>
+          <p className="text-[10px] text-amber-500/90 font-mono">
+            💡 Troubleshooting tip: Ensure you have initialized your Cloud Firestore database in the Firebase Console (under Build &gt; Firestore Database) and updated the Security Rules to allow read access.
+          </p>
+        </div>
+      )}
 
       {/* Grid of registered dealers */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
