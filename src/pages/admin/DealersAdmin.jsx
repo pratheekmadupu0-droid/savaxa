@@ -1,14 +1,21 @@
 import { useState, useEffect } from 'react';
 import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { FiPlus, FiTrash2, FiUsers, FiMapPin, FiPhone } from 'react-icons/fi';
+import { FiPlus, FiTrash2, FiUsers, FiPhone, FiFileText } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
 export default function DealersAdmin() {
   const [dealers, setDealers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newDealer, setNewDealer] = useState({ name: '', location: '', phone: '', email: '' });
+  const [newDealer, setNewDealer] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    type: 'Platinum Hub',
+    warehouseSize: '',
+    license: ''
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -17,10 +24,7 @@ export default function DealersAdmin() {
 
   const fetchDealers = async () => {
     if (!db) {
-      setDealers([
-        { id: '1', name: 'AgriCorp Solutions', location: 'Hyderabad, TS', phone: '+91 9876543210', email: 'contact@agricorp.in' },
-        { id: '2', name: 'GreenFarm Suppliers', location: 'Vijayawada, AP', phone: '+91 9123456789', email: 'sales@greenfarm.in' }
-      ]);
+      setDealers([]);
       setLoading(false);
       return;
     }
@@ -44,9 +48,19 @@ export default function DealersAdmin() {
     }
     setIsSubmitting(true);
     try {
-      const docRef = await addDoc(collection(db, 'dealers'), newDealer);
+      const docRef = await addDoc(collection(db, 'dealers'), {
+        ...newDealer,
+        registeredAt: new Date().toISOString()
+      });
       setDealers([{ id: docRef.id, ...newDealer }, ...dealers]);
-      setNewDealer({ name: '', location: '', phone: '', email: '' });
+      setNewDealer({
+        name: '',
+        phone: '',
+        email: '',
+        type: 'Platinum Hub',
+        warehouseSize: '',
+        license: ''
+      });
       setIsModalOpen(false);
       toast.success('Dealer registered successfully!');
     } catch (error) {
@@ -74,7 +88,9 @@ export default function DealersAdmin() {
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold">Dealers Management</h1>
-          <p className="text-gray-400 mt-1">Total Registered Dealers: <span className="text-primary font-bold">{dealers.length}</span></p>
+          <p className="text-gray-400 mt-1">
+            Total Registered Dealers: <span className="text-primary font-bold">{dealers.length}</span>
+          </p>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
@@ -94,33 +110,48 @@ export default function DealersAdmin() {
           </div>
         ) : (
           dealers.map((dealer) => (
-            <div key={dealer.id} className="bg-gray-900 border border-gray-800 p-6 rounded-2xl relative group hover:border-gray-700 transition-colors">
-              <button
-                onClick={() => handleDelete(dealer.id)}
-                className="absolute top-4 right-4 text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"
-                title="Delete Dealer"
-              >
-                <FiTrash2 className="text-xl" />
-              </button>
-              
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-4 text-2xl border border-primary/20">
-                {dealer.name.charAt(0).toUpperCase()}
-              </div>
-              
-              <h3 className="text-xl font-bold mb-3">{dealer.name}</h3>
-              
-              <div className="space-y-2 text-sm text-gray-400">
-                <div className="flex items-center">
-                  <FiMapPin className="mr-2 text-gray-500" />
-                  {dealer.location}
+            <div key={dealer.id} className="bg-gray-900 border border-gray-800 p-6 rounded-2xl relative group hover:border-gray-700 transition-colors flex flex-col justify-between">
+              <div>
+                <button
+                  onClick={() => handleDelete(dealer.id)}
+                  className="absolute top-4 right-4 text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"
+                  title="Delete Dealer"
+                >
+                  <FiTrash2 className="text-xl" />
+                </button>
+                
+                <div className="flex justify-between items-start mb-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary text-2xl border border-primary/20">
+                    {dealer.name ? dealer.name.charAt(0).toUpperCase() : 'D'}
+                  </div>
+                  <span className="text-[10px] font-mono tracking-widest text-primary bg-primary/10 border border-primary/20 px-2 py-0.5 rounded-full uppercase">
+                    {dealer.type}
+                  </span>
                 </div>
-                <div className="flex items-center">
-                  <FiPhone className="mr-2 text-gray-500" />
-                  {dealer.phone}
-                </div>
-                <div className="flex items-center truncate">
-                  <span className="mr-2 text-gray-500 font-bold">@</span>
-                  {dealer.email}
+                
+                <h3 className="text-xl font-bold mb-4">{dealer.name}</h3>
+                
+                <div className="space-y-2 text-sm text-gray-400">
+                  <div className="flex items-center">
+                    <FiPhone className="mr-2 text-gray-500" />
+                    {dealer.phone}
+                  </div>
+                  <div className="flex items-center truncate">
+                    <span className="mr-2 text-gray-550 font-bold">@</span>
+                    {dealer.email}
+                  </div>
+                  {dealer.warehouseSize && (
+                    <div className="flex items-center">
+                      <span className="mr-2 text-gray-500 font-bold">Size:</span>
+                      {dealer.warehouseSize} Sq Ft
+                    </div>
+                  )}
+                  {dealer.license && (
+                    <div className="flex items-center">
+                      <FiFileText className="mr-2 text-gray-550" />
+                      License: {dealer.license}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -143,23 +174,13 @@ export default function DealersAdmin() {
                   value={newDealer.name}
                   onChange={e => setNewDealer({...newDealer, name: e.target.value})}
                   className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-primary transition-colors"
-                  placeholder="e.g. AgriCorp Solutions"
+                  placeholder="e.g. Savaxa Agri Hub"
                 />
               </div>
-              <div>
-                <label className="block text-sm text-gray-400 mb-1">Location</label>
-                <input
-                  required
-                  type="text"
-                  value={newDealer.location}
-                  onChange={e => setNewDealer({...newDealer, location: e.target.value})}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-primary"
-                  placeholder="e.g. Hyderabad, TS"
-                />
-              </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Phone</label>
+                  <label className="block text-sm text-gray-400 mb-1">WhatsApp Phone</label>
                   <input
                     required
                     type="tel"
@@ -177,9 +198,45 @@ export default function DealersAdmin() {
                     value={newDealer.email}
                     onChange={e => setNewDealer({...newDealer, email: e.target.value})}
                     className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-primary"
-                    placeholder="contact@..."
+                    placeholder="e.g. dealer@savaxa.com"
                   />
                 </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Dealer Type</label>
+                  <select
+                    value={newDealer.type}
+                    onChange={e => setNewDealer({...newDealer, type: e.target.value})}
+                    className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-primary text-sm"
+                  >
+                    <option value="Platinum Hub">Platinum Hub</option>
+                    <option value="Gold Partner">Gold Partner</option>
+                    <option value="Certified Stockist">Certified Stockist</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Warehouse Size (Sq Ft)</label>
+                  <input
+                    type="number"
+                    value={newDealer.warehouseSize}
+                    onChange={e => setNewDealer({...newDealer, warehouseSize: e.target.value})}
+                    className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-primary"
+                    placeholder="e.g. 1500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">Seed/Pesticide License Number</label>
+                <input
+                  type="text"
+                  value={newDealer.license}
+                  onChange={e => setNewDealer({...newDealer, license: e.target.value})}
+                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2 text-white focus:outline-none focus:border-primary"
+                  placeholder="e.g. LIC/CROP/2026/893"
+                />
               </div>
               
               <div className="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-800">
