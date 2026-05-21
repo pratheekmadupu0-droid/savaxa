@@ -85,13 +85,28 @@ export default function AdminLayout() {
           isSidebarOpen ? 'w-64' : 'w-20'
         } bg-gray-900 border-r border-gray-800 transition-all duration-300 flex flex-col fixed md:relative z-50 h-full`}
       >
-        <div className="p-4 flex items-center justify-between border-b border-gray-800 h-16">
-          {isSidebarOpen && (
-            <span className="text-xl font-bold text-primary truncate">Admin Panel</span>
+        <div className="p-4 flex items-center justify-between border-b border-gray-800 h-16 gap-2">
+          {isSidebarOpen ? (
+            <Link to="/" className="flex items-center gap-2 overflow-hidden shrink-0">
+              <img 
+                src="/savax-logo.png" 
+                alt="Savax Logo" 
+                className="h-7 w-auto object-contain"
+              />
+              <span className="text-[10px] font-mono tracking-widest font-extrabold uppercase text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">Admin</span>
+            </Link>
+          ) : (
+            <Link to="/" className="flex items-center justify-center shrink-0">
+              <img 
+                src="/savax-logo.png" 
+                alt="Savax Logo" 
+                className="h-5 w-auto object-contain"
+              />
+            </Link>
           )}
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-2 rounded-lg hover:bg-gray-800 transition-colors text-gray-400"
+            className="p-2 rounded-lg hover:bg-gray-800 transition-colors text-gray-400 shrink-0"
           >
             <FiMenu className="text-xl" />
           </button>

@@ -52,12 +52,14 @@ export default function Login() {
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="bg-gray-900 border border-gray-800 p-8 rounded-2xl shadow-2xl w-full max-w-md relative z-10">
+      <div className="bg-gray-900 border border-gray-800 p-8 rounded-[28px] shadow-2xl w-full max-w-md relative z-10">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 bg-primary/10 border border-primary/20 rounded-2xl flex items-center justify-center mb-4 text-primary">
-            <FiLock className="text-3xl" />
-          </div>
-          <h1 className="text-3xl font-bold text-white text-center">Admin Portal</h1>
+          <img 
+            src="/savax-logo.png" 
+            alt="Savax Logo" 
+            className="h-14 w-auto object-contain mb-4"
+          />
+          <h1 className="text-3xl font-extrabold text-white text-center font-display uppercase tracking-wider">Admin Portal</h1>
           <p className="text-gray-400 mt-2 text-center text-sm">
             Restricted access. Please sign in with an authorized Google account.
           </p>
