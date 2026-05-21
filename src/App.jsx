@@ -23,6 +23,14 @@ import Downloads from './pages/Downloads.jsx'
 import Certifications from './pages/Certifications.jsx'
 import Contact from './pages/Contact.jsx'
 
+// Admin Pages
+import AdminLayout from './pages/admin/AdminLayout.jsx'
+import Login from './pages/admin/Login.jsx'
+import Dashboard from './pages/admin/Dashboard.jsx'
+import ProductsAdmin from './pages/admin/ProductsAdmin.jsx'
+import DealersAdmin from './pages/admin/DealersAdmin.jsx'
+import DownloadsAdmin from './pages/admin/DownloadsAdmin.jsx'
+
 export default function App() {
   const location = useLocation()
 
@@ -38,7 +46,7 @@ export default function App() {
       <ScrollProgress />
 
       {/* Primary Layout */}
-      <Navbar />
+      {!location.pathname.startsWith('/admin') && <Navbar />}
 
       <main className="min-h-screen">
         <Routes>
@@ -53,11 +61,21 @@ export default function App() {
           <Route path="/downloads" element={<Downloads />} />
           <Route path="/certifications" element={<Certifications />} />
           <Route path="/contact" element={<Contact />} />
+
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<Login />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="products" element={<ProductsAdmin />} />
+            <Route path="dealers" element={<DealersAdmin />} />
+            <Route path="downloads" element={<DownloadsAdmin />} />
+          </Route>
         </Routes>
       </main>
 
-      {location.pathname !== '/contact' && <Chatbot />}
-      <Footer />
+      {/* Hide Chatbot and Footer on Admin Routes */}
+      {!location.pathname.startsWith('/admin') && location.pathname !== '/contact' && <Chatbot />}
+      {!location.pathname.startsWith('/admin') && <Footer />}
     </>
   )
 }
