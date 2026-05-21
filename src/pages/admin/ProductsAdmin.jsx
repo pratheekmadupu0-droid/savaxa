@@ -62,80 +62,83 @@ export default function ProductsAdmin() {
       return;
     }
 
-    setIsSubmitting(true);
-    setUploadProgress(0);
+    const tempId = `temp_${Date.now()}`;
+    const productPayload = {
+      ...newProduct,
+      createdAt: new Date().toISOString()
+    };
 
-    // OPTION A: DIRECT IMAGE URL PASTED
+    // OPTION A: DIRECT IMAGE URL PASTED (INSTANT 0ms WAIT)
     if (imageInputType === 'url') {
-      try {
-        const docData = {
-          ...newProduct,
-          img: pastedImageUrl,
-          createdAt: new Date().toISOString()
-        };
+      const docData = {
+        ...productPayload,
+        img: pastedImageUrl
+      };
 
+      // Optimistically update list, close modal, and notify instantly!
+      setProducts(prev => [{ id: tempId, ...docData }, ...prev]);
+      resetForm();
+      toast.success('Product registered successfully!');
+
+      // Save in background
+      try {
         const docRef = await addDoc(collection(db, 'products'), docData);
-        setProducts([{ id: docRef.id, ...docData }, ...products]);
-        
-        resetForm();
-        toast.success('Product registered successfully!');
+        setProducts(prev => prev.map(p => p.id === tempId ? { ...p, id: docRef.id } : p));
       } catch (error) {
         console.error(error);
-        toast.error('Failed to register product: ' + error.message);
-      } finally {
-        setIsSubmitting(false);
+        toast.error('Failed to sync product with database. Removing from list.');
+        setProducts(prev => prev.filter(p => p.id !== tempId));
       }
       return;
     }
 
-    // OPTION B: FILE UPLOAD (Requires Firebase Storage)
+    // OPTION B: FILE UPLOAD (Requires Storage)
     if (!storage) {
-      toast.error('Firebase Storage is not configured in this app. Please paste a direct image URL instead.');
-      setIsSubmitting(false);
+      toast.error('Firebase Storage is not configured. Please paste a direct URL instead.');
       return;
     }
 
+    const selectedFile = file;
+    
+    // Close modal, reset form, and show active progress toast instantly!
+    resetForm();
+    const loadingToastId = toast.loading('Uploading product image & registering in background...');
+
     try {
-      const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      const storageRef = ref(storage, `products/${Date.now()}_${selectedFile.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, selectedFile);
 
       uploadTask.on(
         'state_changed',
-        (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setUploadProgress(progress);
-        },
+        null,
         (error) => {
           console.warn('Storage Upload Error: ', error);
-          toast.error('Firebase Storage upload blocked or not enabled. Tip: Select "Paste Image Link" to skip storage!');
-          setIsSubmitting(false);
+          toast.dismiss(loadingToastId);
+          toast.error('Background upload failed. Use "Paste Image Link" to bypass Storage rules!');
         },
         async () => {
           try {
             const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
-            
             const docData = {
-              ...newProduct,
-              img: imageUrl,
-              createdAt: new Date().toISOString()
+              ...productPayload,
+              img: imageUrl
             };
 
             const docRef = await addDoc(collection(db, 'products'), docData);
-            setProducts([{ id: docRef.id, ...docData }, ...products]);
+            setProducts(prev => [{ id: docRef.id, ...docData }, ...prev]);
             
-            resetForm();
-            toast.success('Product registered successfully!');
+            toast.dismiss(loadingToastId);
+            toast.success(`Product "${productPayload.name}" successfully registered!`);
           } catch (err) {
-            toast.error('Error saving record: ' + err.message);
-          } finally {
-            setIsSubmitting(false);
+            toast.dismiss(loadingToastId);
+            toast.error('Failed to register product: ' + err.message);
           }
         }
       );
     } catch (error) {
       console.error(error);
-      toast.error('Failed to upload. Try pasting a direct Image Link instead.');
-      setIsSubmitting(false);
+      toast.dismiss(loadingToastId);
+      toast.error('Background upload failed. Try pasting a direct link.');
     }
   };
 

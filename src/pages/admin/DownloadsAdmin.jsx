@@ -57,28 +57,33 @@ export default function DownloadsAdmin() {
       return;
     }
 
-    setIsSubmitting(true);
-    setUploadProgress(0);
+    const tempId = `temp_${Date.now()}`;
+    const downloadPayload = {
+      ...newDownload,
+      createdAt: new Date().toISOString()
+    };
 
-    // OPTION A: DIRECT URL PASTED (E.G. GOOGLE DRIVE, EXTERNAL SERVERS)
+    // OPTION A: DIRECT URL PASTED (E.G. GOOGLE DRIVE, EXTERNAL SERVERS) - 0ms WAIT
     if (fileInputType === 'url') {
-      try {
-        const docData = {
-          ...newDownload,
-          url: pastedFileUrl,
-          fileName: 'Direct URL Link',
-          createdAt: new Date().toISOString()
-        };
+      const docData = {
+        ...downloadPayload,
+        url: pastedFileUrl,
+        fileName: 'Direct URL Link'
+      };
 
+      // Optimistically update list, close modal, and notify instantly!
+      setDownloads(prev => [{ id: tempId, ...docData }, ...prev]);
+      resetForm();
+      toast.success('Brochure registered successfully!');
+
+      // Save in background
+      try {
         const docRef = await addDoc(collection(db, 'downloads'), docData);
-        setDownloads([{ id: docRef.id, ...docData }, ...downloads]);
-        
-        resetForm();
-        toast.success('Brochure added successfully!');
+        setDownloads(prev => prev.map(d => d.id === tempId ? { ...d, id: docRef.id } : d));
       } catch (error) {
-        toast.error('Failed to register download link: ' + error.message);
-      } finally {
-        setIsSubmitting(false);
+        console.error(error);
+        toast.error('Failed to sync brochure with database. Removing from list.');
+        setDownloads(prev => prev.filter(d => d.id !== tempId));
       }
       return;
     }
@@ -86,51 +91,51 @@ export default function DownloadsAdmin() {
     // OPTION B: STORAGE UPLOAD
     if (!storage) {
       toast.error('Firebase Storage is not configured. Please paste a direct PDF / File URL instead.');
-      setIsSubmitting(false);
       return;
     }
 
+    const selectedFile = file;
+
+    // Close modal, reset form, and show active progress toast instantly!
+    resetForm();
+    const loadingToastId = toast.loading('Uploading brochure PDF in background...');
+
     try {
-      const storageRef = ref(storage, `downloads/${Date.now()}_${file.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
+      const storageRef = ref(storage, `downloads/${Date.now()}_${selectedFile.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, selectedFile);
 
       uploadTask.on(
         'state_changed',
-        (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setUploadProgress(progress);
-        },
+        null,
         (error) => {
           console.warn('Storage Upload Error: ', error);
-          toast.error('Storage upload not active. Select "Paste File Link" to bypass Storage limits!');
-          setIsSubmitting(false);
+          toast.dismiss(loadingToastId);
+          toast.error('Background upload failed. Use "Paste File Link" to bypass Storage rules!');
         },
         async () => {
           try {
             const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            
             const docData = {
-              ...newDownload,
+              ...downloadPayload,
               url: downloadURL,
-              fileName: file.name,
-              createdAt: new Date().toISOString()
+              fileName: selectedFile.name
             };
 
             const docRef = await addDoc(collection(db, 'downloads'), docData);
-            setDownloads([{ id: docRef.id, ...docData }, ...downloads]);
+            setDownloads(prev => [{ id: docRef.id, ...docData }, ...prev]);
             
-            resetForm();
-            toast.success('Brochure added successfully!');
+            toast.dismiss(loadingToastId);
+            toast.success(`Brochure "${downloadPayload.title}" successfully registered!`);
           } catch (err) {
-            toast.error('Error saving records: ' + err.message);
-          } finally {
-            setIsSubmitting(false);
+            toast.dismiss(loadingToastId);
+            toast.error('Failed to save brochure: ' + err.message);
           }
         }
       );
     } catch (error) {
-      toast.error('Failed to upload file. Try pasting a direct PDF Link instead.');
-      setIsSubmitting(false);
+      console.error(error);
+      toast.dismiss(loadingToastId);
+      toast.error('Background upload failed. Try pasting a direct link.');
     }
   };
 

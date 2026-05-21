@@ -62,31 +62,38 @@ export default function DealersAdmin() {
       toast.error('Database not configured');
       return;
     }
-    setIsSubmitting(true);
+    
+    const tempId = `temp_${Date.now()}`;
+    const dealerPayload = {
+      ...newDealer,
+      registeredAt: new Date().toISOString()
+    };
+
+    // Optimistically update UI instantly!
+    setDealers(prev => [{ id: tempId, ...dealerPayload }, ...prev]);
+    setIsModalOpen(false);
+    toast.success('Dealer registered successfully!');
+
+    // Reset Form
+    setNewDealer({
+      name: '',
+      phone: '',
+      email: '',
+      type: 'Platinum Hub',
+      warehouseSize: '',
+      license: '',
+      address: '',
+      status: 'Verified'
+    });
+
+    // Save in background
     try {
-      const dealerPayload = {
-        ...newDealer,
-        registeredAt: new Date().toISOString()
-      };
-      
       const docRef = await addDoc(collection(db, 'dealers'), dealerPayload);
-      setDealers([{ id: docRef.id, ...dealerPayload }, ...dealers]);
-      setNewDealer({
-        name: '',
-        phone: '',
-        email: '',
-        type: 'Platinum Hub',
-        warehouseSize: '',
-        license: '',
-        address: '',
-        status: 'Verified'
-      });
-      setIsModalOpen(false);
-      toast.success('Dealer registered successfully!');
-    } catch (error) {
-      toast.error('Error adding dealer');
-    } finally {
-      setIsSubmitting(false);
+      setDealers(prev => prev.map(d => d.id === tempId ? { ...d, id: docRef.id } : d));
+    } catch (err) {
+      console.error(err);
+      toast.error('Database sync failed. Removing dealer from active list.');
+      setDealers(prev => prev.filter(d => d.id !== tempId));
     }
   };
 
