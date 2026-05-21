@@ -185,23 +185,7 @@ export default function Home() {
         {/* Cinematic dark transparent gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950/20 to-slate-950/80 pointer-events-none" />
 
-        {/* Floating Tag and Title centered elegantly on the video */}
-        <div className="relative z-10 text-center space-y-6 max-w-4xl px-4 flex flex-col items-center">
 
-
-          {/* Interactive Scroll Down Indicator */}
-          <motion.div 
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-            className="pt-16 flex flex-col items-center gap-2 text-white/70 font-mono text-[10px] tracking-widest uppercase cursor-pointer group"
-            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-          >
-            <span className="group-hover:text-emerald-400 transition-colors">Scroll to explore</span>
-            <div className="w-5 h-8 border-2 border-white/30 group-hover:border-emerald-500/50 rounded-full flex justify-center p-1 transition-colors">
-              <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-bounce" />
-            </div>
-          </motion.div>
-        </div>
       </section>
 
       {/* 1.5 MATTER CONTENT SECTION */}
