@@ -324,19 +324,22 @@ export default function ProductsAdmin() {
                 </div>
 
                 {imageInputType === 'upload' ? (
-                  <div className="border-2 border-dashed border-gray-800 rounded-xl p-4 text-center hover:border-emerald-500 transition-colors cursor-pointer relative">
+                  <div className="border-2 border-dashed border-gray-800 rounded-xl p-4 text-center hover:border-emerald-500 transition-colors cursor-pointer relative bg-gray-950">
                     <input
                       type="file"
                       accept="image/*"
                       onChange={e => setFile(e.target.files[0])}
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     />
                     {file ? (
                       <p className="text-emerald-500 font-semibold text-xs flex items-center justify-center gap-1.5"><FiImage /> {file.name}</p>
                     ) : (
-                      <div className="flex flex-col items-center text-gray-500">
-                        <FiUploadCloud className="text-2xl mb-1 text-emerald-550" />
-                        <p className="text-[10px]">Click or drag product photo to upload</p>
+                      <div className="flex flex-col items-center justify-center py-2 space-y-2">
+                        <FiUploadCloud className="text-3xl text-emerald-500" />
+                        <p className="text-[10px] text-gray-400">Drag & drop your product image here or click</p>
+                        <span className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider transition duration-200 pointer-events-none">
+                          Browse Image
+                        </span>
                       </div>
                     )}
                   </div>
