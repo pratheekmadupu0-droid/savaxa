@@ -17,7 +17,7 @@ export default function Dealers() {
   const [locatorQuery, setLocatorQuery] = useState('')
   
   const [dealersList, setDealersList] = useState([
-    { name: t("Apex Agro Solutions", "అపెక్స్ ఆగ్రో సొల్యూషన్స్ (Apex Agro Solutions)"), state: t("Telangana", "తెలంగాణ"), city: t("Hyderabad", "హైదరాబాద్"), address: t("Pedda Amberpet Road, Bhuvaneshwari Nagar", "పెద్ద అంబర్‌పేట్ రోడ్, భువనేశ్వరి నగర్"), phone: "+91 93987 88328", type: t("Platinum Hub", "ప్లాటినం హబ్ (Platinum Hub)") },
+    { name: t("Apex Agro Solutions", "అపెక్స్ ఆగ్రో సొల్యూషన్స్ (Apex Agro Solutions)"), state: t("Telangana", "తెలంగాణ"), city: t("Hyderabad", "హైదరాబాద్"), address: t("Pedda Amberpet Road, Bhuvaneshwari Nagar", "పెద్ద అంబర్‌పేట్ రోడ్, భువనేశ్వరి నగర్"), phone: "+91 8074 660 491", type: t("Platinum Hub", "ప్లాటినం హబ్ (Platinum Hub)") },
     { name: t("Sri Rama Agronomy Services", "శ్రీ రామ అగ్రోనమీ సర్వీసెస్ (Sri Rama Agronomy)"), state: t("Andhra Pradesh", "ఆంధ్రప్రదేశ్"), city: t("Guntur", "గుంటూరు"), address: t("Mirchi Yard Road, Main Market Complex", "మిర్చి యార్డ్ రోడ్, మెయిన్ మార్కెట్ కాంప్లెక్స్"), phone: "+91 94402 12345", type: t("Gold Partner", "గోల్డ్ పార్ట్నర్ (Gold Partner)") },
     { name: t("Kalyani Crop Protection Ltd", "కళ్యాణి క్రాప్ ప్రొటెక్షన్ లిమిటెడ్ (Kalyani)"), state: t("Maharashtra", "మహారాష్ట్ర"), city: t("Pune", "పూణే"), address: t("Market Yard Complex, Gultekdi", "మార్కెట్ యార్డ్ కాంప్లెక్స్, గుల్తేక్డి"), phone: "+91 98230 56789", type: t("Certified Stockist", "ధృవీకరించబడిన స్టాకిస్ట్") }
   ])

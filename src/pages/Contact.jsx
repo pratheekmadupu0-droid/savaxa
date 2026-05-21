@@ -59,8 +59,8 @@ export default function Contact() {
           <div className="space-y-6 flex flex-col justify-between">
             <div className="space-y-6">
               {[
-                { title: t("Direct Agronomy Desk", "ప్రత్యక్ష వ్యవసాయ సహాయ కేంద్రం"), value: t("1800-833-2888 (Toll-Free)", "1800-833-2888 (ఉచిత హెల్ప్‌లైన్)"), label: t("TOLL FREE HELPLINE", "టోల్ ఫ్రీ హెల్ప్‌లైన్"), icon: <RiPhoneLine className="text-emerald-600 text-xl" /> },
-                { title: t("Chemical Registry Email", "కార్పొరేట్ ఈమెయిల్"), value: "info@savaxa.com", label: t("GENERAL ENQUIRIES", "సాధారణ విచారణలు"), icon: <RiMailLine className="text-emerald-600 text-xl" /> },
+                { title: t("Direct Agronomy Desk", "ప్రత్యక్ష వ్యవసాయ సహాయ కేంద్రం"), value: t("+91 8074 660 491", "+91 8074 660 491"), label: t("TOLL FREE HELPLINE", "టోల్ ఫ్రీ హెల్ప్‌లైన్"), icon: <RiPhoneLine className="text-emerald-600 text-xl" /> },
+                { title: t("Chemical Registry Email", "కార్పొరేట్ ఈమెయిల్"), value: "savaxacropcare2023@gmail.com", label: t("GENERAL ENQUIRIES", "సాధారణ విచారణలు"), icon: <RiMailLine className="text-emerald-600 text-xl" /> },
                 { title: t("Headquarters Coordinates", "ప్రధాన కార్యాలయం చిరునామా"), value: t("Plot 120, Sector 1, Industrial Development Area, Uppal, Hyderabad, TG 500039", "ప్లాట్ నం. 120, సెక్టార్ 1, ఇండస్ట్రియల్ ఏరియా, ఉప్పల్, హైదరాబాద్, తెలంగాణ 500039"), label: t("MAIN OFFICE & LABS", "ప్రధాన కార్యాలయం & పరిశోధన శాలలు"), icon: <RiMapPinLine className="text-emerald-600 text-xl" /> }
               ].map((card, idx) => (
                 <div key={idx} className="glass-panel p-5 rounded-2xl border border-slate-200/60 flex gap-4 hover:border-emerald-500/20 transition duration-300 shadow-sm bg-white/70">
@@ -222,10 +222,10 @@ export default function Contact() {
 
       {/* Floating Bottom-Right WhatsApp Logo / Button */}
       <a
-        href="https://wa.me/919398788328"
+        href="https://wa.me/918074660491"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-24 z-[999] w-14 h-14 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-110 transition duration-300 group"
+        className="fixed bottom-6 right-6 z-[999] w-14 h-14 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-110 transition duration-300 group"
         style={{
           boxShadow: '0 0 25px rgba(16, 185, 129, 0.45)'
         }}

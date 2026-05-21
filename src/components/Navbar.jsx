@@ -425,11 +425,11 @@ export default function Navbar() {
               <div className="flex gap-4">
                 <div>
                   <p className="text-[10px] text-slate-450 tracking-widest font-mono">SUPPORT HELPLINE</p>
-                  <p className="text-xs font-bold text-slate-800">+91 93987 88328</p>
+                  <p className="text-xs font-bold text-slate-800">+91 8074 660 491</p>
                 </div>
                 <div>
                   <p className="text-[10px] text-slate-450 tracking-widest font-mono">EMAIL INQUIRIES</p>
-                  <p className="text-xs font-bold text-slate-800 font-sans">info@savaxa.com</p>
+                  <p className="text-xs font-bold text-slate-800 font-sans">savaxacropcare2023@gmail.com</p>
                 </div>
               </div>
               <p className="text-[10px] text-slate-400 font-mono">© 2026 Savaxa Bio-Agri Sciences. All rights reserved.</p>

@@ -26,8 +26,8 @@ export default function Footer() {
             )}
           </p>
           <div className="space-y-2 text-xs font-mono">
-            <p className="flex items-center gap-2"><RiPhoneLine className="text-cyan-400" /> +91 93987 88328</p>
-            <p className="flex items-center gap-2"><RiMailSendLine className="text-cyan-400" /> info@savaxa.com</p>
+            <p className="flex items-center gap-2"><RiPhoneLine className="text-cyan-400" /> +91 8074 660 491</p>
+            <p className="flex items-center gap-2"><RiMailSendLine className="text-cyan-400" /> savaxacropcare2023@gmail.com</p>
           </div>
         </div>
 

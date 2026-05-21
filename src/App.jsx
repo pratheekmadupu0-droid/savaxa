@@ -56,7 +56,7 @@ export default function App() {
         </Routes>
       </main>
 
-      <Chatbot />
+      {location.pathname !== '/contact' && <Chatbot />}
       <Footer />
     </>
   )

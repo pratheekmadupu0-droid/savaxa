@@ -22,7 +22,7 @@ export default function Chatbot() {
     products: "We have three main segments: 1. Insecticides (crop protection against bugs) 2. Herbicides (weed control) 3. Fungicides (fungal disease control). You can explore them in our Products catalog!",
     organic: "Savaxa integrates bio-engineered ingredients with modern science to maximize safety and efficiency, adhering to rigorous ISO standards.",
     dealer: "To become an authorized Savaxa partner, head to our Dealers page and complete the Registration form. Our state teams will reach out!",
-    contact: "You can reach us directly via the Contact page or send an email to info@savaxa.com. We also have a dedicated WhatsApp helpline!",
+    contact: "You can reach us directly via the Contact page or send an email to savaxacropcare2023@gmail.com. We also have a dedicated WhatsApp helpline!",
     rice: "For Rice cultivation, we recommend our specialized herbicide 'Savaxa Rice-Shield' and our bio-insecticide to combat stem borers. Check 'Crop Solutions' page for details!",
     cotton: "Cotton crops are highly sensitive to bollworms. Our premium insecticide class provides robust defenses. Please view our Crop Solutions section.",
     default: "I appreciate your query! Please feel free to email our support desk at contact@savaxa.com or call our agronomy helpline at 1800-SAVAXA-BIO."
