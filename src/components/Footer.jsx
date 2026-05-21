@@ -56,6 +56,7 @@ export default function Footer() {
             <li><Link to="/blog" className="hover:text-cyan-400 transition">{t("Agri-Tech Intel", "వ్యవసాయ సాంకేతిక వార్తలు")}</Link></li>
             <li><Link to="/downloads" className="hover:text-cyan-400 transition">{t("Downloads Center", "డౌన్‌లోడ్ సెంటర్")}</Link></li>
             <li><Link to="/certifications" className="hover:text-cyan-400 transition">{t("Certifications", "ధృవీకరణ పత్రాలు")}</Link></li>
+            <li><Link to="/faqs" className="hover:text-cyan-400 transition">{t("FAQ", "తరచుగా అడిగే ప్రశ్నలు")}</Link></li>
           </ul>
         </div>
 
@@ -94,7 +95,11 @@ export default function Footer() {
             "సర్వే నం. 470, ప్లాట్ నం. 95, పెద్ద అంబర్‌పేట్ రోడ్, భువనేశ్వరి నగర్, హైదరాబాద్, తెలంగాణ 501505"
           )}
         </p>
-        <p className="flex items-center gap-1">
+        <p className="flex items-center gap-4">
+          <Link to="/privacy-policy" className="hover:text-cyan-400 transition">{t("Privacy Policy", "గోప్యతా విధానం")}</Link>
+          <span>|</span>
+          <Link to="/terms-of-service" className="hover:text-cyan-400 transition">{t("Terms of Service", "సేవా నిబంధనలు")}</Link>
+          <span>|</span>
           <RiCopyrightLine />
           {t(
             "2026 Savaxa Bio-Agri Sciences. All Rights Reserved.",

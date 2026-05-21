@@ -5,6 +5,7 @@ import { RiSearchLine, RiArrowRightLine, RiFilterLine, RiSeedlingLine } from 're
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '../firebase'
 import toast, { Toaster } from 'react-hot-toast'
+import SEO from '../components/SEO'
 
 export default function Products() {
   const { t } = useLanguage()
@@ -46,6 +47,11 @@ export default function Products() {
 
   return (
     <div className="font-sans pt-32 pb-20 relative overflow-hidden bg-slate-50 min-h-screen text-slate-800">
+      <SEO 
+        title="Products Catalog | Insecticides, Fungicides, Herbicides | SAVAXA"
+        description="Explore the complete SAVAXA crop care catalog. Learn about our advanced herbicides, high-efficacy insecticides, bio-stimulants, and protective plant fungicides."
+        keywords="insecticides for agriculture, fungicides for plants, best herbicides for crops, selective weedicides, bio-stimulants, crop protection india"
+      />
       <Toaster position="top-right" />
       
       {/* Meadow Watermark */}

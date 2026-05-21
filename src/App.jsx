@@ -22,6 +22,9 @@ import Blog from './pages/Blog.jsx'
 import Downloads from './pages/Downloads.jsx'
 import Certifications from './pages/Certifications.jsx'
 import Contact from './pages/Contact.jsx'
+import PrivacyPolicy from './pages/PrivacyPolicy.jsx'
+import Terms from './pages/Terms.jsx'
+import FAQ from './pages/FAQ.jsx'
 
 // Admin Pages
 import AdminLayout from './pages/admin/AdminLayout.jsx'
@@ -61,6 +64,9 @@ export default function App() {
           <Route path="/downloads" element={<Downloads />} />
           <Route path="/certifications" element={<Certifications />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<Terms />} />
+          <Route path="/faqs" element={<FAQ />} />
 
           {/* Admin Routes */}
           <Route path="/admin/login" element={<Login />} />

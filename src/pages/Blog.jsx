@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { RiSearchLine, RiCalendarLine, RiUserLine, RiArrowRightLine, RiInboxLine } from 'react-icons/ri'
 import { useLanguage } from '../context/LanguageContext'
+import SEO from '../components/SEO'
 
 export default function Blog() {
   const { t } = useLanguage()
@@ -55,8 +56,40 @@ export default function Blog() {
     return matchesCategory && matchesSearch
   })
 
+  const blogListSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "SAVAXA Agri-Intel Blog",
+    "description": "Scientific bulletins, molecular pesticide diagnostics, and agricultural crop protection yield insights from SAVAXA crop care labs.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "SAVAXA Bio-Agri Sciences",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://savaxa.in/savax-logo.png"
+      }
+    },
+    "blogPost": blogPosts.map(post => ({
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.desc,
+      "datePublished": "2026-05-22",
+      "image": `https://savaxa.in${post.img}`,
+      "author": {
+        "@type": "Person",
+        "name": post.author
+      }
+    }))
+  };
+
   return (
     <div className="font-sans pt-32 pb-20 relative overflow-hidden bg-slate-50">
+      <SEO 
+        title="Agri-Intel Blog & Crop Protection Bulletins | SAVAXA"
+        description="Stay up to date with molecular pesticide formulations, scientific diagnostics, and global agronomic market developments from Savaxa R&D labs."
+        keywords="crop protection blog, best pesticide for rice, how to increase crop yield, fall armyworm mitigation, organic biostimulants research"
+        schema={blogListSchema}
+      />
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
         
         {/* Header Block */}

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Exclude sensitive admin directories from indexing
+Disallow: /admin
+Disallow: /admin/*
+
+Sitemap: https://savaxa.in/sitemap.xml

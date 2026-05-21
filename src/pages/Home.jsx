@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useInView } from 'react-intersection-observer'
 import { useLanguage } from '../context/LanguageContext'
+import SEO from '../components/SEO'
 import { 
   RiShieldCheckLine, 
   RiSeedlingFill, 
@@ -149,8 +150,37 @@ export default function Home() {
     }
   ]
 
+  const homeSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "SAVAXA Bio-Agri Sciences",
+    "url": "https://savaxa.in",
+    "logo": "https://savaxa.in/savax-logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+91-8074660491",
+      "contactType": "sales",
+      "areaServed": "IN",
+      "availableLanguage": ["en", "tel"]
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Survey No. 470, Plot No. 95, Pedda Amberpet Road, Bhuvaneshwari Nagar",
+      "addressLocality": "Hyderabad",
+      "addressRegion": "Telangana",
+      "postalCode": "501505",
+      "addressCountry": "IN"
+    }
+  };
+
   return (
     <div className="font-sans relative overflow-hidden bg-slate-50">
+      <SEO 
+        title="SAVAXA Agro | Best Pesticide & Crop Protection Company in India"
+        description="SAVAXA Agro provides advanced insecticides, herbicides, fungicides, and organic crop protection bio-stimulants for farmers and distributors across India."
+        keywords="pesticide company in India, best herbicides for crops, fungicides for plants, insecticides for agriculture, crop protection solutions, agricultural chemicals, farming solutions, pest control for crops, bio pesticides, agriculture products India"
+        schema={homeSchema}
+      />
       {/* Beautiful Subtle Agrochemical Field Backdrop Watermark */}
       <div className="absolute top-0 left-0 w-full h-[140vh] -z-20 pointer-events-none overflow-hidden">
         <img 
@@ -205,9 +235,9 @@ export default function Home() {
               </span>
             </div>
 
-            <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight font-display uppercase text-slate-900">
+            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight font-display uppercase text-slate-900">
               {t("PIONEERING THE FUTURE OF", "పంటల రక్షణలో")} <span className="text-gradient">{t("CROP PROTECTION", "నూతన విప్లవం")}</span>
-            </h2>
+            </h1>
 
             <p className="text-slate-655 text-base md:text-lg leading-relaxed font-light max-w-xl">
               {t(
