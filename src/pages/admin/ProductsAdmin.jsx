@@ -90,68 +90,36 @@ export default function ProductsAdmin() {
       return;
     }
 
-    // OPTION B: FILE UPLOAD (Requires Storage)
-    if (!storage) {
-      toast.error('Firebase Storage is not configured. Please paste a direct URL instead.');
-      return;
-    }
-
+    // OPTION B: FILE UPLOAD (Instant Base64 Conversion - 0ms Wait)
     const selectedFile = file;
-    const localUrl = URL.createObjectURL(selectedFile);
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedFile);
+    
+    reader.onload = async () => {
+      const base64Image = reader.result;
+      const docData = {
+        ...productPayload,
+        img: base64Image
+      };
 
-    // Create optimistic uploading product
-    const tempProduct = {
-      id: tempId,
-      ...productPayload,
-      img: localUrl,
-      isUploading: true,
-      progress: 0
+      setIsSubmitting(true);
+      resetForm();
+      toast.success(`Product "${productPayload.name}" successfully registered!`);
+
+      try {
+        await addDoc(collection(db, 'products'), docData);
+      } catch (err) {
+        console.error(err);
+        toast.error(`Failed to register product "${productPayload.name}": ` + err.message);
+      } finally {
+        setIsSubmitting(false);
+      }
     };
-
-    // Add to local uploading state
-    setUploadingProducts(prev => [tempProduct, ...prev]);
-    resetForm();
-    toast.success(`Started background upload for "${productPayload.name}"!`);
-
-    try {
-      const storageRef = ref(storage, `products/${Date.now()}_${selectedFile.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, selectedFile);
-
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setUploadingProducts(prev =>
-            prev.map(p => p.id === tempId ? { ...p, progress } : p)
-          );
-        },
-        (error) => {
-          console.warn('Storage Upload Error: ', error);
-          toast.error(`Upload failed for "${productPayload.name}". Please try pasting a link!`);
-          setUploadingProducts(prev => prev.filter(p => p.id !== tempId));
-        },
-        async () => {
-          try {
-            const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
-            const docData = {
-              ...productPayload,
-              img: imageUrl
-            };
-
-            await addDoc(collection(db, 'products'), docData);
-          } catch (err) {
-            console.error(err);
-            toast.error(`Failed to register product "${productPayload.name}": ` + err.message);
-          } finally {
-            setUploadingProducts(prev => prev.filter(p => p.id !== tempId));
-          }
-        }
-      );
-    } catch (error) {
-      console.error(error);
-      toast.error(`Background upload failed for "${productPayload.name}"`);
-      setUploadingProducts(prev => prev.filter(p => p.id !== tempId));
-    }
+    
+    reader.onerror = (error) => {
+      console.error('FileReader Error: ', error);
+      toast.error('Failed to read image file. Please try pasting a link instead.');
+    };
   };
 
   const resetForm = () => {

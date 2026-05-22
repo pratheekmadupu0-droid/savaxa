@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useLanguage } from '../context/LanguageContext'
 import { RiSearchLine, RiArrowRightLine, RiFilterLine, RiSeedlingLine } from 'react-icons/ri'
-import { collection, getDocs } from 'firebase/firestore'
+import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../firebase'
 import toast, { Toaster } from 'react-hot-toast'
 import SEO from '../components/SEO'
@@ -16,26 +16,26 @@ export default function Products() {
   const [selectedProduct, setSelectedProduct] = useState(null)
 
   useEffect(() => {
-    fetchProducts()
-  }, [])
-
-  const fetchProducts = async () => {
     if (!db) {
       setProductsList([])
       setLoading(false)
       return
     }
-    try {
-      const snap = await getDocs(collection(db, 'products'))
-      const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-      setProductsList(data)
-    } catch (error) {
-      console.error(error)
-      toast.error('Failed to load products')
-    } finally {
+
+    const unsubscribe = onSnapshot(collection(db, 'products'), (snapshot) => {
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      // Sort by createdAt descending
+      const sorted = data.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+      setProductsList(sorted)
       setLoading(false)
-    }
-  }
+    }, (error) => {
+      console.error(error)
+      toast.error('Failed to sync products catalog')
+      setLoading(false)
+    })
+
+    return () => unsubscribe()
+  }, [])
 
   const filteredProducts = productsList.filter(prod => {
     const matchesCategory = activeCategory === 'all' || prod.category === activeCategory
@@ -122,9 +122,7 @@ export default function Products() {
         </div>
 
         {/* Products Grid */}
-        {loading ? (
-          <div className="py-12 text-center text-slate-500">Loading catalog...</div>
-        ) : filteredProducts.length === 0 ? (
+        {filteredProducts.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-slate-200 space-y-4 shadow-sm">
             <h3 className="text-lg font-bold text-slate-800 font-display">
               {t("NO PRODUCTS FOUND", "ఉత్పత్తులేవీ లభించలేదు")}

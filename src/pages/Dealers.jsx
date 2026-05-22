@@ -18,7 +18,7 @@ import {
   RiWhatsappLine,
   RiCloseLine
 } from 'react-icons/ri'
-import { collection, getDocs, addDoc, query, where } from 'firebase/firestore'
+import { collection, onSnapshot, getDocs, addDoc, query, where } from 'firebase/firestore'
 import { signInWithPopup, signOut } from 'firebase/auth'
 import { db, auth, googleProvider } from '../firebase'
 import toast, { Toaster } from 'react-hot-toast'
@@ -67,20 +67,15 @@ export default function Dealers() {
       setLoading(false)
     }) : () => { setLoading(false) }
 
-    fetchPublicDealers()
-    return () => unsubscribe()
-  }, [])
-
-  const fetchPublicDealers = async () => {
     if (!db) {
       setDealersList([])
       setLoadingDirectory(false)
-      return
+      return () => unsubscribe()
     }
-    try {
-      setLoadingDirectory(true)
-      const snap = await getDocs(collection(db, 'dealers'))
-      const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    
+    setLoadingDirectory(true)
+    const unsubscribeDealers = onSnapshot(collection(db, 'dealers'), (snapshot) => {
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
       // Sort so verified dealers appear first
       const sorted = data.sort((a, b) => {
         if (a.status === 'Verified' && b.status !== 'Verified') return -1;
@@ -88,12 +83,17 @@ export default function Dealers() {
         return 0;
       });
       setDealersList(sorted)
-    } catch (error) {
-      console.error("Error loading dealers for directory:", error)
-    } finally {
       setLoadingDirectory(false)
+    }, (error) => {
+      console.error("Error loading dealers for directory:", error)
+      setLoadingDirectory(false)
+    })
+
+    return () => {
+      unsubscribe()
+      unsubscribeDealers()
     }
-  }
+  }, [])
 
   const checkRegistrationStatus = async (email) => {
     if (!db) return
@@ -539,12 +539,7 @@ export default function Dealers() {
             </div>
           </div>
 
-          {loadingDirectory ? (
-            <div className="py-16 text-center space-y-3">
-              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
-              <p className="text-xs text-slate-400 font-mono">Loading distributor directories...</p>
-            </div>
-          ) : filteredPublicDealers.length === 0 ? (
+          {filteredPublicDealers.length === 0 ? (
             <div className="bg-white border border-slate-200 rounded-[24px] p-12 text-center text-slate-400 flex flex-col items-center">
               <RiFileTextLine className="text-4xl text-slate-350 mb-2" />
               <p className="text-xs font-mono">No matching partners found in this region.</p>
