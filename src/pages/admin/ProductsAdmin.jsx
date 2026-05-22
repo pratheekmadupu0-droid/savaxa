@@ -95,25 +95,49 @@ export default function ProductsAdmin() {
     const reader = new FileReader();
     reader.readAsDataURL(selectedFile);
     
-    reader.onload = async () => {
-      const base64Image = reader.result;
-      const docData = {
-        ...productPayload,
-        img: base64Image
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
+      
+      img.onload = async () => {
+        // Compress image using HTML5 Canvas to ensure it stays well under 1MB Firestore limit
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 800;
+        const scaleSize = MAX_WIDTH / img.width;
+        
+        // Only scale down if the image is wider than 800px
+        if (scaleSize < 1) {
+          canvas.width = MAX_WIDTH;
+          canvas.height = img.height * scaleSize;
+        } else {
+          canvas.width = img.width;
+          canvas.height = img.height;
+        }
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        // Compress to JPEG with 0.7 quality to guarantee it fits in Firestore's 1MB limit
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+
+        const docData = {
+          ...productPayload,
+          img: compressedBase64
+        };
+
+        setIsSubmitting(true);
+        resetForm();
+        toast.success(`Product "${productPayload.name}" successfully registered!`);
+
+        try {
+          await addDoc(collection(db, 'products'), docData);
+        } catch (err) {
+          console.error(err);
+          toast.error(`Failed to register product "${productPayload.name}": ` + err.message);
+        } finally {
+          setIsSubmitting(false);
+        }
       };
-
-      setIsSubmitting(true);
-      resetForm();
-      toast.success(`Product "${productPayload.name}" successfully registered!`);
-
-      try {
-        await addDoc(collection(db, 'products'), docData);
-      } catch (err) {
-        console.error(err);
-        toast.error(`Failed to register product "${productPayload.name}": ` + err.message);
-      } finally {
-        setIsSubmitting(false);
-      }
     };
     
     reader.onerror = (error) => {
