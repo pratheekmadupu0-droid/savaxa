@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { FiBox, FiUsers, FiDownload, FiActivity } from 'react-icons/fi';
 
@@ -19,12 +19,17 @@ export default function Dashboard() {
 
     const unsubProducts = onSnapshot(collection(db, 'products'), (snap) => {
       setStats(prev => ({ ...prev, products: snap.size }));
-    });
+    }, (error) => console.error('Products stat error:', error));
+
     const unsubDealers = onSnapshot(collection(db, 'dealers'), (snap) => {
       setStats(prev => ({ ...prev, dealers: snap.size }));
-    });
+    }, (error) => console.error('Dealers stat error:', error));
+
     const unsubDownloads = onSnapshot(collection(db, 'downloads'), (snap) => {
       setStats(prev => ({ ...prev, downloads: snap.size }));
+      setLoading(false);
+    }, (error) => {
+      console.error('Downloads stat error:', error);
       setLoading(false);
     });
 
