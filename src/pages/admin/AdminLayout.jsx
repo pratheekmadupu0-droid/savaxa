@@ -5,8 +5,6 @@ import { auth } from '../../firebase';
 import { FiHome, FiBox, FiUsers, FiDownload, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
 import toast, { Toaster } from 'react-hot-toast';
 
-const ALLOWED_EMAILS = ['pratheekmadupu0@gmail.com', 'savaxacropcare2023@gmail.com'];
-
 export default function AdminLayout() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -48,24 +46,6 @@ export default function AdminLayout() {
   // Actually, if they are not logged in, redirect to login page
   if (!user) {
     return <Navigate to="/admin/login" replace />;
-  }
-
-  if (!ALLOWED_EMAILS.includes(user.email)) {
-    return (
-      <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-4">
-        <FiX className="text-red-500 text-6xl mb-4" />
-        <h1 className="text-3xl font-bold mb-2">Access Denied</h1>
-        <p className="text-gray-400 mb-6 text-center max-w-md">
-          You do not have permission to access the Savaxa Admin Panel. Please sign in with an authorized account.
-        </p>
-        <button
-          onClick={handleLogout}
-          className="bg-primary hover:bg-primary/80 text-white px-6 py-2 rounded-full transition-colors"
-        >
-          Sign Out
-        </button>
-      </div>
-    );
   }
 
   const navLinks = [
@@ -154,9 +134,9 @@ export default function AdminLayout() {
             {location.pathname.split('/').pop() || 'Dashboard'}
           </h2>
           <div className="flex items-center space-x-4 text-sm">
-            <span className="text-gray-400">{user.email}</span>
+            <span className="text-gray-400">{user?.email || 'Admin'}</span>
             <div className="w-8 h-8 rounded-full bg-primary/20 border border-primary text-primary flex items-center justify-center font-bold">
-              {user.email.charAt(0).toUpperCase()}
+              {user?.email ? user.email.charAt(0).toUpperCase() : 'A'}
             </div>
           </div>
         </header>
