@@ -1,27 +1,35 @@
 import { useState, useEffect } from 'react';
-import { collection, onSnapshot, addDoc, deleteDoc, doc } from 'firebase/firestore';
+import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../../firebase';
-import { FiPlus, FiTrash2, FiBox, FiUploadCloud, FiLink, FiImage } from 'react-icons/fi';
+import { FiPlus, FiTrash2, FiEdit2, FiBox, FiUploadCloud, FiLink, FiImage, FiFileText } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
 export default function ProductsAdmin() {
   const [products, setProducts] = useState([]);
-  const [uploadingProducts, setUploadingProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  
   const [newProduct, setNewProduct] = useState({
     name: '',
     category: 'insecticides',
     description: '',
+    dosage: '',
+    cropDetails: '',
+    specifications: '',
     usage: '',
     howToBeUsed: '',
     cropEffects: ''
   });
+  
   const [file, setFile] = useState(null);
+  const [pdfFile, setPdfFile] = useState(null);
   const [imageInputType, setImageInputType] = useState('upload'); // 'upload' or 'url'
   const [pastedImageUrl, setPastedImageUrl] = useState('');
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     if (!db) {
@@ -32,7 +40,6 @@ export default function ProductsAdmin() {
     setLoading(true);
     const unsubscribe = onSnapshot(collection(db, 'products'), (snapshot) => {
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      // Sort by createdAt descending
       const sorted = data.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
       setProducts(sorted);
       setLoading(false);
@@ -45,135 +52,150 @@ export default function ProductsAdmin() {
     return () => unsubscribe();
   }, []);
 
-  const handleAddProduct = async (e) => {
+  const handleEditProduct = (product) => {
+    setEditingId(product.id);
+    setNewProduct({
+      name: product.name || '',
+      category: product.category || 'insecticides',
+      description: product.description || '',
+      dosage: product.dosage || '',
+      cropDetails: product.cropDetails || '',
+      specifications: product.specifications || '',
+      usage: product.usage || '',
+      howToBeUsed: product.howToBeUsed || '',
+      cropEffects: product.cropEffects || ''
+    });
+    setImageInputType('url');
+    setPastedImageUrl(product.img || '');
+    setFile(null);
+    setPdfFile(null);
+    setIsModalOpen(true);
+  };
+
+  const handleSaveProduct = async (e) => {
     e.preventDefault();
     if (!db) {
       toast.error('Database connection not established');
       return;
     }
 
-    // Validation
-    if (imageInputType === 'url' && !pastedImageUrl) {
+    if (imageInputType === 'url' && !pastedImageUrl && !editingId) {
       toast.error('Please enter a valid image URL');
       return;
     }
-    if (imageInputType === 'upload' && !file) {
+    if (imageInputType === 'upload' && !file && !editingId) {
       toast.error('Please select an image file or choose to paste a web URL');
       return;
     }
 
-    const tempId = `temp_${Date.now()}`;
-    const productPayload = {
-      ...newProduct,
-      createdAt: new Date().toISOString()
-    };
+    setIsSubmitting(true);
+    setUploadProgress(10);
 
-    // OPTION A: DIRECT IMAGE URL PASTED (INSTANT 0ms WAIT)
-    if (imageInputType === 'url') {
-      const docData = {
-        ...productPayload,
-        img: pastedImageUrl
-      };
+    let finalImageUrl = pastedImageUrl;
+    let finalPdfUrl = editingId ? (products.find(p => p.id === editingId)?.brochurePdf || '') : '';
 
-      setIsSubmitting(true);
-      resetForm();
-      toast.success(`Product "${productPayload.name}" successfully registered!`);
-
-      try {
-        await addDoc(collection(db, 'products'), docData);
-      } catch (error) {
-        console.error(error);
-        toast.error('Failed to register product: ' + error.message);
-      } finally {
-        setIsSubmitting(false);
+    try {
+      // 1. Handle PDF Upload if present
+      if (pdfFile) {
+        setUploadProgress(30);
+        const pdfRef = ref(storage, `brochures/${Date.now()}_${pdfFile.name}`);
+        const uploadTask = await uploadBytesResumable(pdfRef, pdfFile);
+        finalPdfUrl = await getDownloadURL(pdfRef);
       }
-      return;
-    }
 
-    // OPTION B: FILE UPLOAD (Instant Base64 Conversion - 0ms Wait)
-    const selectedFile = file;
-    const reader = new FileReader();
-    reader.readAsDataURL(selectedFile);
-    
-    reader.onload = (event) => {
-      const img = new Image();
-      img.src = event.target.result;
-      
-      img.onload = async () => {
-        // Compress image using HTML5 Canvas to ensure it stays well under 1MB Firestore limit
-        const canvas = document.createElement('canvas');
-        const MAX_WIDTH = 800;
-        const scaleSize = MAX_WIDTH / img.width;
-        
-        // Only scale down if the image is wider than 800px
-        if (scaleSize < 1) {
-          canvas.width = MAX_WIDTH;
-          canvas.height = img.height * scaleSize;
-        } else {
-          canvas.width = img.width;
-          canvas.height = img.height;
-        }
+      // 2. Handle Image Upload if present and using Base64 Canvas Compression
+      if (imageInputType === 'upload' && file) {
+        setUploadProgress(60);
+        const base64Image = await compressImageToBase64(file);
+        finalImageUrl = base64Image;
+      }
 
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        
-        // Compress to JPEG with 0.7 quality to guarantee it fits in Firestore's 1MB limit
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+      setUploadProgress(90);
 
-        const docData = {
-          ...productPayload,
-          img: compressedBase64
-        };
-
-        setIsSubmitting(true);
-        resetForm();
-        toast.success(`Product "${productPayload.name}" successfully registered!`);
-
-        try {
-          await addDoc(collection(db, 'products'), docData);
-        } catch (err) {
-          console.error(err);
-          toast.error(`Failed to register product "${productPayload.name}": ` + err.message);
-        } finally {
-          setIsSubmitting(false);
-        }
+      const productPayload = {
+        ...newProduct,
+        img: finalImageUrl,
+        brochurePdf: finalPdfUrl,
+        updatedAt: new Date().toISOString()
       };
-    };
-    
-    reader.onerror = (error) => {
-      console.error('FileReader Error: ', error);
-      toast.error('Failed to read image file. Please try pasting a link instead.');
-    };
+
+      if (editingId) {
+        await updateDoc(doc(db, 'products', editingId), productPayload);
+        toast.success(`Product "${productPayload.name}" successfully updated!`);
+      } else {
+        productPayload.createdAt = new Date().toISOString();
+        await addDoc(collection(db, 'products'), productPayload);
+        toast.success(`Product "${productPayload.name}" successfully added!`);
+      }
+
+      resetForm();
+    } catch (err) {
+      console.error(err);
+      toast.error(`Failed to save product: ` + err.message);
+    } finally {
+      setIsSubmitting(false);
+      setUploadProgress(0);
+    }
+  };
+
+  const compressImageToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 800;
+          const scaleSize = MAX_WIDTH / img.width;
+          if (scaleSize < 1) {
+            canvas.width = MAX_WIDTH;
+            canvas.height = img.height * scaleSize;
+          } else {
+            canvas.width = img.width;
+            canvas.height = img.height;
+          }
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL('image/jpeg', 0.7));
+        };
+        img.onerror = (error) => reject(error);
+      };
+      reader.onerror = (error) => reject(error);
+    });
   };
 
   const resetForm = () => {
+    setEditingId(null);
     setNewProduct({
       name: '',
       category: 'insecticides',
       description: '',
+      dosage: '',
+      cropDetails: '',
+      specifications: '',
       usage: '',
       howToBeUsed: '',
       cropEffects: ''
     });
     setFile(null);
+    setPdfFile(null);
     setPastedImageUrl('');
     setIsModalOpen(false);
+    setUploadProgress(0);
   };
 
   const handleDelete = async (id) => {
     if (!db) return;
-    if (!window.confirm('Are you sure you want to delete this product?')) return;
-    
+    if (!window.confirm('Are you sure you want to permanently delete this product?')) return;
     try {
       await deleteDoc(doc(db, 'products', id));
-      setProducts(products.filter(p => p.id !== id));
-      toast.success('Product removed from catalog');
+      toast.success('Product removed permanently');
     } catch (error) {
       toast.error('Error removing product');
     }
   };
-
-  const allProducts = [...uploadingProducts, ...products];
 
   return (
     <div className="animate-fade-in text-white font-sans">
@@ -181,11 +203,11 @@ export default function ProductsAdmin() {
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight font-display text-white uppercase">Products Catalog</h1>
           <p className="text-gray-400 text-xs mt-1">
-            Manage your Savaxa products catalog: <span className="text-blue-500 font-extrabold">{allProducts.length} registered blends</span>
+            Manage your Savaxa products catalog: <span className="text-blue-500 font-extrabold">{products.length} active blends</span>
           </p>
         </div>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => { resetForm(); setIsModalOpen(true); }}
           className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl flex items-center transition duration-300 font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/10"
         >
           <FiPlus className="mr-2 text-sm" /> Add New Product
@@ -200,7 +222,7 @@ export default function ProductsAdmin() {
                 <th className="py-4 px-6 font-semibold text-xs tracking-wider uppercase text-gray-400 font-mono">Product Details</th>
                 <th className="py-4 px-6 font-semibold text-xs tracking-wider uppercase text-gray-400 font-mono">Category</th>
                 <th className="py-4 px-6 font-semibold text-xs tracking-wider uppercase text-gray-400 font-mono">Usage</th>
-                <th className="py-4 px-6 font-semibold text-xs tracking-wider uppercase text-gray-400 font-mono">Actions</th>
+                <th className="py-4 px-6 font-semibold text-xs tracking-wider uppercase text-gray-400 font-mono text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -211,44 +233,30 @@ export default function ProductsAdmin() {
                     <p className="text-xs text-gray-500 font-mono">Fetching catalog records...</p>
                   </td>
                 </tr>
-              ) : allProducts.length === 0 ? (
+              ) : products.length === 0 ? (
                 <tr>
                   <td colSpan="4" className="py-16 text-center text-gray-500">
                     <div className="flex flex-col items-center justify-center">
                       <FiBox className="text-5xl mb-4 opacity-30 text-blue-500" />
                       <h3 className="font-bold text-sm text-gray-300">NO PRODUCTS REGISTERED</h3>
-                      <p className="text-[11px] text-gray-500 mt-1 max-w-xs leading-relaxed font-light">
-                        There are currently no active products in your database. Click 'Add New Product' to register one.
-                      </p>
                     </div>
                   </td>
                 </tr>
               ) : (
-                allProducts.map((product) => (
-                  <tr key={product.id} className={`border-b border-gray-800/60 hover:bg-gray-800/20 transition-colors duration-200 ${product.isUploading ? 'bg-blue-950/10 opacity-75' : ''}`}>
+                products.map((product) => (
+                  <tr key={product.id} className="border-b border-gray-800/60 hover:bg-gray-800/20 transition-colors duration-200">
                     <td className="py-4 px-6 flex items-center gap-3">
                       {product.img ? (
                         <img 
                           src={product.img} 
                           alt={product.name} 
                           className="w-12 h-12 object-cover rounded-xl border border-gray-800 flex-shrink-0"
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = "https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=80&q=80";
-                          }}
                         />
                       ) : (
-                        <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500 border border-blue-500/20 flex-shrink-0 font-bold">
-                          P
-                        </div>
+                        <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500 border border-blue-500/20 flex-shrink-0 font-bold">P</div>
                       )}
                       <div className="overflow-hidden">
-                        <div className="font-bold text-white tracking-wide text-sm flex items-center gap-2">
-                          {product.name}
-                          {product.isUploading && (
-                            <span className="text-[9px] font-mono bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded font-extrabold tracking-wider uppercase animate-pulse">Syncing</span>
-                          )}
-                        </div>
+                        <div className="font-bold text-white tracking-wide text-sm">{product.name}</div>
                         <div className="text-xs text-gray-400 truncate max-w-xs mt-0.5 font-light">{product.description}</div>
                       </div>
                     </td>
@@ -258,23 +266,21 @@ export default function ProductsAdmin() {
                       </span>
                     </td>
                     <td className="py-4 px-6 text-gray-300 text-xs font-light truncate max-w-xs">{product.usage}</td>
-                    <td className="py-4 px-6">
-                      {product.isUploading ? (
-                        <div className="flex flex-col items-start gap-1 w-24">
-                          <span className="text-[9px] text-blue-400 font-mono font-bold animate-pulse">Uploading {Math.round(product.progress)}%</span>
-                          <div className="w-full bg-gray-800 rounded-full h-1 overflow-hidden">
-                            <div className="bg-blue-500 h-full rounded-full transition-all duration-300 shadow-[0_0_4px_#3b82f6]" style={{ width: `${product.progress}%` }}></div>
-                          </div>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => handleDelete(product.id)}
-                          className="text-gray-500 hover:text-red-400 p-2 rounded-xl hover:bg-red-500/10 transition duration-200"
-                          title="Delete Product"
-                        >
-                          <FiTrash2 className="text-base" />
-                        </button>
-                      )}
+                    <td className="py-4 px-6 text-right space-x-2">
+                      <button
+                        onClick={() => handleEditProduct(product)}
+                        className="text-gray-400 hover:text-blue-400 p-2 rounded-xl hover:bg-blue-500/10 transition duration-200"
+                        title="Edit Product"
+                      >
+                        <FiEdit2 className="text-base" />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(product.id)}
+                        className="text-gray-500 hover:text-red-400 p-2 rounded-xl hover:bg-red-500/10 transition duration-200"
+                        title="Delete Product"
+                      >
+                        <FiTrash2 className="text-base" />
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -284,13 +290,14 @@ export default function ProductsAdmin() {
         </div>
       </div>
 
-      {/* Add Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-gray-900 border border-gray-800 rounded-[28px] p-8 w-full max-w-lg shadow-2xl relative my-8 animate-scale-in max-h-[90vh] overflow-y-auto">
-            <h2 className="text-2xl font-extrabold tracking-tight font-display mb-6">Register New Product</h2>
+          <div className="bg-gray-900 border border-gray-800 rounded-[28px] p-8 w-full max-w-2xl shadow-2xl relative my-8 animate-scale-in max-h-[90vh] overflow-y-auto">
+            <h2 className="text-2xl font-extrabold tracking-tight font-display mb-6">
+              {editingId ? 'Edit Existing Product' : 'Register New Product'}
+            </h2>
             
-            <form onSubmit={handleAddProduct} className="space-y-4">
+            <form onSubmit={handleSaveProduct} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-1">Product Name</label>
@@ -299,8 +306,7 @@ export default function ProductsAdmin() {
                     type="text"
                     value={newProduct.name}
                     onChange={e => setNewProduct({...newProduct, name: e.target.value})}
-                    className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs"
-                    placeholder="e.g. Savaxa Super"
+                    className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 text-xs"
                   />
                 </div>
                 <div>
@@ -308,7 +314,7 @@ export default function ProductsAdmin() {
                   <select
                     value={newProduct.category}
                     onChange={e => setNewProduct({...newProduct, category: e.target.value})}
-                    className="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs"
+                    className="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-blue-500 text-xs"
                   >
                     <option value="insecticides">Insecticides</option>
                     <option value="herbicides">Herbicides</option>
@@ -318,141 +324,64 @@ export default function ProductsAdmin() {
                 </div>
               </div>
 
-              {/* Image Input Type Selector */}
               <div>
-                <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-2">Image Selection Method</label>
+                <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-2">Product Image (Required)</label>
                 <div className="grid grid-cols-2 gap-3 mb-3">
-                  <button
-                    type="button"
-                    onClick={() => setImageInputType('upload')}
-                    className={`py-2 px-3 rounded-xl border font-bold text-xs tracking-wider flex items-center justify-center gap-1.5 transition ${
-                      imageInputType === 'upload'
-                        ? 'bg-blue-600/15 border-emerald-550 text-emerald-450'
-                        : 'bg-gray-950 border-gray-850 text-gray-400 hover:border-gray-700'
-                    }`}
-                  >
-                    <FiUploadCloud /> Upload Local File
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setImageInputType('url')}
-                    className={`py-2 px-3 rounded-xl border font-bold text-xs tracking-wider flex items-center justify-center gap-1.5 transition ${
-                      imageInputType === 'url'
-                        ? 'bg-blue-600/15 border-emerald-550 text-emerald-450'
-                        : 'bg-gray-950 border-gray-850 text-gray-400 hover:border-gray-700'
-                    }`}
-                  >
-                    <FiLink /> Paste Image Link
-                  </button>
+                  <button type="button" onClick={() => setImageInputType('upload')} className={`py-2 px-3 rounded-xl border font-bold text-[10px] tracking-wider flex items-center justify-center gap-1.5 transition ${imageInputType === 'upload' ? 'bg-blue-600/15 border-blue-500 text-blue-400' : 'bg-gray-950 border-gray-800 text-gray-400'}`}><FiUploadCloud /> Upload Local File</button>
+                  <button type="button" onClick={() => setImageInputType('url')} className={`py-2 px-3 rounded-xl border font-bold text-[10px] tracking-wider flex items-center justify-center gap-1.5 transition ${imageInputType === 'url' ? 'bg-blue-600/15 border-blue-500 text-blue-400' : 'bg-gray-950 border-gray-800 text-gray-400'}`}><FiLink /> Paste Image Link</button>
                 </div>
-
                 {imageInputType === 'upload' ? (
-                  <div className="border-2 border-dashed border-gray-800 rounded-xl p-4 text-center hover:border-blue-500 transition-colors cursor-pointer relative bg-gray-950">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={e => setFile(e.target.files[0])}
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                    />
-                    {file ? (
-                      <p className="text-blue-500 font-semibold text-xs flex items-center justify-center gap-1.5"><FiImage /> {file.name}</p>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center py-2 space-y-2">
-                        <FiUploadCloud className="text-3xl text-blue-500" />
-                        <p className="text-[10px] text-gray-400">Drag & drop your product image here or click</p>
-                        <span className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider transition duration-200 pointer-events-none">
-                          Browse Image
-                        </span>
-                      </div>
-                    )}
-                  </div>
+                  <input type="file" accept="image/*" onChange={e => setFile(e.target.files[0])} className="w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-bold file:bg-blue-500/10 file:text-blue-400 hover:file:bg-blue-500/20" />
                 ) : (
-                  <div>
-                    <input
-                      type="url"
-                      value={pastedImageUrl}
-                      onChange={e => setPastedImageUrl(e.target.value)}
-                      className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs font-mono"
-                      placeholder="Paste Unsplash or direct image URL (e.g. https://example.com/photo.jpg)"
-                    />
-                    <p className="text-[9px] text-gray-500 font-mono mt-1">
-                      💡 Tip: Use public web links from Unsplash, Imgur, or direct servers to skip Firebase Storage limits.
-                    </p>
-                  </div>
+                  <input type="url" value={pastedImageUrl} onChange={e => setPastedImageUrl(e.target.value)} className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 text-xs font-mono" placeholder="Direct Image URL" />
                 )}
               </div>
 
               <div>
+                <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-2">Brochure PDF (Optional)</label>
+                <input type="file" accept="application/pdf" onChange={e => setPdfFile(e.target.files[0])} className="w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-bold file:bg-purple-500/10 file:text-purple-400 hover:file:bg-purple-500/20" />
+                {editingId && products.find(p => p.id === editingId)?.brochurePdf && !pdfFile && (
+                  <p className="text-[10px] text-emerald-400 mt-2 flex items-center gap-1"><FiFileText /> Existing PDF will be kept</p>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-1">Dosage</label>
+                  <input type="text" value={newProduct.dosage} onChange={e => setNewProduct({...newProduct, dosage: e.target.value})} className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2 text-white focus:border-blue-500 text-xs" placeholder="e.g. 2ml per liter" />
+                </div>
+                <div>
+                  <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-1">Specifications</label>
+                  <input type="text" value={newProduct.specifications} onChange={e => setNewProduct({...newProduct, specifications: e.target.value})} className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2 text-white focus:border-blue-500 text-xs" placeholder="e.g. 20% EC" />
+                </div>
+              </div>
+
+              <div>
                 <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-1">Product Description</label>
-                <textarea
-                  required
-                  rows="2"
-                  value={newProduct.description}
-                  onChange={e => setNewProduct({...newProduct, description: e.target.value})}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 resize-none text-xs leading-relaxed"
-                  placeholder="A premium agrochemical formula developed to optimize crops..."
-                ></textarea>
+                <textarea required rows="2" value={newProduct.description} onChange={e => setNewProduct({...newProduct, description: e.target.value})} className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:border-blue-500 text-xs"></textarea>
               </div>
 
-              <div>
-                <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-1">Usage / Recommended Crops</label>
-                <textarea
-                  required
-                  rows="2"
-                  value={newProduct.usage}
-                  onChange={e => setNewProduct({...newProduct, usage: e.target.value})}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 resize-none text-xs leading-relaxed"
-                  placeholder="Target Pests: Sucking bugs, caterpillars. Crops: Paddy, Chillies..."
-                ></textarea>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-1">Crop Details / Targets</label>
+                  <textarea rows="2" value={newProduct.cropDetails} onChange={e => setNewProduct({...newProduct, cropDetails: e.target.value})} className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2 text-white focus:border-blue-500 text-xs"></textarea>
+                </div>
+                <div>
+                  <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-1">Usage Recommendations</label>
+                  <textarea required rows="2" value={newProduct.usage} onChange={e => setNewProduct({...newProduct, usage: e.target.value})} className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2 text-white focus:border-blue-500 text-xs"></textarea>
+                </div>
               </div>
 
-              <div>
-                <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-1">How to be used (Directions)</label>
-                <textarea
-                  required
-                  rows="2"
-                  value={newProduct.howToBeUsed}
-                  onChange={e => setNewProduct({...newProduct, howToBeUsed: e.target.value})}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 resize-none text-xs leading-relaxed"
-                  placeholder="Dilute 1.5 - 2.0 ml per liter of clean water and spray evenly..."
-                ></textarea>
-              </div>
-
-              <div>
-                <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-1">Effects to the plant / crop</label>
-                <textarea
-                  required
-                  rows="2"
-                  value={newProduct.cropEffects}
-                  onChange={e => setNewProduct({...newProduct, cropEffects: e.target.value})}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 resize-none text-xs leading-relaxed"
-                  placeholder="Promotes vigorous root development, increases chlorophyll absorption..."
-                ></textarea>
-              </div>
-
-              {isSubmitting && imageInputType === 'upload' && (
-                <div className="w-full bg-gray-800 rounded-full h-1.5 mt-4">
-                  <div 
-                    className="bg-blue-600 h-1.5 rounded-full transition-all duration-300 shadow-[0_0_6px_#2563eb]" 
-                    style={{ width: `${uploadProgress}%` }}
-                  ></div>
+              {isSubmitting && (
+                <div className="w-full bg-gray-800 rounded-full h-1 mt-4">
+                  <div className="bg-blue-600 h-1 rounded-full transition-all duration-300" style={{ width: `${uploadProgress}%` }}></div>
                 </div>
               )}
               
-              <div className="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-800/60">
-                <button
-                  type="button"
-                  onClick={resetForm}
-                  className="px-4 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 transition duration-200 text-xs font-bold uppercase tracking-wider"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl flex items-center transition duration-300 text-xs font-bold uppercase tracking-wider disabled:opacity-50"
-                >
-                  {isSubmitting ? `Saving ${Math.round(uploadProgress)}%` : 'Save Product'}
+              <div className="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-800">
+                <button type="button" onClick={resetForm} className="px-4 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 text-xs font-bold uppercase">Cancel</button>
+                <button type="submit" disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-xl flex items-center text-xs font-bold uppercase disabled:opacity-50">
+                  {isSubmitting ? 'Saving...' : editingId ? 'Update Product' : 'Add Product'}
                 </button>
               </div>
             </form>
