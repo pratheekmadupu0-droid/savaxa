@@ -64,43 +64,23 @@ export default function DownloadsAdmin() {
       return;
     }
 
-    if (fileInputType === 'url' && !pastedFileUrl && !editingId) {
+    if (!pastedFileUrl && !editingId) {
       toast.error('Please enter a valid file URL');
-      return;
-    }
-    if (fileInputType === 'upload' && !file && !editingId) {
-      toast.error('Please select a PDF file or choose to paste a direct link');
       return;
     }
 
     setIsSubmitting(true);
     let finalUrl = pastedFileUrl;
-    let finalFileName = file ? file.name : (editingId ? downloads.find(d => d.id === editingId)?.fileName : 'Direct URL Link');
+    let finalFileName = editingId ? downloads.find(d => d.id === editingId)?.fileName : 'Direct URL Link';
+
+    const downloadPayload = {
+      ...newDownload,
+      url: finalUrl,
+      fileName: finalFileName,
+      updatedAt: new Date().toISOString()
+    };
 
     try {
-      if (fileInputType === 'upload' && file) {
-        if (!storage) throw new Error('Firebase Storage is not configured.');
-        const storageRef = ref(storage, `downloads/${Date.now()}_${file.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, file);
-        
-        await new Promise((resolve, reject) => {
-          uploadTask.on(
-            'state_changed',
-            (snapshot) => setUploadProgress((snapshot.bytesTransferred / snapshot.totalBytes) * 100),
-            (error) => reject(error),
-            () => resolve()
-          );
-        });
-        finalUrl = await getDownloadURL(uploadTask.snapshot.ref);
-      }
-
-      const downloadPayload = {
-        ...newDownload,
-        url: finalUrl,
-        fileName: finalFileName,
-        updatedAt: new Date().toISOString()
-      };
-
       if (editingId) {
         await updateDoc(doc(db, 'downloads', editingId), downloadPayload);
         toast.success(`Brochure updated successfully!`);
@@ -116,7 +96,6 @@ export default function DownloadsAdmin() {
       toast.error('Failed to save brochure: ' + err.message);
     } finally {
       setIsSubmitting(false);
-      setUploadProgress(0);
     }
   };
 
@@ -224,28 +203,24 @@ export default function DownloadsAdmin() {
               </div>
 
               <div>
-                <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-2">File Source</label>
-                <div className="grid grid-cols-2 gap-3 mb-3">
-                  <button type="button" onClick={() => setFileInputType('upload')} className={`py-2 px-3 rounded-xl border font-bold text-xs tracking-wider flex items-center justify-center gap-1.5 transition ${fileInputType === 'upload' ? 'bg-blue-600/15 border-blue-500 text-blue-400' : 'bg-gray-950 border-gray-850 text-gray-400 hover:border-gray-700'}`}><FiUploadCloud /> Upload PDF File</button>
-                  <button type="button" onClick={() => setFileInputType('url')} className={`py-2 px-3 rounded-xl border font-bold text-xs tracking-wider flex items-center justify-center gap-1.5 transition ${fileInputType === 'url' ? 'bg-blue-600/15 border-blue-500 text-blue-400' : 'bg-gray-950 border-gray-850 text-gray-400 hover:border-gray-700'}`}><FiLink /> Paste File Link</button>
-                </div>
-                {fileInputType === 'upload' ? (
-                  <input type="file" accept="application/pdf" onChange={e => setFile(e.target.files[0])} className="w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-bold file:bg-blue-500/10 file:text-blue-400 hover:file:bg-blue-500/20" />
-                ) : (
-                  <input type="url" value={pastedFileUrl} onChange={e => setPastedFileUrl(e.target.value)} className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs font-mono" placeholder="Paste Direct PDF URL" />
-                )}
+                <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-2">Brochure PDF Link</label>
+                <input
+                  type="url"
+                  required
+                  value={pastedFileUrl}
+                  onChange={e => setPastedFileUrl(e.target.value)}
+                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs font-mono"
+                  placeholder="Paste Google Drive, Dropbox, or custom PDF web URL"
+                />
+                <p className="text-[9px] text-gray-500 font-mono mt-1">
+                  💡 Tip: Ensure the link is set to "Anyone with the link can view".
+                </p>
               </div>
-
-              {isSubmitting && fileInputType === 'upload' && (
-                <div className="w-full bg-gray-800 rounded-full h-1.5 mt-4">
-                  <div className="bg-blue-600 h-1.5 rounded-full transition-all duration-300 shadow-[0_0_6px_#2563eb]" style={{ width: `${uploadProgress}%` }}></div>
-                </div>
-              )}
               
               <div className="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-800/60">
                 <button type="button" onClick={resetForm} className="px-4 py-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 transition duration-200 text-xs font-bold uppercase tracking-wider">Cancel</button>
                 <button type="submit" disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl flex items-center transition duration-300 text-xs font-bold uppercase tracking-wider disabled:opacity-50">
-                  {isSubmitting ? `Saving ${Math.round(uploadProgress)}%` : editingId ? 'Update File' : 'Upload File'}
+                  {isSubmitting ? `Saving...` : editingId ? 'Update File' : 'Save File Link'}
                 </button>
               </div>
             </form>

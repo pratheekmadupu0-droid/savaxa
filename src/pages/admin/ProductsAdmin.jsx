@@ -92,7 +92,7 @@ export default function ProductsAdmin() {
     const payloadCopy = { ...newProduct };
     const editIdCopy = editingId;
     const fileCopy = file;
-    const pdfCopy = pdfFile;
+    const pdfCopy = pdfFile; // This is now just a string URL
     const inputTypeCopy = imageInputType;
     const pastedUrlCopy = pastedImageUrl;
 
@@ -101,23 +101,12 @@ export default function ProductsAdmin() {
     toast.success(editIdCopy ? 'Updating product in background...' : 'Registering product in background...', { icon: '⏳' });
 
     let finalImageUrl = pastedUrlCopy;
-    let finalPdfUrl = editIdCopy ? (products.find(p => p.id === editIdCopy)?.brochurePdf || '') : '';
+    let finalPdfUrl = pdfCopy || (editIdCopy ? (products.find(p => p.id === editIdCopy)?.brochurePdf || '') : '');
 
     try {
-      if (!storage) throw new Error('Firebase Storage is not configured.');
-
-      // 1. Handle PDF Upload if present
-      if (pdfCopy) {
-        const pdfRef = ref(storage, `brochures/${Date.now()}_${pdfCopy.name}`);
-        const pdfUploadTask = await uploadBytesResumable(pdfRef, pdfCopy);
-        finalPdfUrl = await getDownloadURL(pdfRef);
-      }
-
-      // 2. Handle Image Upload to Firebase Storage
+      // Handle Image Upload with Ultra-Aggressive Canvas Compression for Firestore 1MB Limit
       if (inputTypeCopy === 'upload' && fileCopy) {
-        const imageRef = ref(storage, `product_images/${Date.now()}_${fileCopy.name}`);
-        const imageUploadTask = await uploadBytesResumable(imageRef, fileCopy);
-        finalImageUrl = await getDownloadURL(imageRef);
+        finalImageUrl = await compressImageToBase64(fileCopy);
       }
 
       const productPayload = {
@@ -141,6 +130,35 @@ export default function ProductsAdmin() {
     }
   };
 
+  const compressImageToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 500; // Aggressive downscale
+          const scaleSize = MAX_WIDTH / img.width;
+          if (scaleSize < 1) {
+            canvas.width = MAX_WIDTH;
+            canvas.height = img.height * scaleSize;
+          } else {
+            canvas.width = img.width;
+            canvas.height = img.height;
+          }
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          // Compress quality to 0.5 to guarantee it stays under 100KB
+          resolve(canvas.toDataURL('image/jpeg', 0.5));
+        };
+        img.onerror = (error) => reject(error);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
   const resetForm = () => {
     setEditingId(null);
     setNewProduct({
@@ -155,7 +173,7 @@ export default function ProductsAdmin() {
       cropEffects: ''
     });
     setFile(null);
-    setPdfFile(null);
+    setPdfFile('');
     setPastedImageUrl('');
     setIsModalOpen(false);
   };
@@ -312,10 +330,10 @@ export default function ProductsAdmin() {
               </div>
 
               <div>
-                <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-2">Brochure PDF (Optional)</label>
-                <input type="file" accept="application/pdf" onChange={e => setPdfFile(e.target.files[0])} className="w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-[10px] file:font-bold file:bg-purple-500/10 file:text-purple-400 hover:file:bg-purple-500/20" />
+                <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-2">Brochure PDF Link (Optional)</label>
+                <input type="url" placeholder="Paste Google Drive or Dropbox link here" value={pdfFile || ''} onChange={e => setPdfFile(e.target.value)} className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 text-xs font-mono" />
                 {editingId && products.find(p => p.id === editingId)?.brochurePdf && !pdfFile && (
-                  <p className="text-[10px] text-emerald-400 mt-2 flex items-center gap-1"><FiFileText /> Existing PDF will be kept</p>
+                  <p className="text-[10px] text-emerald-400 mt-2 flex items-center gap-1"><FiFileText /> Existing PDF link will be kept</p>
                 )}
               </div>
 
