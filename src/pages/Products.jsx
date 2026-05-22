@@ -232,6 +232,27 @@ export default function Products() {
                   <p className="font-light">{selectedProduct.description}</p>
                 </div>
 
+                {selectedProduct.dosage && (
+                  <div>
+                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Dosage</h4>
+                    <p className="font-light">{selectedProduct.dosage}</p>
+                  </div>
+                )}
+
+                {selectedProduct.specifications && (
+                  <div>
+                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Specifications</h4>
+                    <p className="font-light">{selectedProduct.specifications}</p>
+                  </div>
+                )}
+
+                {selectedProduct.cropDetails && (
+                  <div>
+                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Target Crops / Crop Details</h4>
+                    <p className="font-light">{selectedProduct.cropDetails}</p>
+                  </div>
+                )}
+
                 {selectedProduct.usage && (
                   <div>
                     <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Usage</h4>
@@ -254,10 +275,22 @@ export default function Products() {
                 )}
               </div>
 
-              <div className="pt-4 border-t border-slate-100 flex justify-end">
+              <div className="pt-4 border-t border-slate-100 flex justify-between items-center">
+                {selectedProduct.brochurePdf ? (
+                  <a
+                    href={selectedProduct.brochurePdf}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-500 font-bold text-xs uppercase tracking-widest transition-colors"
+                  >
+                    View Brochure PDF &rarr;
+                  </a>
+                ) : (
+                  <div></div>
+                )}
                 <button
                   onClick={() => setSelectedProduct(null)}
-                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition duration-300 shadow-sm"
+                  className="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition duration-300 shadow-sm"
                 >
                   Close Window
                 </button>
