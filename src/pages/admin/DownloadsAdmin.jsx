@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
+import { collection, onSnapshot, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../../firebase';
 import { FiPlus, FiTrash2, FiFileText, FiUploadCloud, FiLink } from 'react-icons/fi';
@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 
 export default function DownloadsAdmin() {
   const [downloads, setDownloads] = useState([]);
+  const [uploadingDownloads, setUploadingDownloads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newDownload, setNewDownload] = useState({ title: '', description: '' });
@@ -14,32 +15,31 @@ export default function DownloadsAdmin() {
   const [fileInputType, setFileInputType] = useState('upload'); // 'upload' or 'url'
   const [pastedFileUrl, setPastedFileUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
-    fetchDownloads();
-  }, []);
-
-  const fetchDownloads = async () => {
     if (!db) {
       setDownloads([
         { id: '1', title: 'Product Brochure 2026', description: 'Complete catalog of all Savaxa crop care products.', url: '#' },
-        { id: '2', safety: 'Safety Guidelines', description: 'Important safety instructions for handling pesticides.', url: '#' }
+        { id: '2', title: 'Safety Guidelines', description: 'Important safety instructions for handling pesticides.', url: '#' }
       ]);
       setLoading(false);
       return;
     }
-    try {
-      const snap = await getDocs(collection(db, 'downloads'));
-      const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setDownloads(data);
-    } catch (error) {
-      console.warn(error);
-      toast.error('Failed to load brochures registry');
-    } finally {
+    setLoading(true);
+    const unsubscribe = onSnapshot(collection(db, 'downloads'), (snapshot) => {
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      // Sort by createdAt descending
+      const sorted = data.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+      setDownloads(sorted);
       setLoading(false);
-    }
-  };
+    }, (error) => {
+      console.warn(error);
+      toast.error('Failed to sync brochures registry');
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleAddDownload = async (e) => {
     e.preventDefault();
@@ -57,8 +57,11 @@ export default function DownloadsAdmin() {
       return;
     }
 
-    setIsSubmitting(true);
-    setUploadProgress(0);
+    const tempId = `temp_${Date.now()}`;
+    const downloadPayload = {
+      ...newDownload,
+      createdAt: new Date().toISOString()
+    };
 
     // OPTION A: DIRECT URL PASTED (E.G. GOOGLE DRIVE, EXTERNAL SERVERS) - 0ms WAIT
     if (fileInputType === 'url') {
@@ -68,11 +71,12 @@ export default function DownloadsAdmin() {
         fileName: 'Direct URL Link'
       };
 
+      setIsSubmitting(true);
+      resetForm();
+      toast.success(`Brochure "${downloadPayload.title}" successfully registered!`);
+
       try {
-        const docRef = await addDoc(collection(db, 'downloads'), docData);
-        setDownloads(prev => [{ id: docRef.id, ...docData }, ...prev]);
-        toast.success(`Brochure "${downloadPayload.title}" successfully registered!`);
-        resetForm();
+        await addDoc(collection(db, 'downloads'), docData);
       } catch (error) {
         console.error(error);
         toast.error('Failed to save brochure: ' + error.message);
@@ -85,12 +89,25 @@ export default function DownloadsAdmin() {
     // OPTION B: STORAGE UPLOAD
     if (!storage) {
       toast.error('Firebase Storage is not configured. Please paste a direct PDF / File URL instead.');
-      setIsSubmitting(false);
       return;
     }
 
     const selectedFile = file;
-    const loadingToastId = toast.loading('Uploading brochure PDF...');
+
+    // Create optimistic uploading brochure
+    const tempDownload = {
+      id: tempId,
+      ...downloadPayload,
+      fileName: selectedFile.name,
+      url: '#',
+      isUploading: true,
+      progress: 0
+    };
+
+    // Add to local uploading state
+    setUploadingDownloads(prev => [tempDownload, ...prev]);
+    resetForm();
+    toast.success(`Started background upload for "${downloadPayload.title}"!`);
 
     try {
       const storageRef = ref(storage, `downloads/${Date.now()}_${selectedFile.name}`);
@@ -100,13 +117,14 @@ export default function DownloadsAdmin() {
         'state_changed',
         (snapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setUploadProgress(progress);
+          setUploadingDownloads(prev =>
+            prev.map(d => d.id === tempId ? { ...d, progress } : d)
+          );
         },
         (error) => {
           console.warn('Storage Upload Error: ', error);
-          toast.dismiss(loadingToastId);
-          toast.error('Background upload failed. Use "Paste File Link" to bypass Storage rules!');
-          setIsSubmitting(false);
+          toast.error(`Upload failed for "${downloadPayload.title}". Please try pasting a link!`);
+          setUploadingDownloads(prev => prev.filter(d => d.id !== tempId));
         },
         async () => {
           try {
@@ -117,26 +135,19 @@ export default function DownloadsAdmin() {
               fileName: selectedFile.name
             };
 
-            const docRef = await addDoc(collection(db, 'downloads'), docData);
-            setDownloads(prev => [{ id: docRef.id, ...docData }, ...prev]);
-            
-            toast.dismiss(loadingToastId);
-            toast.success(`Brochure "${downloadPayload.title}" successfully registered!`);
-            resetForm();
+            await addDoc(collection(db, 'downloads'), docData);
           } catch (err) {
-            toast.dismiss(loadingToastId);
-            toast.error('Failed to save brochure: ' + err.message);
+            console.error(err);
+            toast.error(`Failed to register brochure "${downloadPayload.title}": ` + err.message);
           } finally {
-            setIsSubmitting(false);
-            setUploadProgress(0);
+            setUploadingDownloads(prev => prev.filter(d => d.id !== tempId));
           }
         }
       );
     } catch (error) {
       console.error(error);
-      toast.dismiss(loadingToastId);
-      toast.error('Background upload failed. Try pasting a direct link.');
-      setIsSubmitting(false);
+      toast.error(`Background upload failed for "${downloadPayload.title}"`);
+      setUploadingDownloads(prev => prev.filter(d => d.id !== tempId));
     }
   };
 
@@ -160,13 +171,15 @@ export default function DownloadsAdmin() {
     }
   };
 
+  const allDownloads = [...uploadingDownloads, ...downloads];
+
   return (
     <div className="animate-fade-in text-white font-sans">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight font-display text-white uppercase font-sans">Downloads & Brochures</h1>
           <p className="text-gray-400 text-xs mt-1">
-            Manage your Savaxa digital downloads: <span className="text-blue-500 font-extrabold">{downloads.length} active brochures</span>
+            Manage your Savaxa digital downloads: <span className="text-blue-500 font-extrabold">{allDownloads.length} active brochures</span>
           </p>
         </div>
         <button
@@ -183,8 +196,8 @@ export default function DownloadsAdmin() {
             <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
             <p className="text-xs text-gray-500 font-mono">Fetching brochures...</p>
           </div>
-        ) : downloads.length === 0 ? (
-          <div className="col-span-full py-16 text-center text-gray-500 flex flex-col items-center bg-gray-900 border border-gray-805/80 rounded-[24px]">
+        ) : allDownloads.length === 0 ? (
+          <div className="col-span-full py-16 text-center text-gray-500 flex flex-col items-center bg-gray-900 border border-gray-850/80 rounded-[24px]">
             <FiFileText className="text-5xl mb-4 opacity-30 text-blue-500" />
             <h3 className="font-bold text-sm text-gray-300">NO RESOURCES REGISTERED</h3>
             <p className="text-[11px] text-gray-500 mt-1 max-w-xs leading-relaxed font-light">
@@ -192,33 +205,58 @@ export default function DownloadsAdmin() {
             </p>
           </div>
         ) : (
-          downloads.map((item) => (
+          allDownloads.map((item) => (
             <div 
               key={item.id} 
-              className="bg-gray-900 border border-gray-805/80 p-6 rounded-[24px] flex items-start group hover:border-blue-600/40 transition duration-300 relative"
+              className={`bg-gray-900 border border-gray-850/80 p-6 rounded-[24px] flex items-start group hover:border-blue-600/40 transition duration-300 relative ${item.isUploading ? 'opacity-75 border-blue-650/30' : ''}`}
             >
-              <div className="p-4 bg-blue-500/15 text-blue-500 rounded-2xl mr-5 border border-blue-500/20 shadow-inner flex-shrink-0">
+              <div className="p-4 bg-blue-500/15 text-blue-500 rounded-2xl mr-5 border border-blue-500/20 shadow-inner flex-shrink-0 relative">
                 <FiFileText className="text-3xl" />
+                {item.isUploading && (
+                  <div className="absolute inset-0 bg-blue-600/25 rounded-2xl flex items-center justify-center">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  </div>
+                )}
               </div>
               <div className="flex-1 overflow-hidden pr-8">
-                <h3 className="text-xl font-extrabold tracking-wide mb-1 font-display line-clamp-1">{item.title}</h3>
+                <h3 className="text-xl font-extrabold tracking-wide mb-1 font-display line-clamp-1 flex items-center gap-2">
+                  {item.title}
+                  {item.isUploading && (
+                    <span className="text-[9px] font-mono bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded font-extrabold tracking-wider uppercase animate-pulse">Syncing</span>
+                  )}
+                </h3>
                 <p className="text-xs text-gray-400 mb-4 line-clamp-2 font-light leading-relaxed">{item.description}</p>
-                <a 
-                  href={item.url} 
-                  target="_blank" 
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-blue-500 hover:text-emerald-450 text-xs font-bold uppercase tracking-wider transition-colors"
-                >
-                  View Brochure &rarr;
-                </a>
+                
+                {item.isUploading ? (
+                  <div className="space-y-1.5 max-w-xs">
+                    <div className="flex justify-between items-center text-[10px] font-mono text-blue-450 font-bold">
+                      <span>Uploading PDF...</span>
+                      <span>{Math.round(item.progress)}%</span>
+                    </div>
+                    <div className="w-full bg-gray-800 rounded-full h-1 overflow-hidden">
+                      <div className="bg-blue-500 h-full rounded-full transition-all duration-300 shadow-[0_0_4px_#3b82f6]" style={{ width: `${item.progress}%` }}></div>
+                    </div>
+                  </div>
+                ) : (
+                  <a 
+                    href={item.url} 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 text-blue-500 hover:text-cyan-400 text-xs font-bold uppercase tracking-wider transition-colors"
+                  >
+                    View Brochure &rarr;
+                  </a>
+                )}
               </div>
-              <button
-                onClick={() => handleDelete(item.id)}
-                className="absolute top-5 right-5 text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all duration-300"
-                title="Remove File"
-              >
-                <FiTrash2 className="text-lg" />
-              </button>
+              {!item.isUploading && (
+                <button
+                  onClick={() => handleDelete(item.id)}
+                  className="absolute top-5 right-5 text-gray-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                  title="Remove File"
+                >
+                  <FiTrash2 className="text-lg" />
+                </button>
+              )}
             </div>
           ))
         )}

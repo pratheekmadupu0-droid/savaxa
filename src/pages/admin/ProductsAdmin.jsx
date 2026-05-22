@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
+import { collection, onSnapshot, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../../firebase';
 import { FiPlus, FiTrash2, FiBox, FiUploadCloud, FiLink, FiImage } from 'react-icons/fi';
@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 
 export default function ProductsAdmin() {
   const [products, setProducts] = useState([]);
+  const [uploadingProducts, setUploadingProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newProduct, setNewProduct] = useState({
@@ -21,29 +22,28 @@ export default function ProductsAdmin() {
   const [imageInputType, setImageInputType] = useState('upload'); // 'upload' or 'url'
   const [pastedImageUrl, setPastedImageUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
     if (!db) {
       setProducts([]);
       setLoading(false);
       return;
     }
-    try {
-      const snap = await getDocs(collection(db, 'products'));
-      const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setProducts(data);
-    } catch (error) {
-      console.warn(error);
-      toast.error('Failed to fetch products catalog');
-    } finally {
+    setLoading(true);
+    const unsubscribe = onSnapshot(collection(db, 'products'), (snapshot) => {
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      // Sort by createdAt descending
+      const sorted = data.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+      setProducts(sorted);
       setLoading(false);
-    }
-  };
+    }, (error) => {
+      console.warn(error);
+      toast.error('Failed to sync products catalog');
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
@@ -68,9 +68,6 @@ export default function ProductsAdmin() {
       createdAt: new Date().toISOString()
     };
 
-    setIsSubmitting(true);
-    setUploadProgress(0);
-
     // OPTION A: DIRECT IMAGE URL PASTED (INSTANT 0ms WAIT)
     if (imageInputType === 'url') {
       const docData = {
@@ -78,11 +75,12 @@ export default function ProductsAdmin() {
         img: pastedImageUrl
       };
 
+      setIsSubmitting(true);
+      resetForm();
+      toast.success(`Product "${productPayload.name}" successfully registered!`);
+
       try {
-        const docRef = await addDoc(collection(db, 'products'), docData);
-        setProducts(prev => [{ id: docRef.id, ...docData }, ...prev]);
-        toast.success(`Product "${productPayload.name}" successfully registered!`);
-        resetForm();
+        await addDoc(collection(db, 'products'), docData);
       } catch (error) {
         console.error(error);
         toast.error('Failed to register product: ' + error.message);
@@ -95,12 +93,25 @@ export default function ProductsAdmin() {
     // OPTION B: FILE UPLOAD (Requires Storage)
     if (!storage) {
       toast.error('Firebase Storage is not configured. Please paste a direct URL instead.');
-      setIsSubmitting(false);
       return;
     }
 
     const selectedFile = file;
-    const loadingToastId = toast.loading('Uploading product image...');
+    const localUrl = URL.createObjectURL(selectedFile);
+
+    // Create optimistic uploading product
+    const tempProduct = {
+      id: tempId,
+      ...productPayload,
+      img: localUrl,
+      isUploading: true,
+      progress: 0
+    };
+
+    // Add to local uploading state
+    setUploadingProducts(prev => [tempProduct, ...prev]);
+    resetForm();
+    toast.success(`Started background upload for "${productPayload.name}"!`);
 
     try {
       const storageRef = ref(storage, `products/${Date.now()}_${selectedFile.name}`);
@@ -110,13 +121,14 @@ export default function ProductsAdmin() {
         'state_changed',
         (snapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setUploadProgress(progress);
+          setUploadingProducts(prev =>
+            prev.map(p => p.id === tempId ? { ...p, progress } : p)
+          );
         },
         (error) => {
           console.warn('Storage Upload Error: ', error);
-          toast.dismiss(loadingToastId);
-          toast.error('Background upload failed. Use "Paste Image Link" to bypass Storage rules!');
-          setIsSubmitting(false);
+          toast.error(`Upload failed for "${productPayload.name}". Please try pasting a link!`);
+          setUploadingProducts(prev => prev.filter(p => p.id !== tempId));
         },
         async () => {
           try {
@@ -126,26 +138,19 @@ export default function ProductsAdmin() {
               img: imageUrl
             };
 
-            const docRef = await addDoc(collection(db, 'products'), docData);
-            setProducts(prev => [{ id: docRef.id, ...docData }, ...prev]);
-            
-            toast.dismiss(loadingToastId);
-            toast.success(`Product "${productPayload.name}" successfully registered!`);
-            resetForm();
+            await addDoc(collection(db, 'products'), docData);
           } catch (err) {
-            toast.dismiss(loadingToastId);
-            toast.error('Failed to register product: ' + err.message);
+            console.error(err);
+            toast.error(`Failed to register product "${productPayload.name}": ` + err.message);
           } finally {
-            setIsSubmitting(false);
-            setUploadProgress(0);
+            setUploadingProducts(prev => prev.filter(p => p.id !== tempId));
           }
         }
       );
     } catch (error) {
       console.error(error);
-      toast.dismiss(loadingToastId);
-      toast.error('Background upload failed. Try pasting a direct link.');
-      setIsSubmitting(false);
+      toast.error(`Background upload failed for "${productPayload.name}"`);
+      setUploadingProducts(prev => prev.filter(p => p.id !== tempId));
     }
   };
 
@@ -176,13 +181,15 @@ export default function ProductsAdmin() {
     }
   };
 
+  const allProducts = [...uploadingProducts, ...products];
+
   return (
     <div className="animate-fade-in text-white font-sans">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight font-display text-white uppercase">Products Catalog</h1>
           <p className="text-gray-400 text-xs mt-1">
-            Manage your Savaxa products catalog: <span className="text-blue-500 font-extrabold">{products.length} registered blends</span>
+            Manage your Savaxa products catalog: <span className="text-blue-500 font-extrabold">{allProducts.length} registered blends</span>
           </p>
         </div>
         <button
@@ -212,7 +219,7 @@ export default function ProductsAdmin() {
                     <p className="text-xs text-gray-500 font-mono">Fetching catalog records...</p>
                   </td>
                 </tr>
-              ) : products.length === 0 ? (
+              ) : allProducts.length === 0 ? (
                 <tr>
                   <td colSpan="4" className="py-16 text-center text-gray-500">
                     <div className="flex flex-col items-center justify-center">
@@ -225,8 +232,8 @@ export default function ProductsAdmin() {
                   </td>
                 </tr>
               ) : (
-                products.map((product) => (
-                  <tr key={product.id} className="border-b border-gray-800/60 hover:bg-gray-800/20 transition-colors duration-200">
+                allProducts.map((product) => (
+                  <tr key={product.id} className={`border-b border-gray-800/60 hover:bg-gray-800/20 transition-colors duration-200 ${product.isUploading ? 'bg-blue-950/10 opacity-75' : ''}`}>
                     <td className="py-4 px-6 flex items-center gap-3">
                       {product.img ? (
                         <img 
@@ -244,7 +251,12 @@ export default function ProductsAdmin() {
                         </div>
                       )}
                       <div className="overflow-hidden">
-                        <div className="font-bold text-white tracking-wide text-sm">{product.name}</div>
+                        <div className="font-bold text-white tracking-wide text-sm flex items-center gap-2">
+                          {product.name}
+                          {product.isUploading && (
+                            <span className="text-[9px] font-mono bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded font-extrabold tracking-wider uppercase animate-pulse">Syncing</span>
+                          )}
+                        </div>
                         <div className="text-xs text-gray-400 truncate max-w-xs mt-0.5 font-light">{product.description}</div>
                       </div>
                     </td>
@@ -255,13 +267,22 @@ export default function ProductsAdmin() {
                     </td>
                     <td className="py-4 px-6 text-gray-300 text-xs font-light truncate max-w-xs">{product.usage}</td>
                     <td className="py-4 px-6">
-                      <button
-                        onClick={() => handleDelete(product.id)}
-                        className="text-gray-500 hover:text-red-400 p-2 rounded-xl hover:bg-red-500/10 transition duration-200"
-                        title="Delete Product"
-                      >
-                        <FiTrash2 className="text-base" />
-                      </button>
+                      {product.isUploading ? (
+                        <div className="flex flex-col items-start gap-1 w-24">
+                          <span className="text-[9px] text-blue-400 font-mono font-bold animate-pulse">Uploading {Math.round(product.progress)}%</span>
+                          <div className="w-full bg-gray-800 rounded-full h-1 overflow-hidden">
+                            <div className="bg-blue-500 h-full rounded-full transition-all duration-300 shadow-[0_0_4px_#3b82f6]" style={{ width: `${product.progress}%` }}></div>
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => handleDelete(product.id)}
+                          className="text-gray-500 hover:text-red-400 p-2 rounded-xl hover:bg-red-500/10 transition duration-200"
+                          title="Delete Product"
+                        >
+                          <FiTrash2 className="text-base" />
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))

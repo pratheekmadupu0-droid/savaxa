@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { collection, onSnapshot, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { 
   FiPlus, 
@@ -33,28 +33,32 @@ export default function DealersAdmin() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchDealers();
-  }, []);
-
-  const fetchDealers = async () => {
     if (!db) {
       setDealers([]);
       setLoading(false);
       return;
     }
-    try {
-      setError(null);
-      const snap = await getDocs(collection(db, 'dealers'));
-      const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setDealers(data);
-    } catch (err) {
+    setLoading(true);
+    setError(null);
+    const unsubscribe = onSnapshot(collection(db, 'dealers'), (snapshot) => {
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      // Sort by status Verified first, then registeredAt descending
+      const sorted = data.sort((a, b) => {
+        if (a.status === 'Verified' && b.status !== 'Verified') return 1;
+        if (a.status !== 'Verified' && b.status === 'Verified') return -1;
+        return new Date(b.registeredAt || 0) - new Date(a.registeredAt || 0);
+      });
+      setDealers(sorted);
+      setLoading(false);
+    }, (err) => {
       console.warn(err);
       setError(err.message || 'Error connecting to Firestore database');
-      toast.error('Failed to load registered dealers');
-    } finally {
+      toast.error('Failed to sync dealers list');
       setLoading(false);
-    }
-  };
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleAddDealer = async (e) => {
     e.preventDefault();
@@ -63,14 +67,11 @@ export default function DealersAdmin() {
       return;
     }
     
-    const tempId = `temp_${Date.now()}`;
     const dealerPayload = {
       ...newDealer,
       registeredAt: new Date().toISOString()
     };
 
-    // Optimistically update UI instantly!
-    setDealers(prev => [{ id: tempId, ...dealerPayload }, ...prev]);
     setIsModalOpen(false);
     toast.success('Dealer registered successfully!');
 
@@ -86,14 +87,11 @@ export default function DealersAdmin() {
       status: 'Verified'
     });
 
-    // Save in background
     try {
-      const docRef = await addDoc(collection(db, 'dealers'), dealerPayload);
-      setDealers(prev => prev.map(d => d.id === tempId ? { ...d, id: docRef.id } : d));
+      await addDoc(collection(db, 'dealers'), dealerPayload);
     } catch (err) {
       console.error(err);
-      toast.error('Database sync failed. Removing dealer from active list.');
-      setDealers(prev => prev.filter(d => d.id !== tempId));
+      toast.error('Failed to sync dealer with Firestore database');
     }
   };
 
@@ -103,7 +101,6 @@ export default function DealersAdmin() {
       await updateDoc(doc(db, 'dealers', id), {
         status: 'Verified'
       });
-      setDealers(dealers.map(d => d.id === id ? { ...d, status: 'Verified' } : d));
       toast.success('Dealer status updated to Verified');
     } catch (error) {
       console.error(error);
