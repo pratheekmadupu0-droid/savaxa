@@ -32,13 +32,13 @@ export default function Contact() {
       </div>
 
       {/* Decorative Warm Organic Blur Circles */}
-      <div className="absolute top-[10%] left-0 w-96 h-96 bg-emerald-100/30 rounded-full filter blur-[130px] pointer-events-none" />
+      <div className="absolute top-[10%] left-0 w-96 h-96 bg-blue-100/20/30 rounded-full filter blur-[130px] pointer-events-none" />
 
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
         
         {/* Header Block */}
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
-          <p className="text-xs font-mono tracking-widest text-emerald-655 uppercase font-bold">
+          <p className="text-xs font-mono tracking-widest text-blue-650 uppercase font-bold">
             {t("SAVAXA CONNECT DESK", "సవాక్సా సహాయ కేంద్రం")}
           </p>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-display">
@@ -59,11 +59,11 @@ export default function Contact() {
           <div className="space-y-6 flex flex-col justify-between">
             <div className="space-y-6">
               {[
-                { title: t("Direct Agronomy Desk", "ప్రత్యక్ష వ్యవసాయ సహాయ కేంద్రం"), value: t("+91 8074 660 491", "+91 8074 660 491"), label: t("TOLL FREE HELPLINE", "టోల్ ఫ్రీ హెల్ప్‌లైన్"), icon: <RiPhoneLine className="text-emerald-600 text-xl" /> },
-                { title: t("Chemical Registry Email", "కార్పొరేట్ ఈమెయిల్"), value: "savaxacropcare2023@gmail.com", label: t("GENERAL ENQUIRIES", "సాధారణ విచారణలు"), icon: <RiMailLine className="text-emerald-600 text-xl" /> },
-                { title: t("Headquarters Coordinates", "ప్రధాన కార్యాలయం చిరునామా"), value: t("Plot 120, Sector 1, Industrial Development Area, Uppal, Hyderabad, TG 500039", "ప్లాట్ నం. 120, సెక్టార్ 1, ఇండస్ట్రియల్ ఏరియా, ఉప్పల్, హైదరాబాద్, తెలంగాణ 500039"), label: t("MAIN OFFICE & LABS", "ప్రధాన కార్యాలయం & పరిశోధన శాలలు"), icon: <RiMapPinLine className="text-emerald-600 text-xl" /> }
+                { title: t("Direct Agronomy Desk", "ప్రత్యక్ష వ్యవసాయ సహాయ కేంద్రం"), value: t("+91 8074 660 491", "+91 8074 660 491"), label: t("TOLL FREE HELPLINE", "టోల్ ఫ్రీ హెల్ప్‌లైన్"), icon: <RiPhoneLine className="text-blue-600 text-xl" /> },
+                { title: t("Chemical Registry Email", "కార్పొరేట్ ఈమెయిల్"), value: "savaxacropcare2023@gmail.com", label: t("GENERAL ENQUIRIES", "సాధారణ విచారణలు"), icon: <RiMailLine className="text-blue-600 text-xl" /> },
+                { title: t("Headquarters Coordinates", "ప్రధాన కార్యాలయం చిరునామా"), value: t("Plot 120, Sector 1, Industrial Development Area, Uppal, Hyderabad, TG 500039", "ప్లాట్ నం. 120, సెక్టార్ 1, ఇండస్ట్రియల్ ఏరియా, ఉప్పల్, హైదరాబాద్, తెలంగాణ 500039"), label: t("MAIN OFFICE & LABS", "ప్రధాన కార్యాలయం & పరిశోధన శాలలు"), icon: <RiMapPinLine className="text-blue-600 text-xl" /> }
               ].map((card, idx) => (
-                <div key={idx} className="glass-panel p-5 rounded-2xl border border-slate-200/60 flex gap-4 hover:border-emerald-500/20 transition duration-300 shadow-sm bg-white/70">
+                <div key={idx} className="glass-panel p-5 rounded-2xl border border-slate-200/60 flex gap-4 hover:border-blue-500/20 transition duration-300 shadow-sm bg-white/70">
                   <div className="w-11 h-11 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0 shadow-inner">
                     {card.icon}
                   </div>
@@ -90,7 +90,7 @@ export default function Contact() {
 
           {/* Contact Form Panel */}
           <div className="glass-panel p-8 rounded-3xl border border-slate-200/60 space-y-6 shadow-sm bg-white/70">
-            <h3 className="text-xl font-bold text-slate-800 tracking-wider font-display uppercase border-l-2 border-emerald-600 pl-3">
+            <h3 className="text-xl font-bold text-slate-800 tracking-wider font-display uppercase border-l-2 border-blue-600 pl-3">
               {t("Agronomy Scientific Inquiry", "వ్యవసాయ సాంకేతిక విచారణ")}
             </h3>
 
@@ -183,7 +183,7 @@ export default function Contact() {
 
                   <button
                     type="submit"
-                    className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs tracking-widest uppercase rounded-xl transition duration-300 flex items-center justify-center gap-1.5 shadow-[0_4px_15px_rgba(16,185,129,0.15)] hover:scale-[1.01]"
+                    className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs tracking-widest uppercase rounded-xl transition duration-300 flex items-center justify-center gap-1.5 shadow-[0_4px_15px_rgba(16,185,129,0.15)] hover:scale-[1.01]"
                   >
                     {t("Transmit Scientific Inquiry", "విచారణను సమర్పించండి")} <RiSendPlaneFill />
                   </button>
@@ -193,9 +193,9 @@ export default function Contact() {
                   key="contact-success"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="p-8 bg-emerald-50 border border-emerald-250 rounded-2xl text-center space-y-4 shadow-sm"
+                  className="p-8 bg-blue-50/70 border border-blue-200 rounded-2xl text-center space-y-4 shadow-sm"
                 >
-                  <RiShieldCheckLine className="text-emerald-600 text-5xl mx-auto" />
+                  <RiShieldCheckLine className="text-blue-600 text-5xl mx-auto" />
                   <h4 className="text-lg font-bold text-slate-800 font-display">
                     {t("INQUIRY SUCCESSFULLY TRANSMITTED", "విచారణ విజయవంతంగా సమర్పించబడింది")}
                   </h4>
@@ -207,7 +207,7 @@ export default function Contact() {
                   </p>
                   <button
                     onClick={() => setFormSubmitted(false)}
-                    className="bg-emerald-600 hover:bg-emerald-550 text-white px-5 py-2.5 rounded-xl font-bold text-[10px] tracking-widest uppercase transition duration-200 shadow-sm"
+                    className="bg-blue-600 hover:bg-blue-50 text-white px-5 py-2.5 rounded-xl font-bold text-[10px] tracking-widest uppercase transition duration-200 shadow-sm"
                   >
                     {t("Send another query", "మరొక విచారణ పంపండి")}
                   </button>
@@ -225,7 +225,7 @@ export default function Contact() {
         href="https://wa.me/918074660491"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-[999] w-14 h-14 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-110 transition duration-300 group"
+        className="fixed bottom-6 right-6 z-[999] w-14 h-14 bg-blue-500 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-110 transition duration-300 group"
         style={{
           boxShadow: '0 0 25px rgba(16, 185, 129, 0.45)'
         }}

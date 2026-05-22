@@ -11,7 +11,7 @@ export default function Downloads() {
       desc: t("Full product catalog containing crop protection specs, host crops, and dosage matrices.", "సవాక్సా ఉత్పత్తుల సమాచారం, వాడాల్సిన పంటలు మరియు ఎకరా మోతాదుల పట్టికల పూర్తి సమాచార పత్రం."),
       size: "8.4 MB",
       type: t("Product Brochure (PDF)", "ఉత్పత్తుల బ్రోచర్ (PDF)"),
-      icon: <RiFilePdfLine className="text-emerald-600 text-3xl" />
+      icon: <RiFilePdfLine className="text-blue-600 text-3xl" />
     },
     {
       title: t("Shield-Ultra Safety SDS Sheet", "షీల్డ్-అల్ట్రా సేఫ్టీ SDS షీట్"),
@@ -39,7 +39,7 @@ export default function Downloads() {
       desc: t("Application guide for BioRoot Protect Trichoderma spores in vegetable nurseries.", "కూరగాయల నారుమడులలో బయోరూట్ ట్రైకోడెర్మా స్పోర్స్ ఉపయోగించే పద్ధతుల పూర్తి గైడ్."),
       size: "4.2 MB",
       type: t("Agronomy Handbook (PDF)", "వ్యవసాయ సాంకేతిక గైడ్ (PDF)"),
-      icon: <RiFilePdfLine className="text-emerald-600 text-3xl" />
+      icon: <RiFilePdfLine className="text-blue-600 text-3xl" />
     },
     {
       title: t("Full Agronomy Safety Pack", "పూర్తి వ్యవసాయ భద్రతా సమాచార ప్యాక్"),
@@ -63,13 +63,13 @@ export default function Downloads() {
       </div>
 
       {/* Decorative Warm Organic Blur Circles */}
-      <div className="absolute top-[10%] left-0 w-96 h-96 bg-emerald-100/30 rounded-full filter blur-[130px] pointer-events-none" />
+      <div className="absolute top-[10%] left-0 w-96 h-96 bg-blue-100/20/30 rounded-full filter blur-[130px] pointer-events-none" />
 
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
         
         {/* Header Block */}
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
-          <p className="text-xs font-mono tracking-widest text-emerald-650 uppercase font-bold">
+          <p className="text-xs font-mono tracking-widest text-blue-650 uppercase font-bold">
             {t("SAVAXA RESOURCE ARCHIVES", "సవాక్సా రిసోర్స్ ఫైల్స్")}
           </p>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-display">
@@ -98,7 +98,7 @@ export default function Downloads() {
                 </div>
                 <div>
                   <span className="text-[9px] font-mono tracking-widest text-slate-400 uppercase font-bold">{item.type}</span>
-                  <h3 className="text-lg font-bold text-slate-800 mt-1 group-hover:text-emerald-600 transition duration-200 font-display leading-snug">
+                  <h3 className="text-lg font-bold text-slate-800 mt-1 group-hover:text-blue-600 transition duration-200 font-display leading-snug">
                     {item.title}
                   </h3>
                   <p className="text-xs text-slate-500 mt-2 leading-relaxed font-light">
@@ -110,7 +110,7 @@ export default function Downloads() {
               {/* download action bar */}
               <div className="flex justify-between items-center pt-4 border-t border-slate-100 text-[10px] font-mono">
                 <span className="text-slate-455 uppercase">{t("File size:", "ఫైల్ సైజు:")} <strong className="text-slate-700 font-bold">{item.size}</strong></span>
-                <button className="py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold tracking-widest uppercase rounded-xl transition duration-200 flex items-center gap-1.5 shadow-sm hover:scale-[1.01]">
+                <button className="py-2.5 px-4 bg-blue-600 hover:bg-blue-500 text-white font-bold tracking-widest uppercase rounded-xl transition duration-200 flex items-center gap-1.5 shadow-sm hover:scale-[1.01]">
                   {t("Download", "డౌన్‌లోడ్")} <RiDownloadLine />
                 </button>
               </div>

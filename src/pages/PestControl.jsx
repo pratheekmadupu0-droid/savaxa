@@ -74,7 +74,7 @@ export default function PestControl() {
         
         {/* Header Block */}
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
-          <p className="text-xs font-mono tracking-widest text-emerald-650 uppercase font-bold">
+          <p className="text-xs font-mono tracking-widest text-blue-650 uppercase font-bold">
             {t("SAVAXA CROP PROTECTION DATABASE", "సవాక్సా పంట రక్షణ డేటాబేస్")}
           </p>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-display">
@@ -108,7 +108,7 @@ export default function PestControl() {
 
                 {/* Classification details */}
                 <div>
-                  <p className="text-[10px] text-emerald-600 font-mono tracking-widest uppercase font-bold">{pest.type}</p>
+                  <p className="text-[10px] text-blue-600 font-mono tracking-widest uppercase font-bold">{pest.type}</p>
                   <h3 className="text-xl font-bold text-slate-800 mt-1 font-display">{pest.name}</h3>
                   <p className="text-xs text-slate-500 italic font-mono mt-0.5">{pest.sciName}</p>
                 </div>

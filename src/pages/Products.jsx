@@ -64,14 +64,14 @@ export default function Products() {
         <div className="absolute inset-0 bg-gradient-to-b from-slate-50/0 via-slate-50/70 to-slate-50" />
       </div>
 
-      <div className="absolute top-[10%] left-0 w-96 h-96 bg-emerald-100/20 rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute top-[10%] left-0 w-96 h-96 bg-blue-100/20/20 rounded-full blur-[130px] pointer-events-none" />
       <div className="absolute top-[45%] right-0 w-[500px] h-[500px] bg-teal-100/20 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
         
         {/* Header Block */}
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-12">
-          <p className="text-xs font-mono tracking-widest text-emerald-650 uppercase font-bold">
+          <p className="text-xs font-mono tracking-widest text-blue-650 uppercase font-bold">
             {t("SAVAXA CROP CARE PORTFOLIO", "సవాక్సా పంట రక్షణ శ్రేణి")}
           </p>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-display">
@@ -100,7 +100,7 @@ export default function Products() {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`px-4 py-2.5 rounded-xl text-xs tracking-wider uppercase font-bold transition duration-300 border ${
                   activeCategory === cat.id
-                    ? 'bg-emerald-600 text-white border-emerald-600 font-bold shadow-sm'
+                    ? 'bg-blue-600 text-white border-blue-600 font-bold shadow-sm'
                     : 'text-slate-550 hover:text-slate-800 hover:bg-slate-100 border-slate-200/60'
                 }`}
               >
@@ -116,7 +116,7 @@ export default function Products() {
               placeholder={t("Search products, usage...", "ఉత్పత్తులు లేదా ఉపయోగాల కొరకు వెతకండి...")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200/60 rounded-xl pl-11 pr-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 transition duration-300 shadow-inner"
+              className="w-full bg-slate-50 border border-slate-200/60 rounded-xl pl-11 pr-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-blue-600 transition duration-300 shadow-inner"
             />
           </div>
         </div>
@@ -134,7 +134,7 @@ export default function Products() {
             </p>
             <button
               onClick={() => { setActiveCategory('all'); setSearchQuery(''); }}
-              className="bg-emerald-600 hover:bg-emerald-555 text-white px-5 py-2.5 rounded-xl font-bold text-[10px] tracking-widest uppercase shadow-sm transition duration-300"
+              className="bg-blue-600 hover:bg-emerald-555 text-white px-5 py-2.5 rounded-xl font-bold text-[10px] tracking-widest uppercase shadow-sm transition duration-300"
             >
               Reset Filters
             </button>
@@ -157,14 +157,14 @@ export default function Products() {
                     {/* Photo */}
                     <div className="h-52 rounded-2xl overflow-hidden relative">
                       <img src={prod.img} alt={prod.name} className="w-full h-full object-cover group-hover:scale-103 transition duration-500" />
-                      <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[8px] font-mono tracking-widest font-extrabold border border-emerald-255 px-2.5 py-0.5 rounded-full text-emerald-600 uppercase">
+                      <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[8px] font-mono tracking-widest font-extrabold border border-emerald-255 px-2.5 py-0.5 rounded-full text-blue-600 uppercase">
                         {prod.category}
                       </span>
                     </div>
 
                     {/* Title & Desc */}
                     <div>
-                      <h3 className="text-lg font-bold text-slate-800 font-display group-hover:text-emerald-600 transition duration-200 leading-snug">
+                      <h3 className="text-lg font-bold text-slate-800 font-display group-hover:text-blue-600 transition duration-200 leading-snug">
                         {prod.name}
                       </h3>
                       <p className="text-xs text-slate-500 mt-2 leading-relaxed font-light font-sans line-clamp-3">
@@ -186,7 +186,7 @@ export default function Products() {
                       e.stopPropagation()
                       setSelectedProduct(prod)
                     }}
-                    className="w-full py-3 bg-slate-50 hover:bg-emerald-600 border border-slate-200 hover:border-emerald-500 text-slate-700 hover:text-white font-bold text-xs tracking-widest uppercase rounded-xl transition duration-300 flex items-center justify-center gap-1.5 shadow-inner"
+                    className="w-full py-3 bg-slate-50 hover:bg-blue-600 border border-slate-200 hover:border-blue-500 text-slate-700 hover:text-white font-bold text-xs tracking-widest uppercase rounded-xl transition duration-300 flex items-center justify-center gap-1.5 shadow-inner"
                   >
                     {t("View Application Guide", "వాడే పద్ధతులు చూడండి")} <RiArrowRightLine />
                   </button>
@@ -213,7 +213,7 @@ export default function Products() {
               {/* Header Image */}
               <div className="h-64 md:h-80 w-full rounded-2xl overflow-hidden border border-slate-100 relative">
                 <img src={selectedProduct.img} alt={selectedProduct.name} className="w-full h-full object-cover" />
-                <span className="absolute bottom-4 left-4 bg-emerald-600 text-white text-[10px] font-mono tracking-widest font-extrabold px-3 py-1 rounded-full uppercase">
+                <span className="absolute bottom-4 left-4 bg-blue-600 text-white text-[10px] font-mono tracking-widest font-extrabold px-3 py-1 rounded-full uppercase">
                   {selectedProduct.category}
                 </span>
               </div>
@@ -226,27 +226,27 @@ export default function Products() {
               {/* Content Grid */}
               <div className="space-y-4 text-sm text-slate-700 leading-relaxed">
                 <div>
-                  <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-emerald-600 mb-1">Product Description</h4>
+                  <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Product Description</h4>
                   <p className="font-light">{selectedProduct.description}</p>
                 </div>
 
                 {selectedProduct.usage && (
                   <div>
-                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-emerald-600 mb-1">Usage</h4>
+                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Usage</h4>
                     <p className="font-light">{selectedProduct.usage}</p>
                   </div>
                 )}
 
                 {selectedProduct.howToBeUsed && (
                   <div>
-                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-emerald-600 mb-1">Directions (How to be used)</h4>
+                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Directions (How to be used)</h4>
                     <p className="font-light">{selectedProduct.howToBeUsed}</p>
                   </div>
                 )}
 
                 {selectedProduct.cropEffects && (
                   <div>
-                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-emerald-600 mb-1">Effects to the plant / crop</h4>
+                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Effects to the plant / crop</h4>
                     <p className="font-light">{selectedProduct.cropEffects}</p>
                   </div>
                 )}
@@ -255,7 +255,7 @@ export default function Products() {
               <div className="pt-4 border-t border-slate-100 flex justify-end">
                 <button
                   onClick={() => setSelectedProduct(null)}
-                  className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition duration-300 shadow-sm"
+                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition duration-300 shadow-sm"
                 >
                   Close Window
                 </button>

@@ -134,12 +134,12 @@ export default function DealersAdmin() {
             Dealers Hub Registry
           </h1>
           <p className="text-gray-400 text-xs mt-1">
-            Authorized Savaxa Retailers & Partners: <span className="text-emerald-500 font-extrabold">{dealers.length} hubs</span>
+            Authorized Savaxa Retailers & Partners: <span className="text-blue-500 font-extrabold">{dealers.length} hubs</span>
           </p>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-xl flex items-center transition duration-300 font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/10"
+          className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl flex items-center transition duration-300 font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/10"
         >
           <FiPlus className="mr-2 text-sm" /> Add New Hub
         </button>
@@ -163,12 +163,12 @@ export default function DealersAdmin() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
           <div className="col-span-full py-16 text-center space-y-3">
-            <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto" />
+            <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
             <p className="text-xs text-gray-500 font-mono">Fetching dealer accounts...</p>
           </div>
         ) : dealers.length === 0 ? (
           <div className="col-span-full py-16 text-center text-gray-500 flex flex-col items-center bg-gray-900/60 border border-gray-800 rounded-[24px]">
-            <FiUsers className="text-5xl mb-4 opacity-30 text-emerald-500" />
+            <FiUsers className="text-5xl mb-4 opacity-30 text-blue-500" />
             <h3 className="font-bold text-sm text-gray-300">NO PARTNERS REGISTERED</h3>
             <p className="text-[11px] text-gray-500 mt-1 max-w-xs leading-relaxed font-light">
               There are currently no active dealership profiles in your database. Click 'Add New Hub' or register on the dealers page to see them here.
@@ -178,7 +178,7 @@ export default function DealersAdmin() {
           dealers.map((dealer) => (
             <div 
               key={dealer.id} 
-              className="bg-gray-900 border border-gray-800/80 p-6 rounded-[24px] relative group hover:border-emerald-600/40 transition duration-300 flex flex-col justify-between"
+              className="bg-gray-900 border border-gray-800/80 p-6 rounded-[24px] relative group hover:border-blue-600/40 transition duration-300 flex flex-col justify-between"
             >
               <div>
                 
@@ -193,17 +193,17 @@ export default function DealersAdmin() {
                 
                 {/* Logo and Type Badge */}
                 <div className="flex justify-between items-start mb-4">
-                  <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500 text-xl font-bold border border-emerald-500/20">
+                  <div className="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-500 text-xl font-bold border border-blue-500/20">
                     {dealer.name ? dealer.name.charAt(0).toUpperCase() : 'D'}
                   </div>
                   <div className="flex flex-col items-end gap-1.5">
-                    <span className="text-[8px] font-mono tracking-widest text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full uppercase font-bold">
+                    <span className="text-[8px] font-mono tracking-widest text-blue-500 bg-blue-500/10 border border-blue-500/20 px-2.5 py-0.5 rounded-full uppercase font-bold">
                       {dealer.type || 'Platinum Hub'}
                     </span>
                     
                     {/* Status Badge */}
                     {dealer.status === 'Verified' ? (
-                      <span className="inline-flex items-center gap-1 text-[8px] font-mono tracking-widest text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-2.5 py-0.5 rounded-full uppercase font-bold">
+                      <span className="inline-flex items-center gap-1 text-[8px] font-mono tracking-widest text-emerald-400 bg-emerald-400/10 border border-blue-400/20 px-2.5 py-0.5 rounded-full uppercase font-bold">
                         <FiCheckCircle className="text-[10px]" /> Verified
                       </span>
                     ) : (
@@ -255,7 +255,7 @@ export default function DealersAdmin() {
               {dealer.status !== 'Verified' && (
                 <button
                   onClick={() => handleVerifyDealer(dealer.id)}
-                  className="w-full mt-5 py-2.5 bg-emerald-600/10 hover:bg-emerald-600 text-emerald-450 hover:text-white border border-emerald-500/20 hover:border-transparent font-bold text-xs uppercase tracking-wider rounded-xl transition duration-300 flex items-center justify-center gap-2"
+                  className="w-full mt-5 py-2.5 bg-blue-600/10 hover:bg-blue-600 text-emerald-450 hover:text-white border border-blue-500/20 hover:border-transparent font-bold text-xs uppercase tracking-wider rounded-xl transition duration-300 flex items-center justify-center gap-2"
                 >
                   <FiCheckCircle /> Approve Store
                 </button>
@@ -282,7 +282,7 @@ export default function DealersAdmin() {
                   type="text"
                   value={newDealer.name}
                   onChange={e => setNewDealer({...newDealer, name: e.target.value})}
-                  className="w-full bg-gray-950 border border-gray-800/80 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition duration-300 text-xs"
+                  className="w-full bg-gray-950 border border-gray-800/80 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs"
                   placeholder="e.g. Savaxa Agri Hub"
                 />
               </div>
@@ -297,7 +297,7 @@ export default function DealersAdmin() {
                     type="tel"
                     value={newDealer.phone}
                     onChange={e => setNewDealer({...newDealer, phone: e.target.value})}
-                    className="w-full bg-gray-950 border border-gray-800/80 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition duration-300 text-xs"
+                    className="w-full bg-gray-950 border border-gray-800/80 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs"
                     placeholder="e.g. 9876543210"
                   />
                 </div>
@@ -310,7 +310,7 @@ export default function DealersAdmin() {
                     type="email"
                     value={newDealer.email}
                     onChange={e => setNewDealer({...newDealer, email: e.target.value})}
-                    className="w-full bg-gray-950 border border-gray-800/80 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition duration-300 text-xs font-mono"
+                    className="w-full bg-gray-950 border border-gray-800/80 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs font-mono"
                     placeholder="e.g. store@gmail.com"
                   />
                 </div>
@@ -324,7 +324,7 @@ export default function DealersAdmin() {
                   <select
                     value={newDealer.type}
                     onChange={e => setNewDealer({...newDealer, type: e.target.value})}
-                    className="w-full bg-gray-950 border border-gray-800/80 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition duration-300 text-xs"
+                    className="w-full bg-gray-950 border border-gray-800/80 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs"
                   >
                     <option value="Platinum Hub">Platinum Hub</option>
                     <option value="Gold Partner">Gold Partner</option>
@@ -339,7 +339,7 @@ export default function DealersAdmin() {
                     type="number"
                     value={newDealer.warehouseSize}
                     onChange={e => setNewDealer({...newDealer, warehouseSize: e.target.value})}
-                    className="w-full bg-gray-950 border border-gray-800/80 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition duration-300 text-xs"
+                    className="w-full bg-gray-950 border border-gray-800/80 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs"
                     placeholder="e.g. 1500"
                   />
                 </div>
@@ -353,7 +353,7 @@ export default function DealersAdmin() {
                   type="text"
                   value={newDealer.license}
                   onChange={e => setNewDealer({...newDealer, license: e.target.value})}
-                  className="w-full bg-gray-950 border border-gray-800/80 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition duration-300 text-xs font-mono"
+                  className="w-full bg-gray-950 border border-gray-800/80 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs font-mono"
                   placeholder="e.g. LIC/CROP/2026/893"
                 />
               </div>
@@ -366,7 +366,7 @@ export default function DealersAdmin() {
                   type="text"
                   value={newDealer.address}
                   onChange={e => setNewDealer({...newDealer, address: e.target.value})}
-                  className="w-full bg-gray-950 border border-gray-800/80 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition duration-300 text-xs"
+                  className="w-full bg-gray-950 border border-gray-800/80 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs"
                   placeholder="e.g. Guntur Delta, Andhra Pradesh"
                 />
               </div>
@@ -382,7 +382,7 @@ export default function DealersAdmin() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2.5 rounded-xl flex items-center transition duration-300 text-xs font-bold uppercase tracking-wider disabled:opacity-50"
+                  className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl flex items-center transition duration-300 text-xs font-bold uppercase tracking-wider disabled:opacity-50"
                 >
                   {isSubmitting ? 'Registering...' : 'Register Hub'}
                 </button>

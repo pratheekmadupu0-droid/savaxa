@@ -108,8 +108,8 @@ export default function Chatbot() {
                   <div className="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center text-slate-900 shadow-[0_0_10px_rgba(6,182,212,0.6)]">
                     <RiRobot2Fill className="text-lg" />
                   </div>
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-950 rounded-full animate-ping" />
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-950 rounded-full" />
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-blue-500 border-2 border-slate-950 rounded-full animate-ping" />
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-blue-500 border-2 border-slate-950 rounded-full" />
                 </div>
                 <div>
                   <h3 className="text-white text-sm font-semibold tracking-wider flex items-center gap-1 font-display">
@@ -207,7 +207,7 @@ export default function Chatbot() {
         whileTap={{ scale: 0.95 }}
       >
         <RiRobot2Fill className="text-2xl text-slate-950 group-hover:scale-110 transition duration-300" />
-        <span className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-brand-dark animate-pulse" />
+        <span className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full border-2 border-brand-dark animate-pulse" />
       </motion.button>
     </div>
   )

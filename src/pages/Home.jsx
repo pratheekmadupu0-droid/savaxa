@@ -43,7 +43,7 @@ function Counter({ value, duration = 2, suffix = "" }) {
   }, [inView, value, duration])
 
   return (
-    <span ref={ref} className="font-display font-extrabold text-4xl md:text-5xl text-emerald-600">
+    <span ref={ref} className="font-display font-extrabold text-4xl md:text-5xl text-blue-600">
       {count}{suffix}
     </span>
   )
@@ -85,8 +85,8 @@ export default function Home() {
       desc: t('Formulated to target chewing and sucking crop pests (thrips, aphids, whiteflies, and bollworms). Delivers rapid insect knockdown with excellent residual control, preserving leaf structure and cotton bolls.', 'నమిలే మరియు పీల్చే పురుగులను (తామర పురుగులు, పేనుబంక, తెల్లదోమ మరియు కాయతొలిచే పురుగులు) నివారించడానికి ప్రత్యేకంగా తయారు చేయబడింది.'),
       targetPests: t('Thrips, Aphids, Whiteflies, Bollworms', 'తామర పురుగులు, పేనుబంక, తెల్లదోమ, కాయతొలిచే పురుగులు'),
       dosage: t('1.5 ml per Litre of water', 'లీటరు నీటికి 1.5 మి.లీ'),
-      icon: <RiShieldCheckLine className="text-emerald-600 text-3xl" />,
-      color: 'from-emerald-500/10 to-teal-500/10',
+      icon: <RiShieldCheckLine className="text-blue-600 text-3xl" />,
+      color: 'from-blue-500/10 to-cyan-500/10',
       tag: t('Insect Pest Protection System', 'కీటక నివారణ రక్షణ వ్యవస్థ')
     },
     {
@@ -115,8 +115,8 @@ export default function Home() {
       desc: t('Enriched with premium seaweed extracts, amino acids, and vital nutrients. Naturally boosts crop tillering, accelerates flowering, improves chlorophyll levels, and strengthens stress tolerance.', 'సముద్రపు నాచు సారం, అమైనో ఆమ్లాలు మరియు పోషకాలతో సమృద్ధిగా ఉండి పంట పెరుగుదలను, పూతను మరియు అధిక దిగుబడిని ప్రోత్సహిస్తుంది.'),
       targetPests: t('Stunted Growth, Low Flowering, Weather Stress', 'తక్కువ ఎదుగుదల, తక్కువ పూత, వాతావరణ ఒత్తిడి'),
       dosage: t('250 ml per Acre (Foliar spray)', 'ఎకరానికి 250 మి.లీ (పిచికారీ ద్వారా)'),
-      icon: <RiSeedlingFill className="text-emerald-600 text-3xl" />,
-      color: 'from-emerald-500/10 to-green-500/10',
+      icon: <RiSeedlingFill className="text-blue-600 text-3xl" />,
+      color: 'from-blue-500/10 to-cyan-500/10',
       tag: t('Yield Booster & Growth Catalyst', 'అధిక దిగుబడి మరియు ఎదుగుదల ఉత్ప్రేరకం')
     }
   ]
@@ -192,7 +192,7 @@ export default function Home() {
       </div>
 
       {/* Soft natural green/blue background overlays */}
-      <div className="absolute top-[10%] left-0 w-96 h-96 bg-emerald-100/30 rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute top-[10%] left-0 w-96 h-96 bg-blue-100/30 rounded-full blur-[130px] pointer-events-none" />
       <div className="absolute top-[45%] right-0 w-[500px] h-[500px] bg-cyan-100/30 rounded-full blur-[150px] pointer-events-none" />
 
       {/* 1. HERO SECTION - Full Screen Cinematic Video Intro */}
@@ -228,9 +228,9 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="lg:col-span-7 space-y-8 text-left"
           >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/80">
-              <RiShieldCheckLine className="text-emerald-600 text-sm" />
-              <span className="text-[10px] md:text-xs tracking-widest uppercase font-mono text-emerald-700 font-bold">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/80">
+              <RiShieldCheckLine className="text-blue-600 text-sm" />
+              <span className="text-[10px] md:text-xs tracking-widest uppercase font-mono text-blue-700 font-bold">
                 {t("Target-Specific Formulations", "లక్ష్య-ఆధారిత ప్రత్యేక రసాయనాలు")}
               </span>
             </div>
@@ -249,10 +249,10 @@ export default function Home() {
             {/* Agrochemical Trust Marks */}
             <div className="flex flex-wrap gap-4 pt-2">
               <div className="flex items-center gap-2 text-xs text-slate-700 bg-white/80 backdrop-blur px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm font-bold">
-                <RiAwardLine className="text-emerald-600 text-lg" /> {t("CIB&RC Registered Formulations", "CIB&RC గుర్తింపు పొందినవి")}
+                <RiAwardLine className="text-blue-600 text-lg" /> {t("CIB&RC Registered Formulations", "CIB&RC గుర్తింపు పొందినవి")}
               </div>
               <div className="flex items-center gap-2 text-xs text-slate-700 bg-white/80 backdrop-blur px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm font-bold">
-                <RiShieldCheckLine className="text-emerald-600 text-lg" /> {t("ISO 9001:2015 Certified Mfg.", "ISO 9001:2015 ధృవీకృత తయారీ")}
+                <RiShieldCheckLine className="text-blue-600 text-lg" /> {t("ISO 9001:2015 Certified Mfg.", "ISO 9001:2015 ధృవీకృత తయారీ")}
               </div>
             </div>
 
@@ -280,7 +280,7 @@ export default function Home() {
               </div>
               <div>
                 <p className="text-[10px] text-slate-400 font-mono tracking-widest uppercase mb-1">Dealers Network</p>
-                <p className="text-2xl font-bold text-emerald-600 font-display">500+ Hubs</p>
+                <p className="text-2xl font-bold text-blue-600 font-display">500+ Hubs</p>
               </div>
               <div>
                 <p className="text-[10px] text-slate-400 font-mono tracking-widest uppercase mb-1">States Covered</p>
@@ -299,14 +299,14 @@ export default function Home() {
           >
             {/* Main Product Showcase Box */}
             <div className="w-full max-w-[500px] h-[490px] rounded-3xl glass-card p-6 flex flex-col justify-between relative shadow-xl overflow-hidden border border-slate-200/80 bg-white">
-              <div className="absolute inset-0 bg-gradient-to-tr from-emerald-50/40 via-transparent to-cyan-50/20 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-blue-50/40 via-transparent to-cyan-50/20 pointer-events-none" />
 
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-emerald-600 uppercase font-bold">
+                  <div className="flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-blue-600 uppercase font-bold">
                     <RiDatabaseLine className="text-base" /> Formulation & Efficacy Panel
                   </div>
-                  <span className="text-[9px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full font-mono uppercase font-bold">
+                  <span className="text-[9px] bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-0.5 rounded-full font-mono uppercase font-bold">
                     Interactive
                   </span>
                 </div>
@@ -318,7 +318,7 @@ export default function Home() {
                       onClick={() => setActiveLayer(c.id)}
                       className={`py-2 px-1 text-[9px] font-bold tracking-wider uppercase rounded-lg transition duration-200 ${
                         activeLayer === c.id 
-                          ? 'bg-emerald-600 text-white font-extrabold shadow-sm' 
+                          ? 'bg-blue-600 text-white font-extrabold shadow-sm' 
                           : 'text-slate-500 hover:text-slate-800 hover:bg-slate-200/60'
                       }`}
                     >
@@ -341,7 +341,7 @@ export default function Home() {
                 </motion.div>
 
                 <div>
-                  <span className="text-[9px] font-mono tracking-widest text-emerald-600 uppercase font-bold">{currentCategory.tag}</span>
+                  <span className="text-[9px] font-mono tracking-widest text-blue-600 uppercase font-bold">{currentCategory.tag}</span>
                   <h3 className="text-xl font-bold text-slate-850 tracking-wide font-display mt-0.5">{currentCategory.title}</h3>
                   <p className="text-slate-500 text-xs mt-1.5 px-4 leading-relaxed font-light">{currentCategory.desc}</p>
                 </div>
@@ -355,7 +355,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-[9px] text-slate-400 uppercase tracking-widest font-bold">Recommended Dosage</p>
-                  <p className="text-xs font-bold text-emerald-600 mt-0.5">{currentCategory.dosage}</p>
+                  <p className="text-xs font-bold text-blue-600 mt-0.5">{currentCategory.dosage}</p>
                 </div>
               </div>
             </div>
@@ -367,8 +367,8 @@ export default function Home() {
               className="absolute -top-4 -right-4 w-44 bg-white p-4 rounded-2xl border border-slate-200 shadow-md text-left hidden md:block"
             >
               <div className="flex items-center gap-2 mb-1.5">
-                <RiSeedlingFill className="text-emerald-500 text-lg" />
-                <p className="text-[9px] font-mono font-bold tracking-widest text-emerald-600 uppercase">Field Checked</p>
+                <RiSeedlingFill className="text-blue-500 text-lg" />
+                <p className="text-[9px] font-mono font-bold tracking-widest text-blue-600 uppercase">Field Checked</p>
               </div>
               <p className="text-xs text-slate-800 font-bold">Eco-Safe Soil Profile</p>
               <p className="text-[9px] text-slate-400 mt-0.5 font-light">Completely selective formulation pathways.</p>
@@ -398,7 +398,7 @@ export default function Home() {
       {/* 3. CROP PROTECTION CATEGORIES */}
       <section className="py-20 max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
-          <p className="text-xs font-mono tracking-widest text-emerald-600 uppercase font-bold">Manufactured Solutions</p>
+          <p className="text-xs font-mono tracking-widest text-blue-600 uppercase font-bold">Manufactured Solutions</p>
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight font-display uppercase">
             OUR <span className="text-gradient">CROP CARE</span> PORTFOLIO
           </h2>
@@ -413,7 +413,7 @@ export default function Home() {
               title: "High-Efficacy Insecticides",
               desc: "Eradicates sucking and chewing lepidoptera pests (thrips, aphids, bollworms) while ensuring outstanding crop safety.",
               route: "/products?category=insecticides",
-              color: "border-emerald-250 hover:border-emerald-450 shadow-sm",
+              color: "border-blue-250 hover:border-blue-450 shadow-sm",
               img: "/cotton_solution.png"
             },
             {
@@ -445,7 +445,7 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-800 font-display pt-2 group-hover:text-emerald-600 transition duration-200">{cat.title}</h3>
+                <h3 className="text-lg font-bold text-slate-800 font-display pt-2 group-hover:text-blue-600 transition duration-200">{cat.title}</h3>
                 <p className="text-xs text-slate-500 font-light leading-relaxed">
                   {cat.desc}
                 </p>
@@ -453,7 +453,7 @@ export default function Home() {
 
               <Link
                 to={cat.route}
-                className="py-3 px-5 rounded-xl border border-emerald-600 text-emerald-600 font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 group-hover:bg-emerald-650 group-hover:text-white transition duration-300"
+                className="py-3 px-5 rounded-xl border border-blue-600 text-blue-600 font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 group-hover:bg-blue-650 group-hover:text-white transition duration-300"
               >
                 Explore Products Catalog <RiArrowRightLine />
               </Link>
@@ -467,7 +467,7 @@ export default function Home() {
         <div className="max-w-[1400px] mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
           <div className="space-y-8">
-            <p className="text-xs font-mono tracking-widest text-emerald-600 uppercase font-bold">TRUSTED CHEMISTRY</p>
+            <p className="text-xs font-mono tracking-widest text-blue-600 uppercase font-bold">TRUSTED CHEMISTRY</p>
             <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight font-display uppercase">
               WHY CROP GROWERS & DEALERS <br />
               <span className="text-gradient">TRUST SAVAXA</span>
@@ -478,9 +478,9 @@ export default function Home() {
 
             <div className="space-y-4">
               {[
-                { title: "CIB&RC Registered Pesticides", desc: "Every formulation is fully compliant with federal agrochemical standards and undergoes strict farm trials.", icon: <RiAwardLine className="text-emerald-600" /> },
+                { title: "CIB&RC Registered Pesticides", desc: "Every formulation is fully compliant with federal agrochemical standards and undergoes strict farm trials.", icon: <RiAwardLine className="text-blue-600" /> },
                 { title: "Guaranteed Higher Crop Yields", desc: "Formulated to optimize crop density, enhance tillering, and protect fruit and cotton bolls from pest damage.", icon: <RiPlantLine className="text-cyan-500" /> },
-                { title: "Eco-Conscious Chemistry", desc: "Selective action modes that hit targets directly, keeping the surrounding soil ecosystem active and healthy.", icon: <RiSeedlingFill className="text-emerald-600" /> }
+                { title: "Eco-Conscious Chemistry", desc: "Selective action modes that hit targets directly, keeping the surrounding soil ecosystem active and healthy.", icon: <RiSeedlingFill className="text-blue-600" /> }
               ].map((point, index) => (
                 <div key={index} className="flex gap-4 p-4 bg-slate-50 border border-slate-100 rounded-2xl hover:border-slate-200/80 transition duration-300">
                   <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/60 flex items-center justify-center text-lg shrink-0 shadow-sm">
@@ -504,18 +504,18 @@ export default function Home() {
               >
                 <div className="relative h-44 rounded-2xl overflow-hidden">
                   <img src={prod.img} alt={prod.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
-                  <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[8px] font-mono tracking-widest text-emerald-600 font-bold border border-emerald-200 px-2 py-0.5 rounded-full uppercase">
+                  <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[8px] font-mono tracking-widest text-blue-600 font-bold border border-blue-200 px-2 py-0.5 rounded-full uppercase">
                     {prod.tag}
                   </span>
                 </div>
                 <div>
                   <p className="text-[9px] text-slate-400 font-mono tracking-widest uppercase font-bold">{prod.category}</p>
-                  <h4 className="text-sm font-bold text-slate-800 mt-1 group-hover:text-emerald-600 transition duration-200 font-display">{prod.name}</h4>
+                  <h4 className="text-sm font-bold text-slate-800 mt-1 group-hover:text-blue-600 transition duration-200 font-display">{prod.name}</h4>
                   <p className="text-xs text-slate-500 mt-1.5 leading-relaxed font-light line-clamp-2">{prod.desc}</p>
                 </div>
                 <Link 
                   to={`/products/details?id=${prod.id}`} 
-                  className="w-full py-2.5 bg-slate-50 hover:bg-emerald-600 border border-slate-200/60 hover:border-emerald-500 hover:text-white font-bold text-[9px] tracking-widest uppercase rounded-xl transition duration-300 flex items-center justify-center gap-1.5"
+                  className="w-full py-2.5 bg-slate-50 hover:bg-blue-600 border border-slate-200/60 hover:border-blue-500 hover:text-white font-bold text-[9px] tracking-widest uppercase rounded-xl transition duration-300 flex items-center justify-center gap-1.5"
                 >
                   View Application Guide <RiArrowRightUpLine />
                 </Link>
@@ -529,7 +529,7 @@ export default function Home() {
       {/* 5. CROP GROWERS TESTIMONIALS */}
       <section className="py-20 max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
-          <p className="text-xs font-mono tracking-widest text-emerald-600 uppercase font-bold">FARMERS VOICES</p>
+          <p className="text-xs font-mono tracking-widest text-blue-600 uppercase font-bold">FARMERS VOICES</p>
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight font-display">
             TRUSTED BY GROWERS
           </h2>
@@ -563,7 +563,7 @@ export default function Home() {
             }
           ].map((t, idx) => (
             <div key={idx} className="glass-card rounded-3xl p-6 border border-slate-200/60 flex flex-col justify-between space-y-6 relative">
-              <RiDoubleQuotesL className="text-emerald-600/10 text-5xl absolute top-6 right-6 pointer-events-none" />
+              <RiDoubleQuotesL className="text-blue-600/10 text-5xl absolute top-6 right-6 pointer-events-none" />
               <div className="space-y-4">
                 <div className="flex gap-1">
                   {[...Array(t.stars)].map((_, i) => <RiStarFill key={i} className="text-amber-400 text-xs" />)}
@@ -574,7 +574,7 @@ export default function Home() {
               </div>
 
               <div className="flex items-center gap-3.5 pt-4 border-t border-slate-100">
-                <img src={t.avatar} alt={t.author} className="w-10 h-10 rounded-full object-cover border border-emerald-400/20 shadow-sm" />
+                <img src={t.avatar} alt={t.author} className="w-10 h-10 rounded-full object-cover border border-blue-400/20 shadow-sm" />
                 <div>
                   <h4 className="text-xs font-bold text-slate-800 font-display">{t.author}</h4>
                   <p className="text-[9px] text-slate-400 font-mono tracking-wider">{t.role}</p>
@@ -587,22 +587,22 @@ export default function Home() {
 
       {/* 6. CALL-TO-ACTION BANNER */}
       <section className="py-20 max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
-        <div className="rounded-[35px] bg-gradient-to-r from-emerald-600 to-teal-700 p-10 md:p-14 text-center relative overflow-hidden shadow-lg flex flex-col items-center">
+        <div className="rounded-[35px] bg-gradient-to-r from-blue-600 to-cyan-700 p-10 md:p-14 text-center relative overflow-hidden shadow-lg flex flex-col items-center">
           <div className="absolute -top-12 -right-12 w-64 h-64 bg-white/10 rounded-full filter blur-2xl pointer-events-none" />
-          <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-emerald-300/20 rounded-full filter blur-2xl pointer-events-none" />
+          <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-blue-300/20 rounded-full filter blur-2xl pointer-events-none" />
 
           <div className="max-w-2xl space-y-6 relative z-10 text-white">
-            <p className="text-[10px] font-mono tracking-widest text-emerald-200 uppercase font-bold">Dealer & Distributor Network</p>
+            <p className="text-[10px] font-mono tracking-widest text-blue-200 uppercase font-bold">Dealer & Distributor Network</p>
             <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight font-display">
               READY TO GROW WITH SAVAXA?
             </h2>
-            <p className="text-emerald-100 text-xs md:text-sm leading-relaxed font-light">
+            <p className="text-blue-100 text-xs md:text-sm leading-relaxed font-light">
               Become an authorized dealer or consult our agricultural experts for optimized spray charts and product specifications.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center">
               <Link 
                 to="/dealers" 
-                className="bg-white hover:bg-slate-50 text-emerald-700 font-bold text-xs tracking-widest uppercase px-8 py-3.5 rounded-xl shadow-md transition duration-300 hover:scale-[1.02]"
+                className="bg-white hover:bg-slate-50 text-blue-700 font-bold text-xs tracking-widest uppercase px-8 py-3.5 rounded-xl shadow-md transition duration-300 hover:scale-[1.02]"
               >
                 Apply for Dealership
               </Link>

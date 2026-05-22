@@ -94,7 +94,7 @@ export default function Blog() {
         
         {/* Header Block */}
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-12">
-          <p className="text-xs font-mono tracking-widest text-emerald-655 uppercase font-bold">
+          <p className="text-xs font-mono tracking-widest text-blue-650 uppercase font-bold">
             {t("SAVAXA AGRONOMY BULLETINS", "సవాక్సా వ్యవసాయ సమాచార పత్రిక")}
           </p>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-display">
@@ -122,7 +122,7 @@ export default function Blog() {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`px-4 py-2.5 rounded-xl text-xs tracking-wider uppercase font-bold border transition duration-300 ${
                   activeCategory === cat.id
-                    ? 'bg-emerald-600 text-white border-emerald-600 font-bold shadow-sm'
+                    ? 'bg-blue-600 text-white border-blue-600 font-bold shadow-sm'
                     : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100 border-slate-200/60'
                 }`}
               >
@@ -138,7 +138,7 @@ export default function Blog() {
               placeholder={t("Search scientific bulletins...", "సమాచారం కోసం వెతకండి...")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 transition duration-300 shadow-inner"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-blue-600 transition duration-300 shadow-inner"
             />
           </div>
         </div>
@@ -160,14 +160,14 @@ export default function Blog() {
                   {/* Photo with metadata category tab */}
                   <div className="h-60 rounded-2xl overflow-hidden relative">
                     <img src={post.img} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                    <span className="absolute top-3 left-3 bg-white/95 text-[8px] font-mono tracking-widest font-extrabold border border-emerald-250 px-2.5 py-0.5 rounded-full text-emerald-600 uppercase shadow-sm">
+                    <span className="absolute top-3 left-3 bg-white/95 text-[8px] font-mono tracking-widest font-extrabold border border-blue-200 px-2.5 py-0.5 rounded-full text-blue-600 uppercase shadow-sm">
                       {post.category === 'agronomy' ? t('agronomy', 'వ్యవసాయశాస్త్రం') : post.category === 'chemistry' ? t('chemistry', 'రసాయనశాస్త్రం') : t('markets', 'మార్కెట్లు')}
                     </span>
                   </div>
 
                   {/* Title & description */}
                   <div className="space-y-2">
-                    <h3 className="text-xl font-bold text-slate-855 font-display group-hover:text-emerald-600 transition duration-200 leading-snug">
+                    <h3 className="text-xl font-bold text-slate-855 font-display group-hover:text-blue-600 transition duration-200 leading-snug">
                       {post.title}
                     </h3>
                     <p className="text-xs md:text-sm text-slate-500 leading-relaxed font-light">
@@ -182,7 +182,7 @@ export default function Blog() {
                     <span className="flex items-center gap-1.5"><RiCalendarLine /> {post.date}</span>
                     <span className="flex items-center gap-1.5 text-slate-500 font-bold"><RiUserLine /> {post.author}</span>
                   </div>
-                  <button className="text-emerald-600 hover:text-emerald-500 font-extrabold tracking-widest uppercase flex items-center gap-1 transition duration-200">
+                  <button className="text-blue-600 hover:text-blue-500 font-extrabold tracking-widest uppercase flex items-center gap-1 transition duration-200">
                     {t("Read Bulletin", "పూర్తిగా చదవండి")} <RiArrowRightLine />
                   </button>
                 </div>
@@ -206,7 +206,7 @@ export default function Blog() {
             </p>
             <button
               onClick={() => { setActiveCategory('all'); setSearchQuery(''); }}
-              className="bg-emerald-600 hover:bg-emerald-550 text-white px-5 py-2.5 rounded-xl font-bold text-[10px] tracking-widest uppercase shadow-sm"
+              className="bg-blue-600 hover:bg-blue-50 text-white px-5 py-2.5 rounded-xl font-bold text-[10px] tracking-widest uppercase shadow-sm"
             >
               {t("Show All Bulletins", "అన్ని కథనాలను చూపించు")}
             </button>

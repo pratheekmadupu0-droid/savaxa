@@ -76,14 +76,14 @@ export default function FAQ() {
       />
 
       {/* Decorative patterns */}
-      <div className="absolute top-[10%] left-0 w-96 h-96 bg-emerald-100/10 rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute top-[10%] left-0 w-96 h-96 bg-blue-100/20/10 rounded-full blur-[130px] pointer-events-none" />
       <div className="absolute bottom-[20%] right-0 w-96 h-96 bg-teal-100/10 rounded-full blur-[130px] pointer-events-none" />
 
       <div className="max-w-3xl mx-auto px-4 md:px-8 relative z-10">
         
         {/* Header Block */}
         <div className="text-center space-y-4 mb-12">
-          <p className="text-xs font-mono tracking-widest text-emerald-600 uppercase font-bold">
+          <p className="text-xs font-mono tracking-widest text-blue-600 uppercase font-bold">
             {t("QUESTIONS & ANSWERS", "ప్రశ్నలు & సమాధానాలు")}
           </p>
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 font-display">
@@ -102,7 +102,7 @@ export default function FAQ() {
             placeholder={t("Search questions...", "ప్రశ్నలను వెతకండి...")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-xs focus:outline-none focus:border-emerald-600 transition shadow-sm"
+            className="w-full bg-white border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-xs focus:outline-none focus:border-blue-600 transition shadow-sm"
           />
         </div>
 
@@ -123,7 +123,7 @@ export default function FAQ() {
                     {faq.q}
                   </h3>
                   {isOpen ? (
-                    <FiChevronUp className="text-emerald-600 text-lg flex-shrink-0 ml-4" />
+                    <FiChevronUp className="text-blue-600 text-lg flex-shrink-0 ml-4" />
                   ) : (
                     <FiChevronDown className="text-slate-400 text-lg flex-shrink-0 ml-4" />
                   )}

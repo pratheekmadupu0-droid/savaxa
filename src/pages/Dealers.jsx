@@ -186,7 +186,7 @@ export default function Dealers() {
     { 
       title: t("High-Margin Trade Scales", "అధిక వ్యాపార మార్జిన్లు"), 
       desc: t("Enjoy highly competitive factory-direct wholesale prices, ensuring superior profitability for crop protection retailers.", "ప్రత్యక్ష రసాయన ఫ్యాక్టరీ రేట్లతో అద్భుతమైన మార్జిన్లు మరియు అధిక వ్యాపార లాభాలను పొందండి."), 
-      icon: <RiPercentLine className="text-emerald-600" /> 
+      icon: <RiPercentLine className="text-blue-600" /> 
     },
     { 
       title: t("Direct Express Supply Lines", "వేగవంతమైన నేరుగా రవాణా"), 
@@ -196,7 +196,7 @@ export default function Dealers() {
     { 
       title: t("Dedicated Agronomist Support", "ప్రత్యక్ష వ్యవసాయ నిపుణుల సలహాలు"), 
       desc: t("Direct hotline linking your retail counter staff to Savaxa R&D molecular agronomists for application support.", "మా నిపుణులతో నేరుగా మీ కౌంటర్ సిబ్బందికి అనుసంధానం ఉండే ప్రత్యక్ష హాట్‌లైన్ సేవలు."), 
-      icon: <RiCustomerService2Line className="text-emerald-600" /> 
+      icon: <RiCustomerService2Line className="text-blue-600" /> 
     }
   ]
 
@@ -237,14 +237,14 @@ export default function Dealers() {
         <div className="absolute inset-0 bg-gradient-to-b from-slate-50/0 via-slate-50/70 to-slate-50" />
       </div>
 
-      <div className="absolute top-[10%] left-0 w-96 h-96 bg-emerald-100/20 rounded-full filter blur-[130px] pointer-events-none" />
+      <div className="absolute top-[10%] left-0 w-96 h-96 bg-blue-100/20/20 rounded-full filter blur-[130px] pointer-events-none" />
       <div className="absolute top-[50%] right-0 w-[500px] h-[500px] bg-teal-100/15 rounded-full filter blur-[150px] pointer-events-none" />
 
       <div className="max-w-[1200px] mx-auto px-4 md:px-8 relative z-10">
         
         {/* Header Block */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-          <p className="text-xs font-mono tracking-widest text-emerald-600 uppercase font-bold">
+          <p className="text-xs font-mono tracking-widest text-blue-600 uppercase font-bold">
             {t("B2B AGRIBUSINESS GROW-SUITE", "సవాక్సా బి2బి డిస్ట్రిబ్యూటర్ నెట్‌వర్క్")}
           </p>
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 font-display">
@@ -265,20 +265,20 @@ export default function Dealers() {
             {/* Top branding bar */}
             <div className="bg-slate-900 text-white px-8 py-5 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <RiBuilding2Line className="text-emerald-500 text-xl" />
+                <RiBuilding2Line className="text-blue-500 text-xl" />
                 <span className="text-[10px] font-mono tracking-widest uppercase font-bold text-slate-300">
                   {t("SAVAXA AUTHORIZATION PORTAL", "సవాక్సా అధికారిక పోర్టల్")}
                 </span>
               </div>
               <div className="flex items-center gap-1.5 text-[9px] font-mono text-slate-400">
-                <RiLockLine className="text-emerald-500 text-xs" /> SSL SECURE 256-BIT
+                <RiLockLine className="text-blue-500 text-xs" /> SSL SECURE 256-BIT
               </div>
             </div>
 
             <div className="p-8 md:p-12">
               {loading ? (
                 <div className="py-20 text-center space-y-3">
-                  <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto" />
+                  <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
                   <p className="text-xs text-slate-400 font-mono">Authenticating secure link...</p>
                 </div>
               ) : !currentUser ? (
@@ -297,7 +297,7 @@ export default function Dealers() {
                   <div className="flex justify-center">
                     <button
                       onClick={handleGoogleLogin}
-                      className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white border border-transparent rounded-2xl flex items-center gap-3 font-bold text-xs uppercase tracking-wider transition duration-300 shadow-[0_4px_20px_rgba(16,185,129,0.2)] hover:scale-[1.02]"
+                      className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white border border-transparent rounded-2xl flex items-center gap-3 font-bold text-xs uppercase tracking-wider transition duration-300 shadow-[0_4px_20px_rgba(16,185,129,0.2)] hover:scale-[1.02]"
                     >
                       <RiGoogleFill className="text-lg" />
                       {t("Sign In with Google", "గూగుల్ ద్వారా సైన్ ఇన్")}
@@ -314,12 +314,12 @@ export default function Dealers() {
                 /* STEP 2: ALREADY REGISTERED - BEAUTIFUL BADGE & PANEL */
                 <div className="space-y-8 py-4">
                   <div className="flex flex-col items-center text-center space-y-4">
-                    <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 shadow-inner">
+                    <div className="w-16 h-16 rounded-full bg-blue-50/70 border border-blue-200 flex items-center justify-center text-blue-600 shadow-inner">
                       <RiShieldCheckLine className="text-3xl" />
                     </div>
 
                     <div className="space-y-1">
-                      <span className="text-[8px] font-mono tracking-widest text-emerald-600 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full uppercase font-bold">
+                      <span className="text-[8px] font-mono tracking-widest text-blue-600 bg-blue-50/70 border border-blue-200 px-3 py-1 rounded-full uppercase font-bold">
                         {registeredDetails?.type || 'Authorized Dealer'}
                       </span>
                       <h2 className="text-2xl font-bold text-slate-800 font-display">
@@ -328,7 +328,7 @@ export default function Dealers() {
                       <p className="text-slate-400 text-xs font-mono">{currentUser.email}</p>
                     </div>
 
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs border border-emerald-100 font-medium">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50/70 text-blue-700 text-xs border border-blue-100 font-medium">
                       <RiCheckboxCircleLine className="text-base" /> Verified Savaxa Partner Account
                     </div>
                   </div>
@@ -361,7 +361,7 @@ export default function Dealers() {
                       onClick={() => {
                         window.open("mailto:savaxacropcare2023@gmail.com?subject=Wholesale%20Order%20Booking%20Request", "_blank")
                       }}
-                      className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition duration-300 flex items-center justify-center gap-1.5"
+                      className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition duration-300 flex items-center justify-center gap-1.5"
                     >
                       Book Wholesale Order
                     </button>
@@ -398,7 +398,7 @@ export default function Dealers() {
                           required
                           value={newDealer.name}
                           onChange={e => setNewDealer({...newDealer, name: e.target.value})}
-                          className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 transition duration-300"
+                          className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-blue-500 transition duration-300"
                         />
                       </div>
 
@@ -424,7 +424,7 @@ export default function Dealers() {
                           placeholder="e.g. 9876543210"
                           value={newDealer.phone}
                           onChange={e => setNewDealer({...newDealer, phone: e.target.value})}
-                          className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 transition duration-300"
+                          className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-blue-500 transition duration-300"
                         />
                       </div>
                     </div>
@@ -440,7 +440,7 @@ export default function Dealers() {
                           placeholder="e.g. AP/TS-HYD-2023-P123"
                           value={newDealer.license}
                           onChange={e => setNewDealer({...newDealer, license: e.target.value})}
-                          className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 transition duration-300"
+                          className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-blue-500 transition duration-300"
                         />
                       </div>
 
@@ -452,7 +452,7 @@ export default function Dealers() {
                           <select
                             value={newDealer.type}
                             onChange={e => setNewDealer({...newDealer, type: e.target.value})}
-                            className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 transition duration-300"
+                            className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-blue-500 transition duration-300"
                           >
                             <option value="Platinum Hub">Platinum Hub</option>
                             <option value="Gold Partner">Gold Partner</option>
@@ -469,7 +469,7 @@ export default function Dealers() {
                             placeholder="e.g. 1500"
                             value={newDealer.warehouseSize}
                             onChange={e => setNewDealer({...newDealer, warehouseSize: e.target.value})}
-                            className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 transition duration-300"
+                            className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-blue-500 transition duration-300"
                           />
                         </div>
                       </div>
@@ -484,7 +484,7 @@ export default function Dealers() {
                           placeholder="e.g. Pedda Amberpet, Hyderabad, Telangana"
                           value={newDealer.address}
                           onChange={e => setNewDealer({...newDealer, address: e.target.value})}
-                          className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 transition duration-300"
+                          className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-blue-500 transition duration-300"
                         />
                       </div>
                     </div>
@@ -499,7 +499,7 @@ export default function Dealers() {
                       </button>
                       <button
                         type="submit"
-                        className="px-8 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition duration-300 flex items-center gap-2 shadow-[0_4px_15px_rgba(16,185,129,0.15)] hover:scale-[1.01]"
+                        className="px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition duration-300 flex items-center gap-2 shadow-[0_4px_15px_rgba(16,185,129,0.15)] hover:scale-[1.01]"
                       >
                         Complete Authorization <RiSendPlaneFill />
                       </button>
@@ -531,14 +531,14 @@ export default function Dealers() {
                 placeholder={t("Search by name, address, or tier...", "పేరు లేదా చిరునామా ద్వారా వెతకండి...")}
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full bg-white border border-slate-250/80 rounded-2xl pl-12 pr-4 py-3 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition duration-300 shadow-sm"
+                className="w-full bg-white border border-slate-250/80 rounded-2xl pl-12 pr-4 py-3 text-xs text-slate-800 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-emerald-500 transition duration-300 shadow-sm"
               />
             </div>
           </div>
 
           {loadingDirectory ? (
             <div className="py-16 text-center space-y-3">
-              <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto" />
+              <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
               <p className="text-xs text-slate-400 font-mono">Loading distributor directories...</p>
             </div>
           ) : filteredPublicDealers.length === 0 ? (
@@ -552,19 +552,19 @@ export default function Dealers() {
                 <div 
                   key={dealer.id}
                   onClick={() => setSelectedDealer(dealer)}
-                  className="p-6 bg-white border border-slate-200/80 rounded-[28px] space-y-4 hover:border-emerald-500/30 transition duration-300 shadow-sm cursor-pointer hover:shadow-md relative group flex flex-col justify-between"
+                  className="p-6 bg-white border border-slate-200/80 rounded-[28px] space-y-4 hover:border-blue-500/30 transition duration-300 shadow-sm cursor-pointer hover:shadow-md relative group flex flex-col justify-between"
                 >
                   <div>
                     <div className="flex justify-between items-start">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-lg">
+                      <div className="w-10 h-10 rounded-xl bg-blue-50/70 border border-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
                         {dealer.name ? dealer.name.charAt(0).toUpperCase() : 'D'}
                       </div>
                       <div className="flex flex-col items-end gap-1">
-                        <span className="text-[7px] font-mono tracking-widest text-emerald-600 bg-emerald-50 border border-emerald-200/40 px-2 py-0.5 rounded-full uppercase font-bold">
+                        <span className="text-[7px] font-mono tracking-widest text-blue-600 bg-blue-50/70 border border-blue-200/40 px-2 py-0.5 rounded-full uppercase font-bold">
                           {dealer.type || 'Platinum Hub'}
                         </span>
                         {dealer.status === 'Verified' && (
-                          <span className="text-[6px] font-mono tracking-widest text-emerald-700 bg-emerald-100/60 px-1.5 py-0.5 rounded uppercase font-bold">
+                          <span className="text-[6px] font-mono tracking-widest text-blue-700 bg-blue-100/20/60 px-1.5 py-0.5 rounded uppercase font-bold">
                             ✓ Verified
                           </span>
                         )}
@@ -575,7 +575,7 @@ export default function Dealers() {
                     
                     {dealer.address && (
                       <p className="text-xs text-slate-400 line-clamp-2 mt-1.5 flex items-start gap-1 font-light leading-relaxed">
-                        <RiMapPinLine className="mt-0.5 text-emerald-600 flex-shrink-0" />
+                        <RiMapPinLine className="mt-0.5 text-blue-600 flex-shrink-0" />
                         {dealer.address}
                       </p>
                     )}
@@ -587,7 +587,7 @@ export default function Dealers() {
                       const cleanedPhone = dealer.phone.replace(/[^0-9]/g, '')
                       window.open(`https://wa.me/${cleanedPhone}?text=Hi%2C%20I%20am%20interested%20in%20Savaxa%20crop%2520care%20products.`, '_blank')
                     }}
-                    className="w-full mt-3 py-2.5 bg-emerald-650 hover:bg-emerald-600 text-white font-bold text-[10px] uppercase rounded-xl tracking-wider transition duration-300 flex items-center justify-center gap-2 shadow-inner"
+                    className="w-full mt-3 py-2.5 bg-blue-650 hover:bg-blue-600 text-white font-bold text-[10px] uppercase rounded-xl tracking-wider transition duration-300 flex items-center justify-center gap-2 shadow-inner"
                   >
                     <RiWhatsappLine className="text-base" /> {t("Contact on WhatsApp", "వాట్సాప్ ద్వారా సంప్రదించండి")}
                   </button>
@@ -637,7 +637,7 @@ export default function Dealers() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
             {steps.map((st, index) => (
               <div key={index} className="relative bg-white border border-slate-200/50 rounded-3xl p-6 space-y-4 shadow-sm">
-                <div className="absolute top-4 right-6 text-4xl font-extrabold font-mono text-emerald-100 select-none">
+                <div className="absolute top-4 right-6 text-4xl font-extrabold font-mono text-blue-100 select-none">
                   {st.num}
                 </div>
                 <h3 className="text-md font-bold text-slate-855 font-display uppercase pt-2">
@@ -679,18 +679,18 @@ export default function Dealers() {
               </button>
 
               <div className="flex flex-col items-center text-center space-y-4 mt-2">
-                <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 font-bold text-3xl shadow-inner">
+                <div className="w-16 h-16 rounded-2xl bg-blue-50/70 border border-blue-200 flex items-center justify-center text-blue-600 font-bold text-3xl shadow-inner">
                   {selectedDealer.name ? selectedDealer.name.charAt(0).toUpperCase() : 'D'}
                 </div>
 
                 <div>
                   <h3 className="text-xl font-bold text-slate-800 uppercase tracking-wide font-display">{selectedDealer.name}</h3>
                   <div className="flex items-center justify-center gap-1.5 mt-2">
-                    <span className="text-[8px] font-mono tracking-widest text-emerald-600 bg-emerald-50 border border-emerald-250/20 px-3 py-1 rounded-full uppercase font-bold">
+                    <span className="text-[8px] font-mono tracking-widest text-blue-600 bg-blue-50/70 border border-blue-200/20 px-3 py-1 rounded-full uppercase font-bold">
                       {selectedDealer.type || 'Platinum Hub'}
                     </span>
                     {selectedDealer.status === 'Verified' && (
-                      <span className="text-[7px] font-mono tracking-widest text-emerald-800 bg-emerald-100/60 px-2 py-0.5 rounded uppercase font-bold">
+                      <span className="text-[7px] font-mono tracking-widest text-blue-800 bg-blue-100/20/60 px-2 py-0.5 rounded uppercase font-bold">
                         ✓ Verified Partner
                       </span>
                     )}
@@ -731,7 +731,7 @@ export default function Dealers() {
                     const cleanedPhone = selectedDealer.phone.replace(/[^0-9]/g, '')
                     window.open(`https://wa.me/${cleanedPhone}?text=Hi%2C%20I%2520am%2520interested%2520in%2520Savaxa%2520crop%2520care%2520products.`, '_blank')
                   }}
-                  className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition duration-300 flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(16,185,129,0.15)]"
+                  className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition duration-300 flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(16,185,129,0.15)]"
                 >
                   <RiWhatsappLine className="text-lg" /> Connect via WhatsApp
                 </button>

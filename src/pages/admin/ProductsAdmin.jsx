@@ -175,12 +175,12 @@ export default function ProductsAdmin() {
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight font-display text-white uppercase">Products Catalog</h1>
           <p className="text-gray-400 text-xs mt-1">
-            Manage your Savaxa products catalog: <span className="text-emerald-500 font-extrabold">{products.length} registered blends</span>
+            Manage your Savaxa products catalog: <span className="text-blue-500 font-extrabold">{products.length} registered blends</span>
           </p>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-xl flex items-center transition duration-300 font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/10"
+          className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl flex items-center transition duration-300 font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/10"
         >
           <FiPlus className="mr-2 text-sm" /> Add New Product
         </button>
@@ -201,7 +201,7 @@ export default function ProductsAdmin() {
               {loading ? (
                 <tr>
                   <td colSpan="4" className="py-16 text-center space-y-2">
-                    <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto" />
+                    <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
                     <p className="text-xs text-gray-500 font-mono">Fetching catalog records...</p>
                   </td>
                 </tr>
@@ -209,7 +209,7 @@ export default function ProductsAdmin() {
                 <tr>
                   <td colSpan="4" className="py-16 text-center text-gray-500">
                     <div className="flex flex-col items-center justify-center">
-                      <FiBox className="text-5xl mb-4 opacity-30 text-emerald-500" />
+                      <FiBox className="text-5xl mb-4 opacity-30 text-blue-500" />
                       <h3 className="font-bold text-sm text-gray-300">NO PRODUCTS REGISTERED</h3>
                       <p className="text-[11px] text-gray-500 mt-1 max-w-xs leading-relaxed font-light">
                         There are currently no active products in your database. Click 'Add New Product' to register one.
@@ -232,7 +232,7 @@ export default function ProductsAdmin() {
                           }}
                         />
                       ) : (
-                        <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-500 border border-emerald-500/20 flex-shrink-0 font-bold">
+                        <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500 border border-blue-500/20 flex-shrink-0 font-bold">
                           P
                         </div>
                       )}
@@ -242,7 +242,7 @@ export default function ProductsAdmin() {
                       </div>
                     </td>
                     <td className="py-4 px-6 text-gray-300">
-                      <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold font-mono border border-emerald-500/20 uppercase tracking-wider">
+                      <span className="px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-500 text-[10px] font-bold font-mono border border-blue-500/20 uppercase tracking-wider">
                         {product.category}
                       </span>
                     </td>
@@ -279,7 +279,7 @@ export default function ProductsAdmin() {
                     type="text"
                     value={newProduct.name}
                     onChange={e => setNewProduct({...newProduct, name: e.target.value})}
-                    className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition duration-300 text-xs"
+                    className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs"
                     placeholder="e.g. Savaxa Super"
                   />
                 </div>
@@ -288,7 +288,7 @@ export default function ProductsAdmin() {
                   <select
                     value={newProduct.category}
                     onChange={e => setNewProduct({...newProduct, category: e.target.value})}
-                    className="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition duration-300 text-xs"
+                    className="w-full bg-gray-950 border border-gray-800 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs"
                   >
                     <option value="insecticides">Insecticides</option>
                     <option value="herbicides">Herbicides</option>
@@ -307,7 +307,7 @@ export default function ProductsAdmin() {
                     onClick={() => setImageInputType('upload')}
                     className={`py-2 px-3 rounded-xl border font-bold text-xs tracking-wider flex items-center justify-center gap-1.5 transition ${
                       imageInputType === 'upload'
-                        ? 'bg-emerald-600/15 border-emerald-550 text-emerald-450'
+                        ? 'bg-blue-600/15 border-emerald-550 text-emerald-450'
                         : 'bg-gray-950 border-gray-850 text-gray-400 hover:border-gray-700'
                     }`}
                   >
@@ -318,7 +318,7 @@ export default function ProductsAdmin() {
                     onClick={() => setImageInputType('url')}
                     className={`py-2 px-3 rounded-xl border font-bold text-xs tracking-wider flex items-center justify-center gap-1.5 transition ${
                       imageInputType === 'url'
-                        ? 'bg-emerald-600/15 border-emerald-550 text-emerald-450'
+                        ? 'bg-blue-600/15 border-emerald-550 text-emerald-450'
                         : 'bg-gray-950 border-gray-850 text-gray-400 hover:border-gray-700'
                     }`}
                   >
@@ -327,7 +327,7 @@ export default function ProductsAdmin() {
                 </div>
 
                 {imageInputType === 'upload' ? (
-                  <div className="border-2 border-dashed border-gray-800 rounded-xl p-4 text-center hover:border-emerald-500 transition-colors cursor-pointer relative bg-gray-950">
+                  <div className="border-2 border-dashed border-gray-800 rounded-xl p-4 text-center hover:border-blue-500 transition-colors cursor-pointer relative bg-gray-950">
                     <input
                       type="file"
                       accept="image/*"
@@ -335,12 +335,12 @@ export default function ProductsAdmin() {
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     />
                     {file ? (
-                      <p className="text-emerald-500 font-semibold text-xs flex items-center justify-center gap-1.5"><FiImage /> {file.name}</p>
+                      <p className="text-blue-500 font-semibold text-xs flex items-center justify-center gap-1.5"><FiImage /> {file.name}</p>
                     ) : (
                       <div className="flex flex-col items-center justify-center py-2 space-y-2">
-                        <FiUploadCloud className="text-3xl text-emerald-500" />
+                        <FiUploadCloud className="text-3xl text-blue-500" />
                         <p className="text-[10px] text-gray-400">Drag & drop your product image here or click</p>
-                        <span className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider transition duration-200 pointer-events-none">
+                        <span className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider transition duration-200 pointer-events-none">
                           Browse Image
                         </span>
                       </div>
@@ -352,7 +352,7 @@ export default function ProductsAdmin() {
                       type="url"
                       value={pastedImageUrl}
                       onChange={e => setPastedImageUrl(e.target.value)}
-                      className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition duration-300 text-xs font-mono"
+                      className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs font-mono"
                       placeholder="Paste Unsplash or direct image URL (e.g. https://example.com/photo.jpg)"
                     />
                     <p className="text-[9px] text-gray-500 font-mono mt-1">
@@ -369,7 +369,7 @@ export default function ProductsAdmin() {
                   rows="2"
                   value={newProduct.description}
                   onChange={e => setNewProduct({...newProduct, description: e.target.value})}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none text-xs leading-relaxed"
+                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 resize-none text-xs leading-relaxed"
                   placeholder="A premium agrochemical formula developed to optimize crops..."
                 ></textarea>
               </div>
@@ -381,7 +381,7 @@ export default function ProductsAdmin() {
                   rows="2"
                   value={newProduct.usage}
                   onChange={e => setNewProduct({...newProduct, usage: e.target.value})}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none text-xs leading-relaxed"
+                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 resize-none text-xs leading-relaxed"
                   placeholder="Target Pests: Sucking bugs, caterpillars. Crops: Paddy, Chillies..."
                 ></textarea>
               </div>
@@ -393,7 +393,7 @@ export default function ProductsAdmin() {
                   rows="2"
                   value={newProduct.howToBeUsed}
                   onChange={e => setNewProduct({...newProduct, howToBeUsed: e.target.value})}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none text-xs leading-relaxed"
+                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 resize-none text-xs leading-relaxed"
                   placeholder="Dilute 1.5 - 2.0 ml per liter of clean water and spray evenly..."
                 ></textarea>
               </div>
@@ -405,7 +405,7 @@ export default function ProductsAdmin() {
                   rows="2"
                   value={newProduct.cropEffects}
                   onChange={e => setNewProduct({...newProduct, cropEffects: e.target.value})}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none text-xs leading-relaxed"
+                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 resize-none text-xs leading-relaxed"
                   placeholder="Promotes vigorous root development, increases chlorophyll absorption..."
                 ></textarea>
               </div>
@@ -413,7 +413,7 @@ export default function ProductsAdmin() {
               {isSubmitting && imageInputType === 'upload' && (
                 <div className="w-full bg-gray-800 rounded-full h-1.5 mt-4">
                   <div 
-                    className="bg-emerald-600 h-1.5 rounded-full transition-all duration-300 shadow-[0_0_6px_#10b981]" 
+                    className="bg-blue-600 h-1.5 rounded-full transition-all duration-300 shadow-[0_0_6px_#2563eb]" 
                     style={{ width: `${uploadProgress}%` }}
                   ></div>
                 </div>
@@ -430,7 +430,7 @@ export default function ProductsAdmin() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2.5 rounded-xl flex items-center transition duration-300 text-xs font-bold uppercase tracking-wider disabled:opacity-50"
+                  className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl flex items-center transition duration-300 text-xs font-bold uppercase tracking-wider disabled:opacity-50"
                 >
                   {isSubmitting ? `Saving ${Math.round(uploadProgress)}%` : 'Save Product'}
                 </button>

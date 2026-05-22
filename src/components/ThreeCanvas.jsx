@@ -11,9 +11,9 @@ export default function ThreeCanvas() {
     const width = container.clientWidth
     const height = container.clientHeight
 
-    // Scene with premium natural light background color
+    // Scene with premium minimalist white background color
     const scene = new THREE.Scene()
-    scene.fog = new THREE.FogExp2(0xf8fafc, 0.02)
+    scene.fog = new THREE.FogExp2(0xffffff, 0.02)
 
     // Camera
     const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000)
@@ -47,10 +47,10 @@ export default function ThreeCanvas() {
       const ctx = canvas.getContext('2d')
       
       const gradient = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2)
-      // Soft organic green and sky blue tones representing healthy crops and moisture
-      gradient.addColorStop(0, 'rgba(16, 185, 129, 0.6)')
-      gradient.addColorStop(0.3, 'rgba(14, 165, 233, 0.3)')
-      gradient.addColorStop(0.7, 'rgba(248, 250, 252, 0)')
+      // Soft premium royal blue and cyan tones representing modern agritech and moisture
+      gradient.addColorStop(0, 'rgba(37, 99, 235, 0.6)')
+      gradient.addColorStop(0.3, 'rgba(6, 182, 212, 0.3)')
+      gradient.addColorStop(0.7, 'rgba(255, 255, 255, 0)')
       
       ctx.fillStyle = gradient
       ctx.fillRect(0, 0, size, size)
@@ -143,7 +143,7 @@ export default function ThreeCanvas() {
   return (
     <div 
       ref={containerRef} 
-      className="fixed inset-0 w-full h-full -z-10 pointer-events-none overflow-hidden bg-slate-50" 
+      className="fixed inset-0 w-full h-full -z-10 pointer-events-none overflow-hidden bg-white" 
     />
   )
 }

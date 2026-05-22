@@ -165,12 +165,12 @@ export default function DownloadsAdmin() {
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight font-display text-white uppercase font-sans">Downloads & Brochures</h1>
           <p className="text-gray-400 text-xs mt-1">
-            Manage your Savaxa digital downloads: <span className="text-emerald-500 font-extrabold">{downloads.length} active brochures</span>
+            Manage your Savaxa digital downloads: <span className="text-blue-500 font-extrabold">{downloads.length} active brochures</span>
           </p>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-xl flex items-center transition duration-300 font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/10"
+          className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl flex items-center transition duration-300 font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/10"
         >
           <FiPlus className="mr-2 text-sm" /> Add Brochure
         </button>
@@ -179,12 +179,12 @@ export default function DownloadsAdmin() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {loading ? (
           <div className="col-span-full py-16 text-center space-y-2">
-            <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto" />
+            <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" />
             <p className="text-xs text-gray-500 font-mono">Fetching brochures...</p>
           </div>
         ) : downloads.length === 0 ? (
           <div className="col-span-full py-16 text-center text-gray-500 flex flex-col items-center bg-gray-900 border border-gray-805/80 rounded-[24px]">
-            <FiFileText className="text-5xl mb-4 opacity-30 text-emerald-500" />
+            <FiFileText className="text-5xl mb-4 opacity-30 text-blue-500" />
             <h3 className="font-bold text-sm text-gray-300">NO RESOURCES REGISTERED</h3>
             <p className="text-[11px] text-gray-500 mt-1 max-w-xs leading-relaxed font-light">
               There are currently no brochures uploaded. Click 'Add Brochure' to publish one.
@@ -194,9 +194,9 @@ export default function DownloadsAdmin() {
           downloads.map((item) => (
             <div 
               key={item.id} 
-              className="bg-gray-900 border border-gray-805/80 p-6 rounded-[24px] flex items-start group hover:border-emerald-600/40 transition duration-300 relative"
+              className="bg-gray-900 border border-gray-805/80 p-6 rounded-[24px] flex items-start group hover:border-blue-600/40 transition duration-300 relative"
             >
-              <div className="p-4 bg-emerald-500/15 text-emerald-500 rounded-2xl mr-5 border border-emerald-500/20 shadow-inner flex-shrink-0">
+              <div className="p-4 bg-blue-500/15 text-blue-500 rounded-2xl mr-5 border border-blue-500/20 shadow-inner flex-shrink-0">
                 <FiFileText className="text-3xl" />
               </div>
               <div className="flex-1 overflow-hidden pr-8">
@@ -206,7 +206,7 @@ export default function DownloadsAdmin() {
                   href={item.url} 
                   target="_blank" 
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-emerald-500 hover:text-emerald-450 text-xs font-bold uppercase tracking-wider transition-colors"
+                  className="inline-flex items-center gap-1 text-blue-500 hover:text-emerald-450 text-xs font-bold uppercase tracking-wider transition-colors"
                 >
                   View Brochure &rarr;
                 </a>
@@ -237,7 +237,7 @@ export default function DownloadsAdmin() {
                   type="text"
                   value={newDownload.title}
                   onChange={e => setNewDownload({...newDownload, title: e.target.value})}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition duration-300 text-xs"
+                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs"
                   placeholder="e.g. 2026 Product Catalog"
                 />
               </div>
@@ -248,7 +248,7 @@ export default function DownloadsAdmin() {
                   rows="3"
                   value={newDownload.description}
                   onChange={e => setNewDownload({...newDownload, description: e.target.value})}
-                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 resize-none text-xs leading-relaxed"
+                  className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 resize-none text-xs leading-relaxed"
                   placeholder="Briefly describe the contents of this brochure..."
                 ></textarea>
               </div>
@@ -262,7 +262,7 @@ export default function DownloadsAdmin() {
                     onClick={() => setFileInputType('upload')}
                     className={`py-2 px-3 rounded-xl border font-bold text-xs tracking-wider flex items-center justify-center gap-1.5 transition ${
                       fileInputType === 'upload'
-                        ? 'bg-emerald-600/15 border-emerald-550 text-emerald-450'
+                        ? 'bg-blue-600/15 border-emerald-550 text-emerald-450'
                         : 'bg-gray-950 border-gray-850 text-gray-400 hover:border-gray-700'
                     }`}
                   >
@@ -273,7 +273,7 @@ export default function DownloadsAdmin() {
                     onClick={() => setFileInputType('url')}
                     className={`py-2 px-3 rounded-xl border font-bold text-xs tracking-wider flex items-center justify-center gap-1.5 transition ${
                       fileInputType === 'url'
-                        ? 'bg-emerald-600/15 border-emerald-550 text-emerald-450'
+                        ? 'bg-blue-600/15 border-emerald-550 text-emerald-450'
                         : 'bg-gray-950 border-gray-850 text-gray-400 hover:border-gray-700'
                     }`}
                   >
@@ -282,7 +282,7 @@ export default function DownloadsAdmin() {
                 </div>
 
                 {fileInputType === 'upload' ? (
-                  <div className="border-2 border-dashed border-gray-800 rounded-xl p-4 text-center hover:border-emerald-500 transition-colors cursor-pointer relative bg-gray-950">
+                  <div className="border-2 border-dashed border-gray-800 rounded-xl p-4 text-center hover:border-blue-500 transition-colors cursor-pointer relative bg-gray-950">
                     <input
                       type="file"
                       accept="application/pdf"
@@ -290,12 +290,12 @@ export default function DownloadsAdmin() {
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     />
                     {file ? (
-                      <p className="text-emerald-500 font-semibold text-xs flex items-center justify-center gap-1.5"><FiFileText /> {file.name}</p>
+                      <p className="text-blue-500 font-semibold text-xs flex items-center justify-center gap-1.5"><FiFileText /> {file.name}</p>
                     ) : (
                       <div className="flex flex-col items-center justify-center py-2 space-y-2">
-                        <FiUploadCloud className="text-3xl text-emerald-500" />
+                        <FiUploadCloud className="text-3xl text-blue-500" />
                         <p className="text-[10px] text-gray-400">Drag & drop your PDF brochure here or click</p>
-                        <span className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider transition duration-200 pointer-events-none">
+                        <span className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-[10px] font-bold uppercase tracking-wider transition duration-200 pointer-events-none">
                           Browse PDF File
                         </span>
                       </div>
@@ -307,7 +307,7 @@ export default function DownloadsAdmin() {
                       type="url"
                       value={pastedFileUrl}
                       onChange={e => setPastedFileUrl(e.target.value)}
-                      className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 transition duration-300 text-xs font-mono"
+                      className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition duration-300 text-xs font-mono"
                       placeholder="Paste Google Drive, Dropbox, or custom PDF web URL"
                     />
                     <p className="text-[9px] text-gray-500 font-mono mt-1">
@@ -320,7 +320,7 @@ export default function DownloadsAdmin() {
               {isSubmitting && fileInputType === 'upload' && (
                 <div className="w-full bg-gray-800 rounded-full h-1.5 mt-4">
                   <div 
-                    className="bg-emerald-600 h-1.5 rounded-full transition-all duration-300 shadow-[0_0_6px_#10b981]" 
+                    className="bg-blue-600 h-1.5 rounded-full transition-all duration-300 shadow-[0_0_6px_#2563eb]" 
                     style={{ width: `${uploadProgress}%` }}
                   ></div>
                 </div>
@@ -337,7 +337,7 @@ export default function DownloadsAdmin() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2.5 rounded-xl flex items-center transition duration-300 text-xs font-bold uppercase tracking-wider disabled:opacity-50"
+                  className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl flex items-center transition duration-300 text-xs font-bold uppercase tracking-wider disabled:opacity-50"
                 >
                   {isSubmitting ? `Uploading ${Math.round(uploadProgress)}%` : 'Upload File'}
                 </button>

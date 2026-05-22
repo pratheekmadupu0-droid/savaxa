@@ -110,13 +110,13 @@ export default function ProductDetails() {
       </div>
 
       {/* Decorative Warm Organic Blur Circles */}
-      <div className="absolute top-[10%] left-0 w-96 h-96 bg-emerald-100/30 rounded-full filter blur-[130px] pointer-events-none" />
+      <div className="absolute top-[10%] left-0 w-96 h-96 bg-blue-100/20/30 rounded-full filter blur-[130px] pointer-events-none" />
       <div className="absolute bottom-[20%] right-0 w-96 h-96 bg-teal-100/30 rounded-full filter blur-[130px] pointer-events-none" />
 
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
         
         {/* Back Link */}
-        <Link to="/products" className="inline-flex items-center gap-2 text-xs font-bold text-slate-550 hover:text-emerald-600 transition mb-8 uppercase tracking-widest font-mono">
+        <Link to="/products" className="inline-flex items-center gap-2 text-xs font-bold text-slate-550 hover:text-blue-600 transition mb-8 uppercase tracking-widest font-mono">
           <RiArrowLeftLine className="text-sm" /> {t("Back to Products", "తిరిగి ఉత్పత్తులకు")}
         </Link>
 
@@ -127,7 +127,7 @@ export default function ProductDetails() {
           <div className="space-y-6">
             <div className="rounded-[30px] overflow-hidden border border-slate-200 shadow-md aspect-video relative">
               <img src={product.img} alt={product.name} className="w-full h-full object-cover" />
-              <span className="absolute top-4 left-4 bg-white/95 text-[9px] font-mono tracking-widest font-extrabold border border-emerald-200 px-3 py-1.5 rounded-full text-emerald-600 uppercase shadow-sm">
+              <span className="absolute top-4 left-4 bg-white/95 text-[9px] font-mono tracking-widest font-extrabold border border-blue-200 px-3 py-1.5 rounded-full text-blue-600 uppercase shadow-sm">
                 {product.category}
               </span>
             </div>
@@ -185,7 +185,7 @@ export default function ProductDetails() {
                     {product.composition.map((c, index) => (
                       <tr key={index} className="border-b border-slate-100 text-slate-700 hover:bg-slate-50/50">
                         <td className="p-3 font-semibold">{c.ingredient}</td>
-                        <td className="p-3 text-right font-mono font-bold text-emerald-600">{c.percentage}</td>
+                        <td className="p-3 text-right font-mono font-bold text-blue-600">{c.percentage}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -212,7 +212,7 @@ export default function ProductDetails() {
                       <tr key={index} className="border-b border-slate-100 text-slate-700 hover:bg-slate-50/50">
                         <td className="p-3 font-bold">{c.crop}</td>
                         <td className="p-3 text-slate-600 font-semibold">{c.pest}</td>
-                        <td className="p-3 text-right font-mono font-bold text-emerald-600">{c.rate}</td>
+                        <td className="p-3 text-right font-mono font-bold text-blue-600">{c.rate}</td>
                       </tr>
                     ))}
                   </tbody>

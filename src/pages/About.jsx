@@ -41,32 +41,32 @@ export default function About() {
     { 
       title: t("Sustainable Agronomy", "సుస్థిర వ్యవసాయం"), 
       desc: t("Developing selective pesticide formulations that degrade naturally in soil with zero long-term active chemical residues.", "మట్టిలో సహజంగా కలిసిపోయేలా మరియు దీర్ఘకాలిక రసాయన అవశేషాలు లేని ప్రత్యేక పురుగుమందుల రూపకల్పన."), 
-      icon: <RiLeafLine className="text-emerald-600 text-2xl" /> 
+      icon: <RiLeafLine className="text-blue-600 text-2xl" /> 
     },
     { 
       title: t("Yield Maximization", "గరిష్ట దిగుబడి"), 
       desc: t("Empowering growers to defend crop panicles, cotton bolls, and paddy fields from heavy infestations, boosting farm profitability.", "పంటలను తెగుళ్ల నుండి కాపాడి, రైతులకు గరిష్ట దిగుబడి మరియు అధిక లాభాలను చేకూర్చడం."), 
-      icon: <RiPlantLine className="text-emerald-600 text-2xl" /> 
+      icon: <RiPlantLine className="text-blue-600 text-2xl" /> 
     },
     { 
       title: t("Scientific Innovation", "శాస్త్రీయ ఆవిష్కరణలు"), 
       desc: t("Continuously researching active spore biological blockades and hyperbaric bio-stimulant synthesis in our R&D labs.", "మా పరిశోధనా శాలల్లో సరికొత్త బయో-ఉత్ప్రేరకాల తయారీ మరియు నిరంతర శాస్త్రీయ పరిశోధనలు."), 
-      icon: <RiFlaskLine className="text-teal-600 text-2xl" /> 
+      icon: <RiFlaskLine className="text-cyan-600 text-2xl" /> 
     },
     { 
       title: t("Grower & Farmer Welfare", "రైతుల సంక్షేమం"), 
       desc: t("Delivering free diagnostic resources, crop guides, and agronomist support directly to rural farming communities across India.", "రైతులకు ఉచిత పంట సలహాలు, మార్గదర్శకాలు మరియు వ్యవసాయ నిపుణుల సలహాలను అందించడం."), 
-      icon: <RiUserLine className="text-emerald-600 text-2xl" /> 
+      icon: <RiUserLine className="text-blue-600 text-2xl" /> 
     },
     { 
       title: t("Quality Integrity Assured", "నాణ్యత ప్రమాణాలు"), 
       desc: t("Running strict batch-wise chemical assays, gas chromatography, and raw material tests to confirm 100% active compound ratios.", "100% నాణ్యమైన మరియు ప్రభావవంతమైన ఉత్పత్తుల తయారీ కొరకు కఠినమైన పరీక్షలు నిర్వహించడం."), 
-      icon: <RiShieldCheckLine className="text-teal-600 text-2xl" /> 
+      icon: <RiShieldCheckLine className="text-cyan-600 text-2xl" /> 
     },
     { 
       title: t("Empowered Dealer Network", "బలమైన డీలర్ల నెట్‌వర్క్"), 
       desc: t("Building a transparent, digitized supply system that ensures dealers receive fresh, properly sealed products on time.", "డీలర్లకు ఉత్పత్తులు సరైన సమయానికి చేరేలా పారదర్శకమైన మరియు డిజిటలైజ్డ్ సరఫరా వ్యవస్థను అందించడం."), 
-      icon: <RiGroupLine className="text-emerald-600 text-2xl" /> 
+      icon: <RiGroupLine className="text-blue-600 text-2xl" /> 
     }
   ]
 
@@ -82,7 +82,7 @@ export default function About() {
         
         {/* Header Block */}
         <div className="text-center max-w-2xl mx-auto space-y-4">
-          <p className="text-xs font-mono tracking-widest text-emerald-600 uppercase font-bold">
+          <p className="text-xs font-mono tracking-widest text-blue-600 uppercase font-bold">
             {t("SAVAXA BIO-AGRI SCIENCES", "సవాక్సా బయో-ఆగ్రి సైన్సెస్")}
           </p>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-display">
@@ -99,9 +99,9 @@ export default function About() {
         {/* Narrative & History Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200">
-              <RiGlobalLine className="text-emerald-600 text-xs" />
-              <span className="text-[10px] tracking-widest uppercase font-mono text-emerald-700 font-bold">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50/70 border border-blue-200">
+              <RiGlobalLine className="text-blue-600 text-xs" />
+              <span className="text-[10px] tracking-widest uppercase font-mono text-blue-700 font-bold">
                 {t("ESTABLISHED IN 2023", "2023లో స్థాపించబడింది")}
               </span>
             </div>
@@ -124,10 +124,10 @@ export default function About() {
             
             <div className="flex flex-wrap gap-4 pt-2">
               <div className="flex items-center gap-2 text-xs font-bold text-slate-700 bg-white/80 backdrop-blur px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm">
-                <RiAwardLine className="text-emerald-600 text-lg" /> {t("CIB&RC Approved Formulations", "CIB&RC ఆమోదిత రసాయనాలు")}
+                <RiAwardLine className="text-blue-600 text-lg" /> {t("CIB&RC Approved Formulations", "CIB&RC ఆమోదిత రసాయనాలు")}
               </div>
               <div className="flex items-center gap-2 text-xs font-bold text-slate-700 bg-white/80 backdrop-blur px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm">
-                <RiLeafLine className="text-emerald-600 text-lg" /> {t("Maximum Eco-Soil Safety", "పర్యావరణ మరియు నేల రక్షణ")}
+                <RiLeafLine className="text-blue-600 text-lg" /> {t("Maximum Eco-Soil Safety", "పర్యావరణ మరియు నేల రక్షణ")}
               </div>
             </div>
           </div>
@@ -153,7 +153,7 @@ export default function About() {
         {/* 2. VISIONARY MD SPOTLIGHT SECTION */}
         <section className="glass-panel rounded-3xl border border-slate-200/60 p-8 md:p-12 shadow-sm relative overflow-hidden bg-white/70">
           {/* Subtle watermark overlay */}
-          <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-100/10 rounded-full filter blur-[100px] pointer-events-none" />
+          <div className="absolute top-0 right-0 w-80 h-80 bg-blue-100/20/10 rounded-full filter blur-[100px] pointer-events-none" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left side: Photo of Dr Narendar Reddy */}
@@ -170,19 +170,19 @@ export default function About() {
             {/* Right side: Detailed Spotlight Info */}
             <div className="lg:col-span-7 space-y-6 text-left">
               <div className="space-y-2">
-                <span className="text-[10px] text-emerald-600 font-mono tracking-widest uppercase font-bold bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                <span className="text-[10px] text-blue-600 font-mono tracking-widest uppercase font-bold bg-blue-50/70 px-3 py-1 rounded-full border border-blue-200">
                   {t("LEADERSHIP SPOTLIGHT", "నాయకత్వ విశేషాలు")}
                 </span>
                 <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900 font-display mt-2 uppercase">
                   {t("DR. NARENDAR REDDY", "డాక్టర్ నరేందర్ రెడ్డి")}
                 </h3>
                 <p className="text-xs font-bold text-slate-500 font-mono tracking-wider flex items-center gap-1.5">
-                  <RiAwardLine className="text-emerald-600 text-lg shrink-0" />
+                  <RiAwardLine className="text-blue-600 text-lg shrink-0" />
                   <span>{t("QUALIFICATION: MBA (AGRI-BUSINESS MANAGEMENT) & PH.D. IN AGRONOMY", "విద్యార్హత: MBA (అగ్రి-బిజినెస్ మేనేజ్‌మెంట్) & Ph.D. (అగ్రోనమీ)")}</span>
                 </p>
               </div>
 
-              <div className="h-0.5 bg-gradient-to-r from-emerald-500 to-transparent w-32" />
+              <div className="h-0.5 bg-gradient-to-r from-blue-500 to-transparent w-32" />
 
               <p className="text-slate-650 text-sm leading-relaxed font-light">
                 {t(
@@ -198,7 +198,7 @@ export default function About() {
               </p>
 
               {/* A beautiful quote */}
-              <div className="p-4 bg-slate-50 border-l-4 border-emerald-500 rounded-r-2xl font-display text-slate-700 italic text-sm leading-relaxed">
+              <div className="p-4 bg-slate-50 border-l-4 border-blue-500 rounded-r-2xl font-display text-slate-700 italic text-sm leading-relaxed">
                 {t(
                   "\"Our technology must always serve the farmer first. We don't just sell chemical compounds; we provide scientific shield arrays that empower farmers to cultivate rich, safe, and highly profitable harvests.\"",
                   "\"మా సాంకేతికత ఎల్లప్పుడూ రైతు శ్రేయస్సుకు మొదటి ప్రాధాన్యత ఇవ్వాలి. మేము కేవలం రసాయనాలను మాత్రమే విక్రయించట్లేదు; రైతులు సురక్షితమైన, నాణ్యమైన మరియు అత్యంత లాభదాయకమైన దిగుబడులను సాధించేలా శాస్త్రీయ రక్షణను అందిస్తున్నాము.\""
@@ -214,7 +214,7 @@ export default function About() {
         {/* 3. OUR VISIONS & VALUES SECTION (6 dynamic cards) */}
         <div className="space-y-12">
           <div className="text-center max-w-xl mx-auto space-y-3">
-            <span className="text-[10px] text-emerald-600 font-mono tracking-widest uppercase font-bold">
+            <span className="text-[10px] text-blue-600 font-mono tracking-widest uppercase font-bold">
               {t("GUIDING PRINCIPLES", "మా సూత్రాలు & విలువలు")}
             </span>
             <h3 className="text-2xl md:text-4xl font-extrabold text-slate-800 font-display uppercase">
@@ -230,7 +230,7 @@ export default function About() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {visions.map((v, idx) => (
-              <div key={idx} className="glass-card p-6 rounded-3xl border border-slate-200/60 space-y-4 shadow-sm hover:border-emerald-500/20 transition duration-300">
+              <div key={idx} className="glass-card p-6 rounded-3xl border border-slate-200/60 space-y-4 shadow-sm hover:border-blue-500/20 transition duration-300">
                 <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center shadow-inner">
                   {v.icon}
                 </div>
@@ -251,8 +251,8 @@ export default function About() {
         {/* Professional stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8">
           {metrics.map((m, idx) => (
-            <div key={idx} className="glass-card p-6 rounded-3xl border border-slate-200/60 text-center space-y-2 shadow-sm hover:border-emerald-400/25 transition duration-300 bg-white/80">
-              <span className="text-3xl md:text-4xl font-extrabold text-emerald-600 font-display">{m.value}</span>
+            <div key={idx} className="glass-card p-6 rounded-3xl border border-slate-200/60 text-center space-y-2 shadow-sm hover:border-blue-400/25 transition duration-300 bg-white/80">
+              <span className="text-3xl md:text-4xl font-extrabold text-blue-600 font-display">{m.value}</span>
               <h4 className="text-xs font-bold text-slate-800 tracking-widest uppercase font-display">{m.label}</h4>
               <p className="text-xs text-slate-500 font-light mt-0.5">{m.desc}</p>
             </div>

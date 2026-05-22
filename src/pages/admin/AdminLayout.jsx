@@ -93,7 +93,7 @@ export default function AdminLayout() {
                 alt="Savax Logo" 
                 className="h-7 w-auto object-contain"
               />
-              <span className="text-[10px] font-mono tracking-widest font-extrabold uppercase text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md">Admin</span>
+              <span className="text-[10px] font-mono tracking-widest font-extrabold uppercase text-blue-500 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded-md">Admin</span>
             </Link>
           ) : (
             <Link to="/" className="flex items-center justify-center shrink-0">

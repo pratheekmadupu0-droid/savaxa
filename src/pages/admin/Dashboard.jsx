@@ -42,7 +42,7 @@ export default function Dashboard() {
     { title: 'Total Products', value: stats.products, icon: <FiBox />, color: 'text-blue-500', bg: 'bg-blue-500/10 border-blue-500/20' },
     { title: 'Registered Dealers', value: stats.dealers, icon: <FiUsers />, color: 'text-primary', bg: 'bg-primary/10 border-primary/20' },
     { title: 'Total Downloads', value: stats.downloads, icon: <FiDownload />, color: 'text-purple-500', bg: 'bg-purple-500/10 border-purple-500/20' },
-    { title: 'Active Users', value: '2', icon: <FiActivity />, color: 'text-green-500', bg: 'bg-green-500/10 border-green-500/20' },
+    { title: 'Active Users', value: '2', icon: <FiActivity />, color: 'text-blue-500', bg: 'bg-blue-500/10 border-blue-500/20' },
   ];
 
   return (

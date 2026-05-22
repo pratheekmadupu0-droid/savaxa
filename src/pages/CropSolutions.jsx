@@ -146,12 +146,12 @@ export default function CropSolutions() {
                     <span className="text-slate-400 block font-mono text-[9px] uppercase font-bold">
                       {t("Mixing Formula:", "నివారణ రసాయనం:")}
                     </span>
-                    <span className="text-emerald-700 font-bold block mt-1">{current.formula}</span>
+                    <span className="text-blue-700 font-bold block mt-1">{current.formula}</span>
                   </div>
                 </div>
 
-                <div className="bg-emerald-50 border border-emerald-200/60 p-4 rounded-2xl">
-                  <span className="text-emerald-700 block font-mono text-[9px] uppercase font-bold">
+                <div className="bg-blue-50/70 border border-blue-200/60 p-4 rounded-2xl">
+                  <span className="text-blue-700 block font-mono text-[9px] uppercase font-bold">
                     {t("Spraying Intervals:", "పిచికారీ సమయం:")}
                   </span>
                   <span className="text-slate-700 font-light block mt-1 leading-relaxed">{current.sprayingInterval}</span>

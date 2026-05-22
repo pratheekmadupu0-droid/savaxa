@@ -50,19 +50,19 @@ export default function Navbar() {
       name: 'Home', 
       teluguName: 'హోమ్',
       path: '/',
-      icon: <RiHome5Line className="text-emerald-600 text-base" />
+      icon: <RiHome5Line className="text-blue-600 text-base" />
     },
     { 
       name: 'About', 
       teluguName: 'గురించి',
       path: '/about',
-      icon: <RiInformationLine className="text-emerald-600 text-base" />
+      icon: <RiInformationLine className="text-blue-600 text-base" />
     },
     { 
       name: 'Products', 
       teluguName: 'ఉత్పత్తులు',
       path: '/products', 
-      icon: <RiSparkling2Line className="text-emerald-600 text-base" />,
+      icon: <RiSparkling2Line className="text-blue-600 text-base" />,
       dropdown: [
         { 
           name: 'All Products', 
@@ -70,7 +70,7 @@ export default function Navbar() {
           path: '/products', 
           desc: 'Complete portfolio of registered agrochemical crop products.', 
           teluguDesc: 'వ్యవసాయ రసాయన పంట ఉత్పత్తుల పూర్తి శ్రేణి.',
-          icon: <RiSparkling2Line className="text-emerald-600" /> 
+          icon: <RiSparkling2Line className="text-blue-600" /> 
         },
         { 
           name: 'Insecticides', 
@@ -78,7 +78,7 @@ export default function Navbar() {
           path: '/products?category=insecticides', 
           desc: 'High-efficacy targeting against chewing & sucking pests.', 
           teluguDesc: 'నమిలే మరియు పీల్చే పురుగుల పై అధిక ప్రభావం చూపేవి.',
-          icon: <RiBugLine className="text-teal-600" /> 
+          icon: <RiBugLine className="text-cyan-600" /> 
         },
         { 
           name: 'Herbicides', 
@@ -86,7 +86,7 @@ export default function Navbar() {
           path: '/products?category=herbicides', 
           desc: 'Selective weed blockades tailored for rich crop yields.', 
           teluguDesc: 'అధిక పంట దిగుబడి కొరకు ప్రత్యేక కలుపు నివారణ మార్గాలు.',
-          icon: <RiLeafLine className="text-emerald-600" /> 
+          icon: <RiLeafLine className="text-blue-600" /> 
         },
         { 
           name: 'Fungicides', 
@@ -102,19 +102,19 @@ export default function Navbar() {
       name: 'Solutions', 
       teluguName: 'పరిష్కారాలు',
       path: '/crop-solutions',
-      icon: <RiLeafLine className="text-emerald-600 text-base" />
+      icon: <RiLeafLine className="text-blue-600 text-base" />
     },
     { 
       name: 'Dealers', 
       teluguName: 'డీలర్లు',
       path: '/dealers',
-      icon: <RiMapPinRangeLine className="text-emerald-600 text-base" />
+      icon: <RiMapPinRangeLine className="text-blue-600 text-base" />
     },
     { 
       name: 'Resources', 
       teluguName: 'వనరులు',
       path: '/downloads',
-      icon: <RiDownload2Line className="text-emerald-600 text-base" />,
+      icon: <RiDownload2Line className="text-blue-600 text-base" />,
       sublinks: [
         { name: 'Downloads', teluguName: 'డౌన్‌లోడ్‌లు', path: '/downloads' },
         { name: 'Certifications', teluguName: 'ధృవపత్రాలు', path: '/certifications' },
@@ -129,6 +129,150 @@ export default function Navbar() {
     return location.pathname.startsWith(path)
   }
 
+  const leftLinks = navLinks.slice(0, 3)
+  const rightLinks = navLinks.slice(3)
+
+  const renderNavLink = (link, idx, globalIdx) => (
+    <div 
+      key={link.name} 
+      className="relative"
+      onMouseEnter={() => {
+        setHoveredIndex(globalIdx)
+        if (link.dropdown) setProductsDropdownOpen(true)
+      }}
+      onMouseLeave={() => {
+        setHoveredIndex(null)
+        if (link.dropdown) setProductsDropdownOpen(false)
+      }}
+    >
+      <Link
+        to={link.path}
+        className={`relative px-4 py-2 text-[10.5px] tracking-widest font-extrabold uppercase transition-colors duration-350 flex items-center gap-1.5 z-10 ${
+          isActive(link.path) ? 'text-blue-700' : 'text-slate-650 hover:text-slate-900'
+        }`}
+      >
+        <span>{t(link.name, link.teluguName)}</span>
+        {link.dropdown && (
+          <RiArrowDownSLine className={`transition-transform duration-350 text-xs ${productsDropdownOpen ? 'rotate-180 text-blue-650' : 'text-slate-400'}`} />
+        )}
+      </Link>
+
+      {/* Dynamic Hover Highlight Pill */}
+      <AnimatePresence>
+        {hoveredIndex === globalIdx && (
+          <motion.div
+            layoutId="navHoverPill"
+            className="absolute inset-0 bg-blue-50/70 border border-blue-100/50 rounded-xl -z-10"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Highly polished mega-dropdown layout */}
+      {link.dropdown && (
+        <AnimatePresence>
+          {productsDropdownOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 15 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute top-full left-1/2 -translate-x-1/2 w-[580px] bg-white rounded-2xl shadow-[0_24px_54px_rgba(37,99,235,0.08)] p-6 mt-3 border border-slate-200/90 z-50 grid grid-cols-12 gap-5"
+            >
+              {/* Dropdown Left side links grid */}
+              <div className="col-span-8 grid grid-cols-1 gap-2 border-r border-slate-100 pr-5">
+                <p className="text-[9px] font-mono tracking-wider text-slate-400 uppercase font-bold mb-1">
+                  {t("CATEGORIES", "విభాగాలు")}
+                </p>
+                {link.dropdown.map((subItem) => (
+                  <Link
+                    key={subItem.name}
+                    to={subItem.path}
+                    className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition duration-200 text-left"
+                  >
+                    <div className="p-2 rounded-lg bg-slate-50 group-hover:bg-white group-hover:shadow-sm border border-slate-100 text-slate-700 transition duration-200">
+                      {subItem.icon}
+                    </div>
+                    <div className="space-y-0.5">
+                      <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider group-hover:text-blue-600 transition-colors">
+                        {t(subItem.name, subItem.teluguName)}
+                      </h4>
+                      <p className="text-[10px] text-slate-450 leading-relaxed font-light font-sans">
+                        {t(subItem.desc, subItem.teluguDesc)}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              {/* Dropdown Right side Featured card */}
+              <div className="col-span-4 flex flex-col justify-between bg-gradient-to-br from-blue-50/50 to-cyan-50/20 p-4 rounded-xl border border-blue-100/40 text-left">
+                <div className="space-y-2">
+                  <span className="inline-block text-[8px] bg-blue-600 text-white font-mono font-bold tracking-widest px-2 py-0.5 rounded-full uppercase">
+                    {t("FEATURED", "ప్రಮುಖమైనవి")}
+                  </span>
+                  <h4 className="text-xs font-bold text-slate-800 tracking-wide font-display uppercase mt-1">
+                    {t("CIB REGISTERED", "CIB&RC అనుమతి పొందినవి")}
+                  </h4>
+                  <p className="text-[10px] text-slate-500 leading-relaxed font-light">
+                    {t(
+                      "75+ registered high-performance chemical blends formulated in state-of-the-art agronomy reactors.",
+                      "అత్యంత నాణ్యమైన రియాక్టర్లలో తయారు చేయబడిన 75+ అనుమతి పొందిన రసాయన మిశ్రమాలు."
+                    )}
+                  </p>
+                </div>
+                <Link 
+                  to="/products"
+                  className="group inline-flex items-center gap-1 text-[9px] font-extrabold uppercase text-blue-600 tracking-widest hover:text-blue-700 mt-4"
+                >
+                  {t("Explore Catalog", "ఉత్పత్తుల కేటలాగ్")}
+                  <RiArrowRightUpLine className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition duration-200" />
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
+
+      {/* Secondary Resources Dropdown */}
+      {link.sublinks && (
+        <AnimatePresence>
+          {hoveredIndex === globalIdx && (
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 15 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-full left-0 w-48 bg-white rounded-xl shadow-2xl p-2 mt-3 border border-slate-200/85 z-50"
+            >
+              {link.sublinks.map((sub) => (
+                <Link
+                  key={sub.name}
+                  to={sub.path}
+                  className="block px-4 py-2.5 text-[10px] tracking-wider uppercase font-bold text-slate-650 hover:text-blue-600 hover:bg-slate-550 rounded-lg transition duration-200 text-left"
+                >
+                  {t(sub.name, sub.teluguName)}
+                </Link>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
+
+      {/* High fidelity tiny dot for active page */}
+      {isActive(link.path) && (
+        <motion.div
+          layoutId="navbarActiveDot"
+          className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-blue-650 rounded-full shadow-[0_0_6px_#2563eb]"
+          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+        />
+      )}
+    </div>
+  )
+
   return (
     <>
       {/* Premium Floating Island Header wrapper */}
@@ -139,180 +283,51 @@ export default function Navbar() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className={`mx-auto w-[94%] xl:w-[90%] max-w-[1400px] pointer-events-auto transition-all duration-550 ${
             isScrolled 
-              ? 'mt-4 bg-white/85 backdrop-blur-xl border border-emerald-500/15 py-2.5 px-6 rounded-2xl shadow-[0_20px_50px_rgba(16,185,129,0.08)]' 
-              : 'mt-6 bg-white/55 backdrop-blur-md border border-white/20 py-4 px-8 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.03)]'
+              ? 'mt-4 bg-white/85 backdrop-blur-xl border border-blue-500/10 py-2.5 px-6 rounded-2xl shadow-[0_20px_50px_rgba(37,99,235,0.05)]' 
+              : 'mt-6 bg-white/55 backdrop-blur-md border border-white/20 py-4 px-8 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.02)]'
           }`}
         >
-          <div className="flex items-center justify-between">
+          <div className="relative w-full min-h-[48px] flex items-center justify-between">
             
-            {/* Logo on the Left - With Interactive Glow and Breathe Aura */}
-            <div className="flex items-center shrink-0 relative group">
-              <div className="absolute -inset-2 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition duration-500 -z-10" />
-              <Link to="/" className="flex items-center">
-                <img 
-                  src="/savax-logo.png" 
-                  alt="Savax Logo" 
-                  className={`w-auto object-contain transition-all duration-550 ${
-                    isScrolled ? 'h-10 md:h-11' : 'h-14 md:h-15'
-                  }`}
-                />
-              </Link>
-            </div>
+            {/* Desktop Centered Symmetric Layout */}
+            <div className="hidden xl:grid grid-cols-12 items-center w-full relative">
+              
+              {/* Left Side Links (Col 1-5) */}
+              <div className="col-span-5 flex items-center justify-end gap-1.5 relative pr-8">
+                {leftLinks.map((link, idx) => renderNavLink(link, idx, idx))}
+              </div>
 
-            {/* Navigation links with sliding capsule hover pillow */}
-            <div className="hidden xl:flex items-center gap-1.5 relative">
-              {navLinks.map((link, idx) => (
-                <div 
-                  key={link.name} 
-                  className="relative"
-                  onMouseEnter={() => {
-                    setHoveredIndex(idx)
-                    if (link.dropdown) setProductsDropdownOpen(true)
-                  }}
-                  onMouseLeave={() => {
-                    setHoveredIndex(null)
-                    if (link.dropdown) setProductsDropdownOpen(false)
-                  }}
-                >
-                  <Link
-                    to={link.path}
-                    className={`relative px-4 py-2 text-[10.5px] tracking-widest font-extrabold uppercase transition-colors duration-350 flex items-center gap-1.5 z-10 ${
-                      isActive(link.path) ? 'text-emerald-700' : 'text-slate-650 hover:text-slate-900'
+              {/* Center Brand Logo (Col 6-7) */}
+              <div className="col-span-2 flex items-center justify-center relative group">
+                <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition duration-500 -z-10" />
+                <Link to="/" className="flex items-center justify-center shrink-0">
+                  <img 
+                    src="/savax-logo.png" 
+                    alt="Savax Logo" 
+                    className={`w-auto object-contain transition-all duration-550 ${
+                      isScrolled ? 'h-10' : 'h-13'
                     }`}
-                  >
-                    <span>{t(link.name, link.teluguName)}</span>
-                    {link.dropdown && (
-                      <RiArrowDownSLine className={`transition-transform duration-350 text-xs ${productsDropdownOpen ? 'rotate-180 text-emerald-600' : 'text-slate-400'}`} />
-                    )}
-                  </Link>
+                  />
+                </Link>
+              </div>
 
-                  {/* Dynamic Hover Highlight Pill */}
-                  <AnimatePresence>
-                    {hoveredIndex === idx && (
-                      <motion.div
-                        layoutId="navHoverPill"
-                        className="absolute inset-0 bg-emerald-50/70 border border-emerald-100/50 rounded-xl -z-10"
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                  </AnimatePresence>
+              {/* Right Side Links (Col 8-12) */}
+              <div className="col-span-5 flex items-center justify-start gap-1.5 relative pl-8">
+                {rightLinks.map((link, idx) => renderNavLink(link, idx, idx + 3))}
+              </div>
 
-                  {/* Highly polished mega-dropdown layout */}
-                  {link.dropdown && (
-                    <AnimatePresence>
-                      {productsDropdownOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 15 }}
-                          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                          className="absolute top-full left-1/2 -translate-x-1/2 w-[580px] bg-white rounded-2xl shadow-[0_24px_54px_rgba(0,0,0,0.12)] p-6 mt-3 border border-slate-200/90 z-50 grid grid-cols-12 gap-5"
-                        >
-                          {/* Dropdown Left side links grid */}
-                          <div className="col-span-8 grid grid-cols-1 gap-2 border-r border-slate-100 pr-5">
-                            <p className="text-[9px] font-mono tracking-wider text-slate-400 uppercase font-bold mb-1">
-                              {t("CATEGORIES", "విభాగాలు")}
-                            </p>
-                            {link.dropdown.map((subItem) => (
-                              <Link
-                                key={subItem.name}
-                                to={subItem.path}
-                                className="group flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition duration-200 text-left"
-                              >
-                                <div className="p-2 rounded-lg bg-slate-50 group-hover:bg-white group-hover:shadow-sm border border-slate-100 text-slate-700 transition duration-200">
-                                  {subItem.icon}
-                                </div>
-                                <div className="space-y-0.5">
-                                  <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider group-hover:text-emerald-600 transition-colors">
-                                    {t(subItem.name, subItem.teluguName)}
-                                  </h4>
-                                  <p className="text-[10px] text-slate-450 leading-relaxed font-light font-sans">
-                                    {t(subItem.desc, subItem.teluguDesc)}
-                                  </p>
-                                </div>
-                              </Link>
-                            ))}
-                          </div>
-
-                          {/* Dropdown Right side Featured card */}
-                          <div className="col-span-4 flex flex-col justify-between bg-gradient-to-br from-emerald-50/50 to-teal-50/20 p-4 rounded-xl border border-emerald-100/40 text-left">
-                            <div className="space-y-2">
-                              <span className="inline-block text-[8px] bg-emerald-600 text-white font-mono font-bold tracking-widest px-2 py-0.5 rounded-full uppercase">
-                                {t("FEATURED", "ప్రముఖమైనవి")}
-                              </span>
-                              <h4 className="text-xs font-bold text-slate-800 tracking-wide font-display uppercase mt-1">
-                                {t("CIB REGISTERED", "CIB&RC అనుమతి పొందినవి")}
-                              </h4>
-                              <p className="text-[10px] text-slate-500 leading-relaxed font-light">
-                                {t(
-                                  "75+ registered high-performance chemical blends formulated in state-of-the-art agronomy reactors.",
-                                  "అత్యంత నాణ్యమైన రియాక్టర్లలో తయారు చేయబడిన 75+ అనుమతి పొందిన రసాయన మిశ్రమాలు."
-                                )}
-                              </p>
-                            </div>
-                            <Link 
-                              to="/products"
-                              className="group inline-flex items-center gap-1 text-[9px] font-extrabold uppercase text-emerald-600 tracking-widest hover:text-emerald-700 mt-4"
-                            >
-                              {t("Explore Catalog", "ఉత్పత్తుల కేటలాగ్")}
-                              <RiArrowRightUpLine className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition duration-200" />
-                            </Link>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  )}
-
-                  {/* Secondary Resources Dropdown */}
-                  {link.sublinks && (
-                    <AnimatePresence>
-                      {hoveredIndex === idx && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 15 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute top-full left-0 w-48 bg-white rounded-xl shadow-2xl p-2 mt-3 border border-slate-200/85 z-50"
-                        >
-                          {link.sublinks.map((sub) => (
-                            <Link
-                              key={sub.name}
-                              to={sub.path}
-                              className="block px-4 py-2.5 text-[10px] tracking-wider uppercase font-bold text-slate-650 hover:text-emerald-600 hover:bg-slate-50 rounded-lg transition duration-200 text-left"
-                            >
-                              {t(sub.name, sub.teluguName)}
-                            </Link>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  )}
-
-                  {/* High fidelity tiny dot for active page */}
-                  {isActive(link.path) && (
-                    <motion.div
-                      layoutId="navbarActiveDot"
-                      className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-emerald-600 rounded-full shadow-[0_0_6px_#10b981]"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </div>
-              ))}
             </div>
 
-            {/* CTA action button and menu triggers */}
-            <div className="flex items-center gap-4">
+            {/* Far Right floating controls (absolute on desktop to prevent center shift) */}
+            <div className="hidden xl:flex absolute right-0 top-1/2 -translate-y-1/2 items-center gap-4 z-10 pointer-events-auto">
               {/* Language Selector Button */}
               <button
                 onClick={toggleLanguage}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 bg-white/90 hover:bg-slate-550 text-slate-700 hover:text-slate-900 transition duration-300 text-[10.5px] font-extrabold tracking-widest uppercase cursor-pointer shadow-sm hover:shadow"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 bg-white/90 hover:bg-slate-50 text-slate-700 hover:text-slate-900 transition duration-300 text-[10.5px] font-extrabold tracking-widest uppercase cursor-pointer shadow-sm hover:shadow"
                 title={language === 'en' ? 'Switch to Telugu' : 'ఇంగ్లీషుకు మారండి'}
               >
                 <span>🌐</span>
-                <span className="text-emerald-650 font-black">{language === 'en' ? 'TE' : 'EN'}</span>
+                <span className="text-blue-650 font-black">{language === 'en' ? 'TE' : 'EN'}</span>
               </button>
 
               <Link 
@@ -322,14 +337,45 @@ export default function Navbar() {
                 <span>{t("Get In Touch", "ಸಂಪರ್ಕಿಸಿ")}</span>
                 <RiArrowRightUpLine className="group-hover:translate-x-1 group-hover:-translate-y-1 transition duration-300 text-xs shrink-0" />
               </Link>
+            </div>
 
-              {/* Mobile hamburger menu */}
-              <button 
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="xl:hidden text-slate-800 hover:text-emerald-600 transition p-2 hover:bg-slate-100 rounded-xl border border-slate-200"
-              >
-                {mobileMenuOpen ? <RiCloseFill className="text-xl" /> : <RiMenu3Line className="text-xl" />}
-              </button>
+            {/* Mobile / Tablet Responsive Layout (Standard left logo, right hamburger) */}
+            <div className="flex xl:hidden items-center justify-between w-full relative pointer-events-auto">
+              
+              {/* Left Logo */}
+              <Link to="/" className="flex items-center shrink-0">
+                <img 
+                  src="/savax-logo.png" 
+                  alt="Savax Logo" 
+                  className="h-10 w-auto object-contain"
+                />
+              </Link>
+              
+              {/* Right Menu Trigger & Language */}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={toggleLanguage}
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white/95 text-slate-705 text-[10px] font-extrabold tracking-widest uppercase cursor-pointer shadow-sm"
+                  title={language === 'en' ? 'Switch to Telugu' : 'ఇంగ్లీషుకు మారండి'}
+                >
+                  <span className="text-blue-650 font-black">{language === 'en' ? 'TE' : 'EN'}</span>
+                </button>
+
+                <Link 
+                  to="/contact"
+                  className="btn-premium font-bold px-3.5 py-2 rounded-lg text-[9.5px] tracking-widest uppercase flex items-center gap-1 group shrink-0"
+                >
+                  <span>{t("Get In Touch", "ಸಂಪರ್ಕಿಸಿ")}</span>
+                </Link>
+
+                <button 
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="text-slate-800 hover:text-blue-650 transition p-2 hover:bg-slate-100 rounded-xl border border-slate-200"
+                >
+                  {mobileMenuOpen ? <RiCloseFill className="text-lg" /> : <RiMenu3Line className="text-lg" />}
+                </button>
+              </div>
+
             </div>
 
           </div>
@@ -348,7 +394,7 @@ export default function Navbar() {
           >
             <div className="space-y-8 mt-24">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <p className="text-[10px] text-emerald-600 tracking-widest uppercase font-mono font-bold">
+                <p className="text-[10px] text-blue-600 tracking-widest uppercase font-mono font-bold">
                   {t("NAVIGATION MENU", "నావిగేషన్ మెనూ")}
                 </p>
                 {/* Mobile Language Toggle */}
@@ -368,7 +414,7 @@ export default function Navbar() {
                       <div key={link.name} className="col-span-2 space-y-2">
                         <Link
                           to="/products"
-                          className="text-sm font-extrabold tracking-wider text-slate-850 hover:text-emerald-600 flex items-center gap-1.5 uppercase font-display"
+                          className="text-sm font-extrabold tracking-wider text-slate-850 hover:text-blue-600 flex items-center gap-1.5 uppercase font-display"
                         >
                           {t(link.name, link.teluguName)}
                         </Link>
@@ -377,7 +423,7 @@ export default function Navbar() {
                             <Link
                               key={sub.name}
                               to={sub.path}
-                              className="text-[11px] text-slate-500 hover:text-emerald-600 py-1 uppercase font-bold"
+                              className="text-[11px] text-slate-500 hover:text-blue-600 py-1 uppercase font-bold"
                             >
                               {t(sub.name, sub.teluguName)}
                             </Link>
@@ -397,7 +443,7 @@ export default function Navbar() {
                             <Link
                               key={sub.name}
                               to={sub.path}
-                              className="text-[11px] text-slate-500 hover:text-emerald-600 py-1 uppercase font-bold"
+                              className="text-[11px] text-slate-500 hover:text-blue-600 py-1 uppercase font-bold"
                             >
                               {t(sub.name, sub.teluguName)}
                             </Link>
@@ -411,7 +457,7 @@ export default function Navbar() {
                       key={link.name}
                       to={link.path}
                       className={`text-sm font-extrabold tracking-wider uppercase font-display transition duration-200 ${
-                        isActive(link.path) ? 'text-emerald-600' : 'text-slate-650 hover:text-slate-850'
+                        isActive(link.path) ? 'text-blue-600' : 'text-slate-650 hover:text-slate-850'
                       }`}
                     >
                       {t(link.name, link.teluguName)}
