@@ -38,12 +38,16 @@ export default function Products() {
   }, [])
 
   const filteredProducts = productsList.filter(prod => {
-    const matchesCategory = activeCategory === 'all' || prod.category === activeCategory
-    const matchesSearch = prod.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          (prod.description && prod.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
-                          (prod.usage && prod.usage.toLowerCase().includes(searchQuery.toLowerCase()))
-    return matchesCategory && matchesSearch
-  })
+    const matchesCategory = activeCategory === 'all' || prod.category === activeCategory;
+    if (!searchQuery) return matchesCategory;
+
+    const query = searchQuery.toLowerCase();
+    const nameMatch = prod.name ? prod.name.toLowerCase().includes(query) : false;
+    const descMatch = prod.description ? prod.description.toLowerCase().includes(query) : false;
+    const usageMatch = prod.usage ? prod.usage.toLowerCase().includes(query) : false;
+    
+    return matchesCategory && (nameMatch || descMatch || usageMatch);
+  });
 
   return (
     <div className="font-sans pt-32 pb-20 relative overflow-hidden bg-slate-50 min-h-screen text-slate-800">
