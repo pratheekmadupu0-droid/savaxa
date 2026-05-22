@@ -71,84 +71,25 @@ export default function Dealers() {
     return () => unsubscribe()
   }, [])
 
-  const initialDealers = [
-    {
-      id: 'dl-seed-1',
-      name: 'Sri Laxmi Agri Agencies',
-      phone: '9848022338',
-      email: 'laxmi.agri@gmail.com',
-      type: 'Platinum Hub',
-      warehouseSize: '2500',
-      license: 'LIC/CROP/AP-HYD/983',
-      address: 'Pedda Amberpet, Hyderabad, Telangana',
-      status: 'Verified'
-    },
-    {
-      id: 'dl-seed-2',
-      name: 'Venkateswara Crop Care',
-      phone: '9440128392',
-      email: 'venkateswara.cc@gmail.com',
-      type: 'Gold Partner',
-      warehouseSize: '1500',
-      license: 'LIC/CROP/AP-GNT/554',
-      address: 'Guntur Delta Market, Guntur, Andhra Pradesh',
-      status: 'Verified'
-    },
-    {
-      id: 'dl-seed-3',
-      name: 'Annapurna Seeds & Chemicals',
-      phone: '9866034188',
-      email: 'annapurna.seeds@gmail.com',
-      type: 'Certified Stockist',
-      warehouseSize: '1000',
-      license: 'LIC/CROP/AP-VJA/210',
-      address: 'Opposite Rythu Bazar, Vijayawada, Andhra Pradesh',
-      status: 'Verified'
-    }
-  ];
-
   const fetchPublicDealers = async () => {
+    if (!db) {
+      setDealersList([])
+      setLoadingDirectory(false)
+      return
+    }
     try {
       setLoadingDirectory(true)
-      
-      // Load cache first
-      const cached = localStorage.getItem('savaxa_dealers');
-      if (cached) {
-        setDealersList(JSON.parse(cached));
-      } else {
-        setDealersList(initialDealers);
-      }
-
-      if (!db) {
-        setLoadingDirectory(false)
-        return
-      }
-
       const snap = await getDocs(collection(db, 'dealers'))
-      if (!snap.empty) {
-        const firestoreList = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-        // Merge with seeds without duplicates
-        const merged = [...firestoreList];
-        initialDealers.forEach(seed => {
-          if (!merged.some(d => d.name.toLowerCase() === seed.name.toLowerCase())) {
-            merged.push(seed);
-          }
-        });
-        
-        // Sort so verified dealers appear first
-        const sorted = merged.sort((a, b) => {
-          if (a.status === 'Verified' && b.status !== 'Verified') return -1;
-          if (a.status !== 'Verified' && b.status === 'Verified') return 1;
-          return 0;
-        });
-        setDealersList(sorted)
-        localStorage.setItem('savaxa_dealers', JSON.stringify(sorted));
-      } else {
-        setDealersList(initialDealers);
-        localStorage.setItem('savaxa_dealers', JSON.stringify(initialDealers));
-      }
+      const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      // Sort so verified dealers appear first
+      const sorted = data.sort((a, b) => {
+        if (a.status === 'Verified' && b.status !== 'Verified') return -1;
+        if (a.status !== 'Verified' && b.status === 'Verified') return 1;
+        return 0;
+      });
+      setDealersList(sorted)
     } catch (error) {
-      console.warn("Error loading dealers for directory, using cache/seeds:", error)
+      console.error("Error loading dealers for directory:", error)
     } finally {
       setLoadingDirectory(false)
     }
@@ -234,6 +175,9 @@ export default function Dealers() {
 
   // Filter public dealers by search criteria
   const filteredPublicDealers = dealersList.filter(dealer => {
+    // Only display verified dealers to public users
+    if (dealer.status !== 'Verified') return false;
+
     const matchesSearch = 
       (dealer.name && dealer.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (dealer.address && dealer.address.toLowerCase().includes(searchQuery.toLowerCase())) ||

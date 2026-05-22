@@ -1,131 +1,54 @@
-import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { RiFilePdfLine, RiDownloadLine, RiFolderZipLine, RiShieldCheckLine } from 'react-icons/ri'
 import { useLanguage } from '../context/LanguageContext'
-import { collection, getDocs } from 'firebase/firestore'
-import { db } from '../firebase'
 
 export default function Downloads() {
   const { t } = useLanguage()
-  const [downloadItems, setDownloadItems] = useState([])
-  const [loading, setLoading] = useState(true)
 
-  const initialDownloads = [
+  const downloadItems = [
     {
-      id: 'dl-init-1',
       title: t("Savaxa Product Catalog 2026", "సవాక్సా ప్రొడక్ట్ క్యాటలాగ్ 2026"),
       desc: t("Full product catalog containing crop protection specs, host crops, and dosage matrices.", "సవాక్సా ఉత్పత్తుల సమాచారం, వాడాల్సిన పంటలు మరియు ఎకరా మోతాదుల పట్టికల పూర్తి సమాచార పత్రం."),
       size: "8.4 MB",
       type: t("Product Brochure (PDF)", "ఉత్పత్తుల బ్రోచర్ (PDF)"),
-      url: "#",
       icon: <RiFilePdfLine className="text-blue-600 text-3xl" />
     },
     {
-      id: 'dl-init-2',
       title: t("Shield-Ultra Safety SDS Sheet", "షీల్డ్-అల్ట్రా సేఫ్టీ SDS షీట్"),
       desc: t("Material Safety Data Sheet (MSDS) guidelines, toxicology classification, and antidote directions.", "మెటీరియల్ సేఫ్టీ డాటా షీట్ (MSDS) సూచనలు, రసాయన వర్గీకరణ మరియు అత్యవసర చికిత్స పద్ధతులు."),
       size: "1.2 MB",
       type: t("Safety SDS Document (PDF)", "సురక్షిత సమాచార పత్రం (PDF)"),
-      url: "#",
       icon: <RiFilePdfLine className="text-rose-500 text-3xl" />
     },
     {
-      id: 'dl-init-3',
       title: t("Bollgard-Zap SDS Document", "బోల్గార్డ్-జాప్ SDS డాక్యుమెంట్"),
       desc: t("Occupational safety standards, protective suit requirements, and water body safety bounds.", "పనిచేసేటప్పుడు పాటించవలసిన భద్రతా ప్రమాణాలు, రక్షణ దుస్తుల వివరాలు మరియు పర్యావరణ సూచనలు."),
       size: "1.1 MB",
       type: t("Safety SDS Document (PDF)", "సురక్షిత సమాచార పత్రం (PDF)"),
-      url: "#",
       icon: <RiFilePdfLine className="text-rose-500 text-3xl" />
     },
     {
-      id: 'dl-init-4',
       title: t("Vanquish-X Weed Spray SDS Sheet", "వాన్క్విష్-X కలుపునాశక పిచికారీ SDS షీట్"),
       desc: t("Post-emergent herbicide spraying intervals, soil degradation charts, and standing water safety.", "మొలకెత్తిన తర్వాత కలుపు పిచికారీ సమయాలు, భూమి రక్షణ చార్టులు మరియు నీటి వాడకం భద్రతా సూచనలు."),
       size: "1.5 MB",
       type: t("Safety SDS Document (PDF)", "సురక్షిత సమాచార పత్రం (PDF)"),
-      url: "#",
       icon: <RiFilePdfLine className="text-rose-500 text-3xl" />
     },
     {
-      id: 'dl-init-5',
       title: t("Organic Bio-Inoculants Manual", "సేంద్రీయ జీవ రసాయనాల గైడ్"),
       desc: t("Application guide for BioRoot Protect Trichoderma spores in vegetable nurseries.", "కూరగాయల నారుమడులలో బయోరూట్ ట్రైకోడెర్మా స్పోర్స్ ఉపయోగించే పద్ధతుల పూర్తి గైడ్."),
       size: "4.2 MB",
       type: t("Agronomy Handbook (PDF)", "వ్యవసాయ సాంకేతిక గైడ్ (PDF)"),
-      url: "#",
       icon: <RiFilePdfLine className="text-blue-600 text-3xl" />
     },
     {
-      id: 'dl-init-6',
       title: t("Full Agronomy Safety Pack", "పూర్తి వ్యవసాయ భద్రతా సమాచార ప్యాక్"),
       desc: t("All safety sheets and dosage manuals packaged in a convenient digital ZIP folder.", "అన్ని భద్రతా పత్రాలు మరియు మోతాదు వివరాలు కలిగిన డిజిటల్ జిప్ (ZIP) ఫోల్డర్."),
       size: "14.8 MB",
       type: t("System Bundle (ZIP)", "సిస్టమ్ బండిల్ (ZIP)"),
-      url: "#",
       icon: <RiFolderZipLine className="text-amber-500 text-3xl" />
     }
-  ];
-
-  useEffect(() => {
-    fetchDownloads()
-  }, [])
-
-  const fetchDownloads = async () => {
-    try {
-      // 1. Initial cached/seed load
-      const cached = localStorage.getItem('savaxa_downloads');
-      if (cached) {
-        setDownloadItems(JSON.parse(cached));
-      } else {
-        setDownloadItems(initialDownloads);
-      }
-
-      if (!db) {
-        setLoading(false);
-        return;
-      }
-
-      // 2. Fetch from Firestore
-      const snap = await getDocs(collection(db, 'downloads'));
-      if (!snap.empty) {
-        const firestoreList = snap.docs.map(doc => {
-          const docData = doc.data();
-          const lowerFile = (docData.fileName || '').toLowerCase();
-          const isZip = lowerFile.endsWith('.zip') || lowerFile.endsWith('.rar');
-          
-          return {
-            id: doc.id,
-            title: docData.title,
-            desc: docData.description,
-            url: docData.url || '#',
-            size: docData.size || (isZip ? "12.5 MB" : "3.2 MB"),
-            type: docData.type || (isZip ? t("System Bundle (ZIP)", "సిస్టమ్ బండిల్ (ZIP)") : t("Product Brochure (PDF)", "ఉత్పత్తుల బ్రోచర్ (PDF)")),
-            icon: isZip 
-              ? <RiFolderZipLine className="text-amber-500 text-3xl" /> 
-              : <RiFilePdfLine className="text-blue-600 text-3xl" />
-          };
-        });
-
-        // Merge with initial downloads
-        const merged = [...firestoreList];
-        initialDownloads.forEach(initD => {
-          if (!merged.some(d => d.title.toLowerCase() === initD.title.toLowerCase())) {
-            merged.push(initD);
-          }
-        });
-        setDownloadItems(merged);
-        localStorage.setItem('savaxa_downloads', JSON.stringify(merged));
-      } else {
-        setDownloadItems(initialDownloads);
-        localStorage.setItem('savaxa_downloads', JSON.stringify(initialDownloads));
-      }
-    } catch (error) {
-      console.warn("Firestore downloads fetch failed, using local/cached records:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  ]
 
   return (
     <div className="font-sans pt-32 pb-20 relative overflow-hidden bg-slate-50">

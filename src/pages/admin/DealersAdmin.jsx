@@ -37,13 +37,8 @@ export default function DealersAdmin() {
   }, []);
 
   const fetchDealers = async () => {
-    // Check localStorage cache first
-    const cached = localStorage.getItem('savaxa_dealers');
-    if (cached) {
-      setDealers(JSON.parse(cached));
-    }
-
     if (!db) {
+      setDealers([]);
       setLoading(false);
       return;
     }
@@ -52,7 +47,6 @@ export default function DealersAdmin() {
       const snap = await getDocs(collection(db, 'dealers'));
       const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setDealers(data);
-      localStorage.setItem('savaxa_dealers', JSON.stringify(data));
     } catch (err) {
       console.warn(err);
       setError(err.message || 'Error connecting to Firestore database');
@@ -75,11 +69,8 @@ export default function DealersAdmin() {
       registeredAt: new Date().toISOString()
     };
 
-    setIsSubmitting(true);
     // Optimistically update UI instantly!
-    const updatedList = [{ id: tempId, ...dealerPayload }, ...dealers];
-    setDealers(updatedList);
-    localStorage.setItem('savaxa_dealers', JSON.stringify(updatedList));
+    setDealers(prev => [{ id: tempId, ...dealerPayload }, ...prev]);
     setIsModalOpen(false);
     toast.success('Dealer registered successfully!');
 
@@ -98,21 +89,11 @@ export default function DealersAdmin() {
     // Save in background
     try {
       const docRef = await addDoc(collection(db, 'dealers'), dealerPayload);
-      setDealers(prev => {
-        const synced = prev.map(d => d.id === tempId ? { ...d, id: docRef.id } : d);
-        localStorage.setItem('savaxa_dealers', JSON.stringify(synced));
-        return synced;
-      });
+      setDealers(prev => prev.map(d => d.id === tempId ? { ...d, id: docRef.id } : d));
     } catch (err) {
       console.error(err);
       toast.error('Database sync failed. Removing dealer from active list.');
-      setDealers(prev => {
-        const reverted = prev.filter(d => d.id !== tempId);
-        localStorage.setItem('savaxa_dealers', JSON.stringify(reverted));
-        return reverted;
-      });
-    } finally {
-      setIsSubmitting(false);
+      setDealers(prev => prev.filter(d => d.id !== tempId));
     }
   };
 
@@ -122,9 +103,7 @@ export default function DealersAdmin() {
       await updateDoc(doc(db, 'dealers', id), {
         status: 'Verified'
       });
-      const updated = dealers.map(d => d.id === id ? { ...d, status: 'Verified' } : d);
-      setDealers(updated);
-      localStorage.setItem('savaxa_dealers', JSON.stringify(updated));
+      setDealers(dealers.map(d => d.id === id ? { ...d, status: 'Verified' } : d));
       toast.success('Dealer status updated to Verified');
     } catch (error) {
       console.error(error);
@@ -138,9 +117,7 @@ export default function DealersAdmin() {
     
     try {
       await deleteDoc(doc(db, 'dealers', id));
-      const filtered = dealers.filter(d => d.id !== id);
-      setDealers(filtered);
-      localStorage.setItem('savaxa_dealers', JSON.stringify(filtered));
+      setDealers(dealers.filter(d => d.id !== id));
       toast.success('Dealer removed from network');
     } catch (error) {
       toast.error('Error removing dealer');

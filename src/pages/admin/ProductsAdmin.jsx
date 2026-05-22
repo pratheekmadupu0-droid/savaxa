@@ -28,13 +28,8 @@ export default function ProductsAdmin() {
   }, []);
 
   const fetchProducts = async () => {
-    // Check localStorage cache first
-    const cached = localStorage.getItem('savaxa_products');
-    if (cached) {
-      setProducts(JSON.parse(cached));
-    }
-
     if (!db) {
+      setProducts([]);
       setLoading(false);
       return;
     }
@@ -42,7 +37,6 @@ export default function ProductsAdmin() {
       const snap = await getDocs(collection(db, 'products'));
       const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setProducts(data);
-      localStorage.setItem('savaxa_products', JSON.stringify(data));
     } catch (error) {
       console.warn(error);
       toast.error('Failed to fetch products catalog');
@@ -74,6 +68,9 @@ export default function ProductsAdmin() {
       createdAt: new Date().toISOString()
     };
 
+    setIsSubmitting(true);
+    setUploadProgress(0);
+
     // OPTION A: DIRECT IMAGE URL PASTED (INSTANT 0ms WAIT)
     if (imageInputType === 'url') {
       const docData = {
@@ -81,30 +78,14 @@ export default function ProductsAdmin() {
         img: pastedImageUrl
       };
 
-      setIsSubmitting(true);
-      // Optimistically update list, close modal, and notify instantly!
-      const updatedList = [{ id: tempId, ...docData }, ...products];
-      setProducts(updatedList);
-      localStorage.setItem('savaxa_products', JSON.stringify(updatedList));
-      resetForm();
-      toast.success('Product registered successfully!');
-
-      // Save in background
       try {
         const docRef = await addDoc(collection(db, 'products'), docData);
-        setProducts(prev => {
-          const synced = prev.map(p => p.id === tempId ? { ...p, id: docRef.id } : p);
-          localStorage.setItem('savaxa_products', JSON.stringify(synced));
-          return synced;
-        });
+        setProducts(prev => [{ id: docRef.id, ...docData }, ...prev]);
+        toast.success(`Product "${productPayload.name}" successfully registered!`);
+        resetForm();
       } catch (error) {
         console.error(error);
-        toast.error('Failed to sync product with database. Removing from list.');
-        setProducts(prev => {
-          const reverted = prev.filter(p => p.id !== tempId);
-          localStorage.setItem('savaxa_products', JSON.stringify(reverted));
-          return reverted;
-        });
+        toast.error('Failed to register product: ' + error.message);
       } finally {
         setIsSubmitting(false);
       }
@@ -114,15 +95,12 @@ export default function ProductsAdmin() {
     // OPTION B: FILE UPLOAD (Requires Storage)
     if (!storage) {
       toast.error('Firebase Storage is not configured. Please paste a direct URL instead.');
+      setIsSubmitting(false);
       return;
     }
 
     const selectedFile = file;
-    
-    // Close modal, reset form, and show active progress toast instantly!
-    setIsSubmitting(true);
-    resetForm();
-    const loadingToastId = toast.loading('Uploading product image & registering in background...');
+    const loadingToastId = toast.loading('Uploading product image...');
 
     try {
       const storageRef = ref(storage, `products/${Date.now()}_${selectedFile.name}`);
@@ -149,14 +127,11 @@ export default function ProductsAdmin() {
             };
 
             const docRef = await addDoc(collection(db, 'products'), docData);
-            setProducts(prev => {
-              const updated = [{ id: docRef.id, ...docData }, ...prev];
-              localStorage.setItem('savaxa_products', JSON.stringify(updated));
-              return updated;
-            });
+            setProducts(prev => [{ id: docRef.id, ...docData }, ...prev]);
             
             toast.dismiss(loadingToastId);
             toast.success(`Product "${productPayload.name}" successfully registered!`);
+            resetForm();
           } catch (err) {
             toast.dismiss(loadingToastId);
             toast.error('Failed to register product: ' + err.message);
@@ -194,9 +169,7 @@ export default function ProductsAdmin() {
     
     try {
       await deleteDoc(doc(db, 'products', id));
-      const filtered = products.filter(p => p.id !== id);
-      setProducts(filtered);
-      localStorage.setItem('savaxa_products', JSON.stringify(filtered));
+      setProducts(products.filter(p => p.id !== id));
       toast.success('Product removed from catalog');
     } catch (error) {
       toast.error('Error removing product');
