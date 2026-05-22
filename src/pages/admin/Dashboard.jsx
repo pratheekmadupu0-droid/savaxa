@@ -12,30 +12,27 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchStats() {
-      if (!db) {
-        setLoading(false);
-        return;
-      }
-      try {
-        const [productsSnap, dealersSnap, downloadsSnap] = await Promise.all([
-          getDocs(collection(db, 'products')),
-          getDocs(collection(db, 'dealers')),
-          getDocs(collection(db, 'downloads'))
-        ]);
-        
-        setStats({
-          products: productsSnap.size,
-          dealers: dealersSnap.size,
-          downloads: downloadsSnap.size,
-        });
-      } catch (error) {
-        console.warn('Failed to fetch stats (check firebase config or permissions):', error);
-      } finally {
-        setLoading(false);
-      }
+    if (!db) {
+      setLoading(false);
+      return;
     }
-    fetchStats();
+
+    const unsubProducts = onSnapshot(collection(db, 'products'), (snap) => {
+      setStats(prev => ({ ...prev, products: snap.size }));
+    });
+    const unsubDealers = onSnapshot(collection(db, 'dealers'), (snap) => {
+      setStats(prev => ({ ...prev, dealers: snap.size }));
+    });
+    const unsubDownloads = onSnapshot(collection(db, 'downloads'), (snap) => {
+      setStats(prev => ({ ...prev, downloads: snap.size }));
+      setLoading(false);
+    });
+
+    return () => {
+      unsubProducts();
+      unsubDealers();
+      unsubDownloads();
+    };
   }, []);
 
   const cards = [
