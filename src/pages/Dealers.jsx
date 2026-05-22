@@ -177,12 +177,14 @@ export default function Dealers() {
   const filteredPublicDealers = dealersList.filter(dealer => {
     // Only display verified dealers to public users
     if (dealer.status !== 'Verified') return false;
+    if (!searchQuery) return true;
 
-    const matchesSearch = 
-      (dealer.name && dealer.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (dealer.address && dealer.address.toLowerCase().includes(searchQuery.toLowerCase())) ||
-      (dealer.type && dealer.type.toLowerCase().includes(searchQuery.toLowerCase()))
-    return matchesSearch
+    const query = searchQuery.toLowerCase();
+    const nameMatch = dealer.name ? dealer.name.toLowerCase().includes(query) : false;
+    const addressMatch = dealer.address ? dealer.address.toLowerCase().includes(query) : false;
+    const typeMatch = dealer.type ? dealer.type.toLowerCase().includes(query) : false;
+    
+    return nameMatch || addressMatch || typeMatch;
   })
 
   const benefits = [
