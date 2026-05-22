@@ -28,8 +28,13 @@ export default function ProductsAdmin() {
   }, []);
 
   const fetchProducts = async () => {
+    // Check localStorage cache first
+    const cached = localStorage.getItem('savaxa_products');
+    if (cached) {
+      setProducts(JSON.parse(cached));
+    }
+
     if (!db) {
-      setProducts([]);
       setLoading(false);
       return;
     }
@@ -37,6 +42,7 @@ export default function ProductsAdmin() {
       const snap = await getDocs(collection(db, 'products'));
       const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setProducts(data);
+      localStorage.setItem('savaxa_products', JSON.stringify(data));
     } catch (error) {
       console.warn(error);
       toast.error('Failed to fetch products catalog');
@@ -75,19 +81,32 @@ export default function ProductsAdmin() {
         img: pastedImageUrl
       };
 
+      setIsSubmitting(true);
       // Optimistically update list, close modal, and notify instantly!
-      setProducts(prev => [{ id: tempId, ...docData }, ...prev]);
+      const updatedList = [{ id: tempId, ...docData }, ...products];
+      setProducts(updatedList);
+      localStorage.setItem('savaxa_products', JSON.stringify(updatedList));
       resetForm();
       toast.success('Product registered successfully!');
 
       // Save in background
       try {
         const docRef = await addDoc(collection(db, 'products'), docData);
-        setProducts(prev => prev.map(p => p.id === tempId ? { ...p, id: docRef.id } : p));
+        setProducts(prev => {
+          const synced = prev.map(p => p.id === tempId ? { ...p, id: docRef.id } : p);
+          localStorage.setItem('savaxa_products', JSON.stringify(synced));
+          return synced;
+        });
       } catch (error) {
         console.error(error);
         toast.error('Failed to sync product with database. Removing from list.');
-        setProducts(prev => prev.filter(p => p.id !== tempId));
+        setProducts(prev => {
+          const reverted = prev.filter(p => p.id !== tempId);
+          localStorage.setItem('savaxa_products', JSON.stringify(reverted));
+          return reverted;
+        });
+      } finally {
+        setIsSubmitting(false);
       }
       return;
     }
@@ -101,6 +120,7 @@ export default function ProductsAdmin() {
     const selectedFile = file;
     
     // Close modal, reset form, and show active progress toast instantly!
+    setIsSubmitting(true);
     resetForm();
     const loadingToastId = toast.loading('Uploading product image & registering in background...');
 
@@ -110,11 +130,15 @@ export default function ProductsAdmin() {
 
       uploadTask.on(
         'state_changed',
-        null,
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setUploadProgress(progress);
+        },
         (error) => {
           console.warn('Storage Upload Error: ', error);
           toast.dismiss(loadingToastId);
           toast.error('Background upload failed. Use "Paste Image Link" to bypass Storage rules!');
+          setIsSubmitting(false);
         },
         async () => {
           try {
@@ -125,13 +149,20 @@ export default function ProductsAdmin() {
             };
 
             const docRef = await addDoc(collection(db, 'products'), docData);
-            setProducts(prev => [{ id: docRef.id, ...docData }, ...prev]);
+            setProducts(prev => {
+              const updated = [{ id: docRef.id, ...docData }, ...prev];
+              localStorage.setItem('savaxa_products', JSON.stringify(updated));
+              return updated;
+            });
             
             toast.dismiss(loadingToastId);
             toast.success(`Product "${productPayload.name}" successfully registered!`);
           } catch (err) {
             toast.dismiss(loadingToastId);
             toast.error('Failed to register product: ' + err.message);
+          } finally {
+            setIsSubmitting(false);
+            setUploadProgress(0);
           }
         }
       );
@@ -139,6 +170,7 @@ export default function ProductsAdmin() {
       console.error(error);
       toast.dismiss(loadingToastId);
       toast.error('Background upload failed. Try pasting a direct link.');
+      setIsSubmitting(false);
     }
   };
 
@@ -162,7 +194,9 @@ export default function ProductsAdmin() {
     
     try {
       await deleteDoc(doc(db, 'products', id));
-      setProducts(products.filter(p => p.id !== id));
+      const filtered = products.filter(p => p.id !== id);
+      setProducts(filtered);
+      localStorage.setItem('savaxa_products', JSON.stringify(filtered));
       toast.success('Product removed from catalog');
     } catch (error) {
       toast.error('Error removing product');

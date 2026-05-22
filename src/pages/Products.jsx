@@ -15,25 +15,89 @@ export default function Products() {
   const [activeCategory, setActiveCategory] = useState('all')
   const [selectedProduct, setSelectedProduct] = useState(null)
 
+  const initialProducts = [
+    {
+      id: 'sav-ultra-1',
+      name: 'Shield-Ultra Insecticide',
+      category: 'insecticides',
+      description: 'Premium high-efficacy insecticide designed to target destructive cotton bollworms and chewing pests with fast knockdown action.',
+      usage: 'Crops: Cotton, Chillies, Vegetables. Target Pests: Thrips, Aphids, Whiteflies, Bollworms.',
+      howToBeUsed: 'Dilute 1.5 ml per Litre of water and spray evenly over foliage.',
+      cropEffects: 'Protects crop foliage, preserves bolls, and enhances green yield.',
+      img: '/cotton_solution.png'
+    },
+    {
+      id: 'sav-weed-2',
+      name: 'Vanquish-X Herbicide',
+      category: 'herbicides',
+      description: 'Highly selective pre and post-emergence weedicide designed to eradicate stubborn grassy weeds in commercial rice fields.',
+      usage: 'Crops: Wet Paddy Fields. Target Weeds: Barnyard Grass, Broadleaf Weeds.',
+      howToBeUsed: 'Apply 80 - 100 ml per Acre dissolved in water during early weed growth.',
+      cropEffects: 'Eliminates root competition, ensuring maximum soil nutrient absorption by paddy.',
+      img: '/rice_solution.png'
+    },
+    {
+      id: 'sav-fung-3',
+      name: 'BioRoot Fungicide',
+      category: 'fungicides',
+      description: 'High-performance protective bio-fungicide powder to shield nursery beds from Pythium and damp-off root rot.',
+      usage: 'Crops: Tomatoes, Chillies, Horticultural nurseries. Target Pathogens: Root Rot, Early Blight.',
+      howToBeUsed: 'Apply 1.5 to 2.0 grams per Litre of water for root drenching or nursery bed spraying.',
+      cropEffects: 'Promotes strong lateral root development and safeguards seedlings.',
+      img: '/tomato_solution.png'
+    },
+    {
+      id: 'sav-grow-4',
+      name: 'Savaxa Growth-Catalyst',
+      category: 'biostimulants',
+      description: 'Enriched organic growth promoter formulated with premium seaweed extracts and amino acids to boost crop tillering.',
+      usage: 'Crops: All commercial and horticultural crops. Target: Stunted growth, low flowering.',
+      howToBeUsed: 'Apply 250 ml per Acre through foliar spraying during active growth phases.',
+      cropEffects: 'Accelerates cell division, increases chlorophyll absorption, and enhances stress tolerance.',
+      img: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&q=80'
+    }
+  ];
+
   useEffect(() => {
     fetchProducts()
   }, [])
 
   const fetchProducts = async () => {
-    if (!db) {
-      setProductsList([])
-      setLoading(false)
-      return
-    }
     try {
-      const snap = await getDocs(collection(db, 'products'))
-      const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-      setProductsList(data)
+      // 1. Initial cached/seed load
+      const cached = localStorage.getItem('savaxa_products');
+      if (cached) {
+        setProductsList(JSON.parse(cached));
+      } else {
+        setProductsList(initialProducts);
+      }
+
+      if (!db) {
+        setLoading(false);
+        return;
+      }
+
+      // 2. Fetch from Firestore
+      const snap = await getDocs(collection(db, 'products'));
+      if (!snap.empty) {
+        const firestoreList = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        // Merge with initial products filtering duplicates by name
+        const merged = [...firestoreList];
+        initialProducts.forEach(initP => {
+          if (!merged.some(p => p.name.toLowerCase() === initP.name.toLowerCase())) {
+            merged.push(initP);
+          }
+        });
+        setProductsList(merged);
+        localStorage.setItem('savaxa_products', JSON.stringify(merged));
+      } else {
+        setProductsList(initialProducts);
+        localStorage.setItem('savaxa_products', JSON.stringify(initialProducts));
+      }
     } catch (error) {
-      console.error(error)
-      toast.error('Failed to load products')
+      console.warn("Firestore fetch failed, using local/cached records:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 

@@ -21,11 +21,13 @@ export default function DownloadsAdmin() {
   }, []);
 
   const fetchDownloads = async () => {
+    // Check localStorage cache first
+    const cached = localStorage.getItem('savaxa_downloads');
+    if (cached) {
+      setDownloads(JSON.parse(cached));
+    }
+
     if (!db) {
-      setDownloads([
-        { id: '1', title: 'Product Brochure 2026', description: 'Complete catalog of all Savaxa crop care products.', url: '#' },
-        { id: '2', safety: 'Safety Guidelines', description: 'Important safety instructions for handling pesticides.', url: '#' }
-      ]);
       setLoading(false);
       return;
     }
@@ -33,6 +35,7 @@ export default function DownloadsAdmin() {
       const snap = await getDocs(collection(db, 'downloads'));
       const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setDownloads(data);
+      localStorage.setItem('savaxa_downloads', JSON.stringify(data));
     } catch (error) {
       console.warn(error);
       toast.error('Failed to load brochures registry');
@@ -71,19 +74,32 @@ export default function DownloadsAdmin() {
         fileName: 'Direct URL Link'
       };
 
+      setIsSubmitting(true);
       // Optimistically update list, close modal, and notify instantly!
-      setDownloads(prev => [{ id: tempId, ...docData }, ...prev]);
+      const updatedList = [{ id: tempId, ...docData }, ...downloads];
+      setDownloads(updatedList);
+      localStorage.setItem('savaxa_downloads', JSON.stringify(updatedList));
       resetForm();
       toast.success('Brochure registered successfully!');
 
       // Save in background
       try {
         const docRef = await addDoc(collection(db, 'downloads'), docData);
-        setDownloads(prev => prev.map(d => d.id === tempId ? { ...d, id: docRef.id } : d));
+        setDownloads(prev => {
+          const synced = prev.map(d => d.id === tempId ? { ...d, id: docRef.id } : d);
+          localStorage.setItem('savaxa_downloads', JSON.stringify(synced));
+          return synced;
+        });
       } catch (error) {
         console.error(error);
         toast.error('Failed to sync brochure with database. Removing from list.');
-        setDownloads(prev => prev.filter(d => d.id !== tempId));
+        setDownloads(prev => {
+          const reverted = prev.filter(d => d.id !== tempId);
+          localStorage.setItem('savaxa_downloads', JSON.stringify(reverted));
+          return reverted;
+        });
+      } finally {
+        setIsSubmitting(false);
       }
       return;
     }
@@ -97,6 +113,7 @@ export default function DownloadsAdmin() {
     const selectedFile = file;
 
     // Close modal, reset form, and show active progress toast instantly!
+    setIsSubmitting(true);
     resetForm();
     const loadingToastId = toast.loading('Uploading brochure PDF in background...');
 
@@ -106,11 +123,15 @@ export default function DownloadsAdmin() {
 
       uploadTask.on(
         'state_changed',
-        null,
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setUploadProgress(progress);
+        },
         (error) => {
           console.warn('Storage Upload Error: ', error);
           toast.dismiss(loadingToastId);
           toast.error('Background upload failed. Use "Paste File Link" to bypass Storage rules!');
+          setIsSubmitting(false);
         },
         async () => {
           try {
@@ -122,13 +143,20 @@ export default function DownloadsAdmin() {
             };
 
             const docRef = await addDoc(collection(db, 'downloads'), docData);
-            setDownloads(prev => [{ id: docRef.id, ...docData }, ...prev]);
+            setDownloads(prev => {
+              const updated = [{ id: docRef.id, ...docData }, ...prev];
+              localStorage.setItem('savaxa_downloads', JSON.stringify(updated));
+              return updated;
+            });
             
             toast.dismiss(loadingToastId);
             toast.success(`Brochure "${downloadPayload.title}" successfully registered!`);
           } catch (err) {
             toast.dismiss(loadingToastId);
             toast.error('Failed to save brochure: ' + err.message);
+          } finally {
+            setIsSubmitting(false);
+            setUploadProgress(0);
           }
         }
       );
@@ -136,6 +164,7 @@ export default function DownloadsAdmin() {
       console.error(error);
       toast.dismiss(loadingToastId);
       toast.error('Background upload failed. Try pasting a direct link.');
+      setIsSubmitting(false);
     }
   };
 
@@ -152,7 +181,9 @@ export default function DownloadsAdmin() {
     
     try {
       await deleteDoc(doc(db, 'downloads', id));
-      setDownloads(downloads.filter(d => d.id !== id));
+      const filtered = downloads.filter(d => d.id !== id);
+      setDownloads(filtered);
+      localStorage.setItem('savaxa_downloads', JSON.stringify(filtered));
       toast.success('Download removed successfully');
     } catch (error) {
       toast.error('Error removing download');
