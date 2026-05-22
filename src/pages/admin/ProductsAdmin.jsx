@@ -104,16 +104,20 @@ export default function ProductsAdmin() {
     let finalPdfUrl = editIdCopy ? (products.find(p => p.id === editIdCopy)?.brochurePdf || '') : '';
 
     try {
+      if (!storage) throw new Error('Firebase Storage is not configured.');
+
       // 1. Handle PDF Upload if present
       if (pdfCopy) {
         const pdfRef = ref(storage, `brochures/${Date.now()}_${pdfCopy.name}`);
-        const uploadTask = await uploadBytesResumable(pdfRef, pdfCopy);
+        const pdfUploadTask = await uploadBytesResumable(pdfRef, pdfCopy);
         finalPdfUrl = await getDownloadURL(pdfRef);
       }
 
-      // 2. Handle Image Upload with Canvas Compression
+      // 2. Handle Image Upload to Firebase Storage
       if (inputTypeCopy === 'upload' && fileCopy) {
-        finalImageUrl = await compressImageToBase64(fileCopy);
+        const imageRef = ref(storage, `product_images/${Date.now()}_${fileCopy.name}`);
+        const imageUploadTask = await uploadBytesResumable(imageRef, fileCopy);
+        finalImageUrl = await getDownloadURL(imageRef);
       }
 
       const productPayload = {
@@ -137,34 +141,6 @@ export default function ProductsAdmin() {
     }
   };
 
-  const compressImageToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (event) => {
-        const img = new Image();
-        img.src = event.target.result;
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const MAX_WIDTH = 800;
-          const scaleSize = MAX_WIDTH / img.width;
-          if (scaleSize < 1) {
-            canvas.width = MAX_WIDTH;
-            canvas.height = img.height * scaleSize;
-          } else {
-            canvas.width = img.width;
-            canvas.height = img.height;
-          }
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          resolve(canvas.toDataURL('image/jpeg', 0.7));
-        };
-        img.onerror = (error) => reject(error);
-      };
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
   const resetForm = () => {
     setEditingId(null);
     setNewProduct({
@@ -182,7 +158,6 @@ export default function ProductsAdmin() {
     setPdfFile(null);
     setPastedImageUrl('');
     setIsModalOpen(false);
-    setUploadProgress(0);
   };
 
   const handleDelete = async (id) => {

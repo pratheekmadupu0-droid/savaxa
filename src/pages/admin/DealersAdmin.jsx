@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { collection, onSnapshot, addDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { db, storage } from '../../firebase';
 import { 
   FiPlus, 
   FiTrash2, 
@@ -105,9 +106,17 @@ export default function DealersAdmin() {
     toast.success(editIdCopy ? 'Updating hub in background...' : 'Registering hub in background...', { icon: '⏳' });
 
     try {
+      if (inputTypeCopy === 'upload' && fileCopy && !storage) {
+        throw new Error('Firebase Storage is not configured for image uploads.');
+      }
+
       let finalLogoUrl = pastedUrlCopy;
+      
+      // Upload Logo to Firebase Storage
       if (inputTypeCopy === 'upload' && fileCopy) {
-        finalLogoUrl = await compressImageToBase64(fileCopy);
+        const imageRef = ref(storage, `dealer_logos/${Date.now()}_${fileCopy.name}`);
+        await uploadBytesResumable(imageRef, fileCopy);
+        finalLogoUrl = await getDownloadURL(imageRef);
       }
 
       const dealerPayload = {
@@ -126,36 +135,8 @@ export default function DealersAdmin() {
       }
     } catch (err) {
       console.error(err);
-      toast.error('Failed to sync dealer with database');
+      toast.error('Failed to sync dealer with database: ' + err.message);
     }
-  };
-
-  const compressImageToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (event) => {
-        const img = new Image();
-        img.src = event.target.result;
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const MAX_WIDTH = 400; // smaller for logos
-          const scaleSize = MAX_WIDTH / img.width;
-          if (scaleSize < 1) {
-            canvas.width = MAX_WIDTH;
-            canvas.height = img.height * scaleSize;
-          } else {
-            canvas.width = img.width;
-            canvas.height = img.height;
-          }
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          resolve(canvas.toDataURL('image/jpeg', 0.8));
-        };
-        img.onerror = (error) => reject(error);
-      };
-      reader.onerror = (error) => reject(error);
-    });
   };
 
   const resetForm = () => {
