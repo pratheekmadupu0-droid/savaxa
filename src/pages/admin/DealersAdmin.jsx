@@ -93,35 +93,40 @@ export default function DealersAdmin() {
       return;
     }
     
-    setIsSubmitting(true);
-    let finalLogoUrl = pastedImageUrl;
+    // Capture state before closing modal
+    const payloadCopy = { ...newDealer };
+    const editIdCopy = editingId;
+    const fileCopy = file;
+    const inputTypeCopy = imageInputType;
+    const pastedUrlCopy = pastedImageUrl;
+
+    // Instantly close modal and reset UI for 0ms latency feel
+    resetForm();
+    toast.success(editIdCopy ? 'Updating hub in background...' : 'Registering hub in background...', { icon: '⏳' });
 
     try {
-      if (imageInputType === 'upload' && file) {
-        finalLogoUrl = await compressImageToBase64(file);
+      let finalLogoUrl = pastedUrlCopy;
+      if (inputTypeCopy === 'upload' && fileCopy) {
+        finalLogoUrl = await compressImageToBase64(fileCopy);
       }
 
       const dealerPayload = {
-        ...newDealer,
+        ...payloadCopy,
         logo: finalLogoUrl,
         updatedAt: new Date().toISOString()
       };
 
-      if (editingId) {
-        await updateDoc(doc(db, 'dealers', editingId), dealerPayload);
-        toast.success('Dealer updated successfully!');
+      if (editIdCopy) {
+        await updateDoc(doc(db, 'dealers', editIdCopy), dealerPayload);
+        toast.success('Dealer successfully updated!');
       } else {
         dealerPayload.registeredAt = new Date().toISOString();
         await addDoc(collection(db, 'dealers'), dealerPayload);
-        toast.success('Dealer registered successfully!');
+        toast.success('Dealer successfully registered!');
       }
-
-      resetForm();
     } catch (err) {
       console.error(err);
-      toast.error('Failed to sync dealer with Firestore database');
-    } finally {
-      setIsSubmitting(false);
+      toast.error('Failed to sync dealer with database');
     }
   };
 

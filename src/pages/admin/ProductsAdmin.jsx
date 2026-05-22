@@ -88,53 +88,52 @@ export default function ProductsAdmin() {
       return;
     }
 
-    setIsSubmitting(true);
-    setUploadProgress(10);
+    // Capture state locally before closing the UI
+    const payloadCopy = { ...newProduct };
+    const editIdCopy = editingId;
+    const fileCopy = file;
+    const pdfCopy = pdfFile;
+    const inputTypeCopy = imageInputType;
+    const pastedUrlCopy = pastedImageUrl;
 
-    let finalImageUrl = pastedImageUrl;
-    let finalPdfUrl = editingId ? (products.find(p => p.id === editingId)?.brochurePdf || '') : '';
+    // INSTANT CLOSE: 0ms wait for the user
+    resetForm();
+    toast.success(editIdCopy ? 'Updating product in background...' : 'Registering product in background...', { icon: '⏳' });
+
+    let finalImageUrl = pastedUrlCopy;
+    let finalPdfUrl = editIdCopy ? (products.find(p => p.id === editIdCopy)?.brochurePdf || '') : '';
 
     try {
       // 1. Handle PDF Upload if present
-      if (pdfFile) {
-        setUploadProgress(30);
-        const pdfRef = ref(storage, `brochures/${Date.now()}_${pdfFile.name}`);
-        const uploadTask = await uploadBytesResumable(pdfRef, pdfFile);
+      if (pdfCopy) {
+        const pdfRef = ref(storage, `brochures/${Date.now()}_${pdfCopy.name}`);
+        const uploadTask = await uploadBytesResumable(pdfRef, pdfCopy);
         finalPdfUrl = await getDownloadURL(pdfRef);
       }
 
-      // 2. Handle Image Upload if present and using Base64 Canvas Compression
-      if (imageInputType === 'upload' && file) {
-        setUploadProgress(60);
-        const base64Image = await compressImageToBase64(file);
-        finalImageUrl = base64Image;
+      // 2. Handle Image Upload with Canvas Compression
+      if (inputTypeCopy === 'upload' && fileCopy) {
+        finalImageUrl = await compressImageToBase64(fileCopy);
       }
 
-      setUploadProgress(90);
-
       const productPayload = {
-        ...newProduct,
+        ...payloadCopy,
         img: finalImageUrl,
         brochurePdf: finalPdfUrl,
         updatedAt: new Date().toISOString()
       };
 
-      if (editingId) {
-        await updateDoc(doc(db, 'products', editingId), productPayload);
+      if (editIdCopy) {
+        await updateDoc(doc(db, 'products', editIdCopy), productPayload);
         toast.success(`Product "${productPayload.name}" successfully updated!`);
       } else {
         productPayload.createdAt = new Date().toISOString();
         await addDoc(collection(db, 'products'), productPayload);
         toast.success(`Product "${productPayload.name}" successfully added!`);
       }
-
-      resetForm();
     } catch (err) {
       console.error(err);
       toast.error(`Failed to save product: ` + err.message);
-    } finally {
-      setIsSubmitting(false);
-      setUploadProgress(0);
     }
   };
 
