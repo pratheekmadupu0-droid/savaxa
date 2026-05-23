@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import ReactCountUp from 'react-countup'
 const CountUp = ReactCountUp.default || ReactCountUp
@@ -13,12 +13,10 @@ import {
   Award, 
   BadgeCheck, 
   Microscope,
-  Compass,
   Cpu,
   Target,
   Sparkles
 } from 'lucide-react'
-import gsap from 'gsap'
 
 // Testimonials using basic flex overflow for simplicity/reliability
 const testimonials = [
@@ -59,261 +57,42 @@ const blogImages = [
 
 export default function Home() {
   const [mounted, setMounted] = useState(false)
-  const videoRef = useRef(null)
-  const videoBgRef = useRef(null)
-  const displayCanvasRef = useRef(null)
-  const [framesReady, setFramesReady] = useState(false)
-  
-  // Refs for Boomerang Capture and scrub tracking
-  const framesRef = useRef([])
-  const requestRef = useRef(null)
-  
-  // Parallax and mouse coordinate tracking refs
-  const mouseX = useRef(0)
-  const mouseY = useRef(0)
-  const smoothX = useRef(0)
-  const smoothY = useRef(0)
-
-  // Floating Particle Ambient States
-  const particles = useRef([])
 
   useEffect(() => {
     setMounted(true)
-    
-    // Create Float Particles
-    const tempParticles = []
-    for (let i = 0; i < 40; i++) {
-      tempParticles.push({
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 3 + 1,
-        speedX: (Math.random() - 0.5) * 0.05,
-        speedY: (Math.random() - 0.5) * 0.05,
-        alpha: Math.random() * 0.5 + 0.2
-      })
-    }
-    particles.current = tempParticles
-
-    // Mouse movement listeners
-    const handleMouseMove = (e) => {
-      mouseX.current = e.clientX
-      mouseY.current = e.clientY
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-
-    // Canvas drawing and scrubbing animation loop
-    const canvas = displayCanvasRef.current
-    const ctx = canvas ? canvas.getContext('2d') : null
-
-    const updateFrame = () => {
-      // 1. Mouse lag calculation for smooth cinematic parallax
-      const targetX = (mouseX.current / window.innerWidth) - 0.5
-      const targetY = (mouseY.current / window.innerHeight) - 0.5
-      smoothX.current += (targetX - smoothX.current) * 0.08
-      smoothY.current += (targetY - smoothY.current) * 0.08
-
-      // Apply subtle displacement/parallax to interactive Hero Elements
-      gsap.to('.parallax-container', {
-        x: smoothX.current * 40,
-        y: smoothY.current * 30,
-        rotateX: smoothY.current * -5,
-        rotateY: smoothX.current * 5,
-        duration: 0.5,
-        ease: 'power2.out'
-      })
-
-      // 2. Video Scrub / Boomerang Capture Logic
-      const video = videoRef.current
-      if (video && video.readyState >= 2 && canvas && ctx) {
-        // Dynamic aspect-ratio crop calculation
-        const cw = canvas.width = window.innerWidth
-        const ch = canvas.height = window.innerHeight
-
-        const vWidth = video.videoWidth
-        const vHeight = video.videoHeight
-        const vAspect = vWidth / vHeight
-        const cAspect = cw / ch
-
-        let sx = 0, sy = 0, sWidth = vWidth, sHeight = vHeight
-        if (cAspect > vAspect) {
-          sHeight = vWidth / cAspect
-          sy = (vHeight - sHeight) / 2
-        } else {
-          sWidth = vHeight * cAspect
-          sx = (vWidth - sWidth) / 2
-        }
-
-        // Realtime scrubbing based on mouse X coordinate (boomerang capture simulation)
-        const scrubProgress = (mouseX.current / window.innerWidth)
-        if (scrubProgress >= 0 && scrubProgress <= 1) {
-          const targetTime = scrubProgress * video.duration
-          video.currentTime += (targetTime - video.currentTime) * 0.15
-        }
-
-        ctx.clearRect(0, 0, cw, ch)
-        ctx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, cw, ch)
-
-        // 3. Draw high-tech cyber grids and floating ambient particles
-        ctx.fillStyle = 'rgba(6, 182, 212, 0.03)'
-        // Draw grid lines
-        const step = 80
-        for (let x = 0; x < cw; x += step) {
-          ctx.beginPath()
-          ctx.moveTo(x, 0)
-          ctx.lineTo(x, ch)
-          ctx.strokeStyle = 'rgba(59, 130, 246, 0.03)'
-          ctx.stroke()
-        }
-        for (let y = 0; y < ch; y += step) {
-          ctx.beginPath()
-          ctx.moveTo(0, y)
-          ctx.lineTo(cw, y)
-          ctx.strokeStyle = 'rgba(59, 130, 246, 0.03)'
-          ctx.stroke()
-        }
-
-        // Draw and update float particles
-        particles.current.forEach(p => {
-          p.x += p.speedX
-          p.y += p.speedY
-
-          // Wrap boundaries
-          if (p.x < 0) p.x = 100
-          if (p.x > 100) p.x = 0
-          if (p.y < 0) p.y = 100
-          if (p.y > 100) p.y = 0
-
-          ctx.beginPath()
-          const px = (p.x / 100) * cw
-          const py = (p.y / 100) * ch
-          ctx.arc(px, py, p.size, 0, Math.PI * 2)
-          ctx.fillStyle = `rgba(6, 182, 212, ${p.alpha})`
-          ctx.shadowBlur = 10
-          ctx.shadowColor = '#06b6d4'
-          ctx.fill()
-        })
-      }
-
-      requestRef.current = requestAnimationFrame(updateFrame)
-    }
-
-    requestRef.current = requestAnimationFrame(updateFrame)
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-      if (requestRef.current) cancelAnimationFrame(requestRef.current)
-    }
   }, [])
 
   return (
     <div className="bg-[#020817] min-h-screen font-body text-slate-100 relative overflow-x-hidden">
       
-      {/* HIDDEN REFERENCE VIDEO FOR FLUID RENDER CANVAS */}
-      <video
-        ref={videoRef}
-        src="/savaxa-2.mp4"
-        loop
-        muted
-        playsInline
-        className="hidden"
-        onLoadedData={() => setFramesReady(true)}
-      />
-
-      {/* 1. FUTURISTIC FULLSCREEN HERO SECTION */}
-      <section className="relative w-screen h-screen flex flex-col justify-between overflow-hidden bg-[#020817] pt-24 pb-8 z-20">
+      {/* 1. CINEMATIC FULLSCREEN HERO SECTION (VIDEO ONLY, ZERO LAG) */}
+      <section className="relative w-screen h-screen overflow-hidden bg-[#020817] z-20">
         
-        {/* Render Canvas Background */}
-        <canvas 
-          ref={displayCanvasRef}
+        {/* GPU-Accelerated Native Video Loop */}
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          src="/savaxa-2.mp4" 
           className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
+          style={{ willChange: 'transform' }}
         />
 
         {/* Ambient Dark Tech Gradients & Glowing atmosphere */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#020817]/70 via-[#020817]/40 to-[#020817]/90 z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#020817]/60 via-[#020817]/25 to-[#020817]/95 z-10 pointer-events-none" />
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[160px] pointer-events-none z-10" />
         <div className="absolute bottom-10 left-1/3 w-[300px] h-[300px] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none z-10" />
 
-        {/* TOP SPACING */}
-        <div className="h-6" />
-
-        {/* MAIN HUD MIDDLE COLUMN (GSAP Parallax Container) */}
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col items-center justify-center text-center flex-1">
-          <div className="parallax-container space-y-6">
-            
-            {/* Trusted Badge pill */}
+        {/* SUBTLE MOUSE SCROLL DOWN INDICATOR */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 select-none pointer-events-none">
+          <span className="text-[9px] uppercase tracking-[0.25em] font-bold text-slate-400 animate-pulse">Scroll to explore</span>
+          <div className="w-5 h-8 border border-white/20 rounded-full flex justify-center p-1">
             <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full liquid-glass border border-blue-500/20 shadow-md text-xs font-bold tracking-widest text-[#06b6d4] uppercase"
-            >
-              <BadgeCheck className="w-4 h-4 text-cyan-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.6)]" />
-              <span>Trusted Crop Protection Since 2008</span>
-            </motion.div>
-
-            {/* Futuristic Giant Titles */}
-            <div className="space-y-4">
-              <motion.h1 
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, ease: 'easeOut' }}
-                className="hero-title select-none font-dirtyline text-white"
-              >
-                SAVAXA
-              </motion.h1>
-
-              <motion.p 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4, duration: 1 }}
-                className="hero-subtitle mt-6 text-slate-300 font-medium tracking-[0.15em]"
-              >
-                Advanced Agriculture & Crop Protection Solutions
-              </motion.p>
-            </div>
-
-            {/* Glowing active hub metrics */}
-            <div className="hidden md:flex items-center justify-center gap-8 text-[10px] font-bold tracking-widest uppercase text-slate-400 pt-6">
-              <span className="flex items-center gap-1.5"><Cpu className="w-3.5 h-3.5 text-[#06b6d4]" /> Dynamic Formulation</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500/30" />
-              <span className="flex items-center gap-1.5"><Target className="w-3.5 h-3.5 text-[#06b6d4]" /> Ultra Precision spray</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500/30" />
-              <span className="flex items-center gap-1.5"><Sparkles className="w-3.5 h-3.5 text-[#06b6d4]" /> Sustainable farming</span>
-            </div>
-
-          </div>
-        </div>
-
-        {/* BOTTOM HUD COLUMN GRID */}
-        <div className="relative z-20 max-w-7xl mx-auto px-6 lg:px-8 w-full border-t border-white/5 pt-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
-            {/* Left Description Block */}
-            <div className="lg:col-span-4 text-slate-400 text-xs md:text-sm tracking-wide leading-relaxed">
-              Advanced crop protection solutions designed for modern agriculture and sustainable farming.
-            </div>
-
-            {/* Center Buttons Container */}
-            <div className="lg:col-span-4 flex flex-col sm:flex-row justify-center gap-4">
-              <Link 
-                to="/products" 
-                className="liquid-glass-strong bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold px-8 py-4 rounded-full text-xs uppercase tracking-widest text-center shadow-lg shadow-blue-500/25 hover:shadow-cyan-500/35 hover:scale-102 transition-all duration-300"
-              >
-                Explore Products
-              </Link>
-              <Link 
-                to="/crop-solutions" 
-                className="liquid-glass border border-white/10 hover:border-blue-500/30 text-white font-bold px-8 py-4 rounded-full text-xs uppercase tracking-widest text-center hover:bg-white/5 hover:scale-102 transition-all duration-300"
-              >
-                View Crop Solutions
-              </Link>
-            </div>
-
-            {/* Right Description Block */}
-            <div className="lg:col-span-4 text-slate-400 text-xs md:text-sm tracking-wide leading-relaxed lg:text-right">
-              Empowering farmers with innovative pesticide technologies and smart agricultural solutions.
-            </div>
-
+              animate={{ y: [0, 10, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5 }}
+              className="w-1.5 h-1.5 bg-[#06b6d4] rounded-full"
+            />
           </div>
         </div>
 

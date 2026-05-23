@@ -81,7 +81,6 @@ export default function Navbar() {
           <div className="flex-shrink-0 xl:hidden flex items-center gap-2">
             <Link to="/" className="flex items-center gap-2.5">
               <SavaxaLogo />
-              <span className="font-dirtyline text-xl tracking-widest text-white">SAVAXA</span>
             </Link>
           </div>
 
@@ -110,9 +109,8 @@ export default function Navbar() {
 
             {/* Center Logo */}
             <div className="flex-shrink-0 flex items-center justify-center">
-              <Link to="/" className="flex items-center gap-3">
+              <Link to="/" className="flex items-center justify-center">
                 <SavaxaLogo />
-                <span className="font-dirtyline text-2xl tracking-widest text-white">SAVAXA</span>
               </Link>
             </div>
 
@@ -187,7 +185,6 @@ export default function Navbar() {
             <div className="flex justify-between items-center p-6 border-b border-white/5">
               <div className="flex items-center gap-2.5">
                 <SavaxaLogo />
-                <span className="font-dirtyline text-xl tracking-widest text-white">SAVAXA</span>
               </div>
               <button
                 onClick={() => setMobileMenuOpen(false)}
