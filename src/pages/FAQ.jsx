@@ -50,7 +50,7 @@ export default function FAQ() {
   };
 
   return (
-    <div className="font-inter bg-[var(--color-brand-surface)] min-h-screen pt-32 pb-24 relative overflow-hidden">
+    <div className="font-inter bg-[var(--color-brand-surface)] min-h-screen pt-32 pb-24 relative">
       <SEO 
         title="Frequently Asked Questions (FAQ) | SAVAXA Crop Care Solutions"
         description="Find answers to common questions about agricultural pesticides, herbicides, dealer registration, and plant protection methodologies."

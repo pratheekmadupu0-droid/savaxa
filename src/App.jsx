@@ -8,7 +8,6 @@ import ThreeCanvas from './components/ThreeCanvas.jsx'
 import Chatbot from './components/Chatbot.jsx'
 import ScrollProgress from './components/ScrollProgress.jsx'
 import CustomCursor from './components/CustomCursor.jsx'
-import LenisScroll from './components/LenisScroll.jsx'
 
 // Pages
 import Home from './pages/Home.jsx'
@@ -45,7 +44,6 @@ export default function App() {
   return (
     <>
       {/* Premium UI/UX Additions */}
-      <LenisScroll />
       <ScrollProgress />
 
       {/* Primary Layout */}

@@ -3,7 +3,7 @@ import { Scale } from 'lucide-react';
 
 export default function Terms() {
   return (
-    <div className="font-inter bg-[var(--color-brand-surface)] min-h-screen pt-32 pb-24 relative overflow-hidden">
+    <div className="font-inter bg-[var(--color-brand-surface)] min-h-screen pt-32 pb-24 relative">
       <SEO 
         title="Terms of Service | SAVAXA Crop Care"
         description="Review the Terms of Service governing the use of SAVAXA website, dealer portal, and crop protection catalogs."

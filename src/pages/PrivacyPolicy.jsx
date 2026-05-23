@@ -3,7 +3,7 @@ import { ShieldCheck } from 'lucide-react';
 
 export default function PrivacyPolicy() {
   return (
-    <div className="font-inter bg-[var(--color-brand-surface)] min-h-screen pt-32 pb-24 relative overflow-hidden">
+    <div className="font-inter bg-[var(--color-brand-surface)] min-h-screen pt-32 pb-24 relative">
       <SEO 
         title="Privacy Policy | SAVAXA Crop Care"
         description="Read the Privacy Policy of SAVAXA. Learn how we collect, use, and protect your information as a leading crop care and agriculture solutions provider."
