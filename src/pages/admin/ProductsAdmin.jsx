@@ -200,7 +200,7 @@ export default function ProductsAdmin() {
         </div>
         <button
           onClick={() => { resetForm(); setIsModalOpen(true); }}
-          className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl flex items-center transition duration-300 font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/10"
+          className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl flex items-center transition duration-300 font-bold text-xs uppercase tracking-wider shadow-lg shadow-sky-600/10"
         >
           <FiPlus className="mr-2 text-sm" /> Add New Product
         </button>
@@ -333,7 +333,7 @@ export default function ProductsAdmin() {
                 <label className="block text-[9px] font-mono tracking-widest text-gray-400 uppercase font-bold mb-2">Brochure PDF Link (Optional)</label>
                 <input type="url" placeholder="Paste Google Drive or Dropbox link here" value={pdfFile || ''} onChange={e => setPdfFile(e.target.value)} className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 text-xs font-mono" />
                 {editingId && products.find(p => p.id === editingId)?.brochurePdf && !pdfFile && (
-                  <p className="text-[10px] text-emerald-400 mt-2 flex items-center gap-1"><FiFileText /> Existing PDF link will be kept</p>
+                  <p className="text-[10px] text-sky-400 mt-2 flex items-center gap-1"><FiFileText /> Existing PDF link will be kept</p>
                 )}
               </div>
 

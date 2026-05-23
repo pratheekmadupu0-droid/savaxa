@@ -65,9 +65,9 @@ export default function Dashboard() {
 
   const cards = [
     { title: 'Total Products', value: stats.products, icon: <FiBox />, color: 'text-blue-500', bg: 'bg-blue-500/10 border-blue-500/20' },
-    { title: 'Registered Dealers', value: stats.dealers, icon: <FiUsers />, color: 'text-emerald-500', bg: 'bg-emerald-500/10 border-emerald-500/20' },
-    { title: 'Total Downloads', value: stats.downloads, icon: <FiDownload />, color: 'text-purple-500', bg: 'bg-purple-500/10 border-purple-500/20' },
-    { title: 'Active Admins', value: '1', icon: <FiActivity />, color: 'text-amber-500', bg: 'bg-amber-500/10 border-amber-500/20' },
+    { title: 'Registered Dealers', value: stats.dealers, icon: <FiUsers />, color: 'text-sky-500', bg: 'bg-sky-500/10 border-sky-500/20' },
+    { title: 'Total Downloads', value: stats.downloads, icon: <FiDownload />, color: 'text-blue-400', bg: 'bg-blue-400/10 border-blue-400/20' },
+    { title: 'Active Admins', value: '1', icon: <FiActivity />, color: 'text-indigo-500', bg: 'bg-indigo-500/10 border-indigo-500/20' },
   ];
 
   return (
@@ -112,7 +112,7 @@ export default function Dashboard() {
               {recentActivity.map((item, idx) => (
                 <div key={idx} className="flex items-center justify-between p-4 hover:bg-gray-800/20 rounded-xl transition-colors">
                   <div className="flex items-center gap-4">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center border ${item.type === 'Product' ? 'bg-blue-500/10 border-blue-500/20 text-blue-500' : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500'}`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center border ${item.type === 'Product' ? 'bg-blue-500/10 border-blue-500/20 text-blue-500' : 'bg-sky-500/10 border-sky-500/20 text-sky-500'}`}>
                       {item.type === 'Product' ? <FiBox /> : <FiUsers />}
                     </div>
                     <div>
@@ -133,7 +133,7 @@ export default function Dashboard() {
       </div>
 
       {!db && (
-        <div className="mt-8 bg-yellow-500/10 border border-yellow-500/20 p-6 rounded-2xl text-yellow-500">
+        <div className="mt-8 bg-blue-500/10 border border-blue-500/20 p-6 rounded-2xl text-blue-500">
           <h3 className="text-xl font-bold mb-2 flex items-center">
             <FiActivity className="mr-2" />
             Firebase Not Configured

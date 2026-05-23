@@ -1,165 +1,204 @@
 import { useState } from 'react'
+import SEO from '../components/SEO'
 import { motion, AnimatePresence } from 'framer-motion'
-import { RiShieldCheckLine, RiFilterLine, RiSeedlingLine, RiFlaskLine } from 'react-icons/ri'
-import { useLanguage } from '../context/LanguageContext'
+import { Link } from 'react-router-dom'
+import { 
+  Leaf, 
+  Droplet, 
+  Target, 
+  Clock, 
+  ArrowRight,
+  ShieldAlert,
+  Sprout,
+  Activity
+} from 'lucide-react'
 
 export default function CropSolutions() {
-  const { t } = useLanguage()
   const [selectedCrop, setSelectedCrop] = useState('cotton')
 
   const cropSolutionsList = {
     cotton: {
-      name: t("Cotton Crops Protection", "పత్తి పంట రక్షణ (Cotton Protection)"),
-      pathogen: t("American Bollworm, Sucking Whitefly, Thrips", "శనగ పచ్చ పురుగు, తెల్ల దోమ, తామర పురుగులు"),
-      threat: t("Critical - High Defoliation Risk", "తీవ్ర నష్టం - ఆకులు ఎండిపోయే ప్రమాదం"),
-      symptoms: t("Circular boring cavities in mature cotton bolls, leaf curling with black soot coatings, stunted terminal shoots.", "పత్తి కాయల్లో గుండ్రటి రంధ్రాలు, ఆకులు నల్లగా మారడం, ఎదుగుదల లోపించడం."),
-      formula: t("Shield-Ultra Insecticide & SOLVO Biostimulant", "షీల్డ్-అల్ట్రా కీటకనాశని & సోల్వో బయో-ఉత్ప్రేరకం"),
-      mixingRatio: t("Shield-Ultra: 1.2 ml/L + SOLVO: 1.5 ml/L", "షీల్డ్-అల్ట్రా: లీటరుకు 1.2 మి.లీ + సోల్వో: లీటరుకు 1.5 మి.లీ"),
-      sprayingInterval: t("Apply at first square formation, repeat after 12 days if pest count exceeds 5 per branch.", "మొదటి మొగ్గ దశలో పిచికారీ చేయండి, పురుగుల తీవ్రత ఎక్కువగా ఉంటే 12 రోజుల తర్వాత మళ్లీ పిచికారీ చేయండి."),
-      img: "/cotton_solution.png"
+      name: "Cotton Crops Protection",
+      pathogen: "American Bollworm, Sucking Whitefly, Thrips",
+      threat: "Critical - High Defoliation Risk",
+      symptoms: "Circular boring cavities in mature cotton bolls, leaf curling with black soot coatings, stunted terminal shoots.",
+      formula: "Shield-Ultra Insecticide & SOLVO Biostimulant",
+      mixingRatio: "Shield-Ultra: 1.2 ml/L + SOLVO: 1.5 ml/L",
+      sprayingInterval: "Apply at first square formation, repeat after 12 days if pest count exceeds 5 per branch.",
+      img: "https://images.unsplash.com/photo-1595166297316-01582e38c3aa?auto=format&fit=crop&w=800&q=80"
     },
     rice: {
-      name: t("Wet Paddy Rice Security", "వరి పంట రక్షణ (Paddy Security)"),
-      pathogen: t("Barnyard Grass (Echinochloa), Sedges, Stem Borers", "తుంగ గడ్డి, వెడల్పాటి కలుపు మొక్కలు, కాండం తొలిచే పురుగు"),
-      threat: t("Severe Nutrient Deprivation Risk", "తీవ్ర పోషకాల నష్టం - ఎదుగుదల లోపం"),
-      symptoms: t("Tall broad grass choking out tender paddy shoots, nutrient theft leading to yellow thin leaves, lower panicle formation.", "కలుపు మొక్కలు వరి పంటను ఆవరించి నేలలోని పోషకాలను లాగేసుకోవడం, ఆకులు పసుపు రంగులోకి మారడం."),
-      formula: t("Vanquish-X Herbicide System", "వాన్క్విష్-X కలుపు నాశక వ్యవస్థ"),
-      mixingRatio: t("Vanquish-X: 80 - 100 ml per Acre in 150L water", "వాన్క్విష్-X: ఎకరానికి 80-100 మి.లీ 150 లీటర్ల నీటిలో"),
-      sprayingInterval: t("Post-emergence foliar spray 10-15 days after transplanting when weeds are in 2-4 leaf stage.", "నాట్లు వేసిన 10-15 రోజులలోపు కలుపు మొక్కలు 2-4 ఆకుల దశలో ఉన్నప్పుడు పిచికారీ చేయాలి."),
-      img: "/rice_solution.png"
+      name: "Wet Paddy Rice Security",
+      pathogen: "Barnyard Grass, Sedges, Stem Borers",
+      threat: "Severe Nutrient Deprivation Risk",
+      symptoms: "Tall broad grass choking out tender paddy shoots, nutrient theft leading to yellow thin leaves, lower panicle formation.",
+      formula: "Vanquish-X Herbicide System",
+      mixingRatio: "Vanquish-X: 80 - 100 ml per Acre in 150L water",
+      sprayingInterval: "Post-emergence foliar spray 10-15 days after transplanting when weeds are in 2-4 leaf stage.",
+      img: "https://images.unsplash.com/photo-1586521995568-39abaa0c2311?auto=format&fit=crop&w=800&q=80"
     },
     tomato: {
-      name: t("Solanaceous Tomato Defense", "టమోటా పంట రక్షణ (Tomato Defense)"),
-      pathogen: t("Pythium Damping-Off Rot, Early Fungal Blight", "నారు కుళ్లు తెగులు, ఆకుమచ్చ తెగులు"),
-      threat: t("Extreme Nursery Seedling Mortality", "నారుమడులలో తీవ్ర మొలకల నష్టం"),
-      symptoms: t("Water-soaked girdling of seedling stems near soil level, leaf spots with concentric target-board rings.", "నారు కాండం కుళ్లిపోవడం, ఆకులపై గుండ్రటి నల్లటి మచ్చలు ఏర్పడటం."),
-      formula: t("BioRoot Spore Inoculant", "బయోరూట్ స్పోర్ ఇనాక్యులెంట్"),
-      mixingRatio: t("BioRoot: 2.0 kg per Acre mixed with organic manure", "బయోరూట్: ఎకరానికి 2.0 కిలోలు సేంద్రీయ ఎరువుతో కలిపి"),
-      sprayingInterval: t("Apply in seed beds during soil preparation, repeat as drench 15 days after transplanting.", "నారుమడి నేల తయారీలో వాడండి, నాట్లు వేసిన 15 రోజుల తర్వాత మళ్లీ నేలపై చల్లండి."),
-      img: "/tomato_solution.png"
+      name: "Solanaceous Tomato Defense",
+      pathogen: "Pythium Damping-Off Rot, Early Fungal Blight",
+      threat: "Extreme Nursery Seedling Mortality",
+      symptoms: "Water-soaked girdling of seedling stems near soil level, leaf spots with concentric target-board rings.",
+      formula: "BioRoot Spore Inoculant",
+      mixingRatio: "BioRoot: 2.0 kg per Acre mixed with organic manure",
+      sprayingInterval: "Apply in seed beds during soil preparation, repeat as drench 15 days after transplanting.",
+      img: "https://images.unsplash.com/photo-1592841200221-a6898f307baa?auto=format&fit=crop&w=800&q=80"
     },
     chili: {
-      name: t("Chili Crops Protection", "మిరప పంట రక్షణ (Chili Protection)"),
-      pathogen: t("Sucking Thrips, Downy Mildew", "తామర పురుగులు, బూడిద తెగులు"),
-      threat: t("High Foliage Scorch & Curl", "ఆకులు ముడుచుకుపోయే తీవ్ర ప్రమాదం"),
-      symptoms: t("Leaf margins drying and curling upwards into distinctive boat shapes, white powder dust on leaf underside.", "ఆకులు పైకి ముడుచుకుని దోనె ఆకారంలోకి మారడం, ఆకుల అడుగున తెల్లటి పౌడర్ ఏర్పడటం."),
-      formula: t("Shield-Ultra systemic spray & BioRoot", "షీల్డ్-అల్ట్రా సిస్టమిక్ పిచికారీ & బయోరూట్"),
-      mixingRatio: t("Shield-Ultra: 150 ml/Acre + BioRoot: 1.5 kg/Acre", "షీల్డ్-అల్ట్రా: ఎకరానికి 150 మి.లీ + బయోరూట్: ఎకరానికి 1.5 కిలోలు"),
-      sprayingInterval: t("Spray Shield-Ultra at flowering onset, drench roots with BioRoot to secure soil spores.", "పూత దశలో షీల్డ్-అల్ట్రా పిచికారీ చేయండి, వేర్ల వద్ద బయోరూట్ తడపండి."),
-      img: "/chili_solution.png"
+      name: "Chili Crops Protection",
+      pathogen: "Sucking Thrips, Downy Mildew",
+      threat: "High Foliage Scorch & Curl",
+      symptoms: "Leaf margins drying and curling upwards into distinctive boat shapes, white powder dust on leaf underside.",
+      formula: "Shield-Ultra systemic spray & BioRoot",
+      mixingRatio: "Shield-Ultra: 150 ml/Acre + BioRoot: 1.5 kg/Acre",
+      sprayingInterval: "Spray Shield-Ultra at flowering onset, drench roots with BioRoot to secure soil spores.",
+      img: "https://images.unsplash.com/photo-1588145293290-7a0e3f01ef87?auto=format&fit=crop&w=800&q=80"
     }
   }
 
   const current = cropSolutionsList[selectedCrop]
 
   return (
-    <div className="font-sans pt-32 pb-20 relative overflow-hidden bg-slate-50">
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
+    <div className="font-inter bg-white min-h-screen pt-32 pb-24">
+      <SEO 
+        title="Crop Solutions | SAVAXA Crop Care"
+        description="Discover targeted biological symptoms, pathogen stressors, and certified Savaxa mixing ratios for major cash crops."
+      />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header Block */}
-        <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
-          <p className="text-xs font-mono tracking-widest text-cyan-600 uppercase font-bold">
-            {t("SAVAXA CROP DIAGNOSTICS", "సవాక్సా పంట నిర్ధారణ")}
-          </p>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-display">
-            {t("Crop Solutions", "పంట పరిష్కారాలు")}
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-montserrat font-bold text-[var(--color-brand-navy)] uppercase tracking-tight">
+            Crop Solutions
           </h1>
-          <p className="text-slate-500 text-sm leading-relaxed font-light">
-            {t(
-              "Select your primary cash crop to discover targeted biological symptoms, pathogen stressors, and certified mixing ratios.",
-              "తెగుళ్లు, వాటి లక్షణాలు మరియు సరైన సవాక్సా నివారణ పద్ధతులను తెలుసుకోవడానికి మీ పంటను ఎంచుకోండి."
-            )}
+          <div className="w-24 h-1.5 bg-[var(--color-brand-primary)] mx-auto mt-6 rounded-full mb-6" />
+          <p className="text-slate-600 max-w-2xl mx-auto text-lg">
+            Select your primary cash crop to discover targeted biological symptoms, pathogen stressors, and certified Savaxa mixing ratios.
           </p>
         </div>
 
         {/* Crops Selector Panel */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
           {Object.keys(cropSolutionsList).map((key) => (
             <button
               key={key}
               onClick={() => setSelectedCrop(key)}
-              className={`py-4 rounded-2xl border text-xs tracking-wider uppercase font-bold transition duration-300 flex flex-col items-center gap-2 ${
+              className={`py-6 px-4 rounded-2xl border flex flex-col items-center gap-3 transition-all duration-300 ${
                 selectedCrop === key
-                  ? 'bg-cyan-600 border-cyan-500 text-white shadow-md'
-                  : 'bg-white border-slate-200 hover:border-cyan-600 text-slate-600 hover:text-slate-800'
+                  ? 'bg-[var(--color-brand-primary)] border-[var(--color-brand-primary)] text-white shadow-lg -translate-y-1'
+                  : 'bg-[var(--color-brand-surface)] border-[var(--color-blue-100)] hover:border-[var(--color-brand-primary)] text-[var(--color-brand-navy)] hover:-translate-y-1'
               }`}
             >
-              <RiSeedlingLine className="text-xl" />
-              {key === 'cotton' ? t("Cotton Protection", "పత్తి రక్షణ") :
-               key === 'rice' ? t("Rice Protection", "వరి రక్షణ") :
-               key === 'tomato' ? t("Tomato Protection", "టమోటా రక్షణ") :
-               t("Chili Protection", "మిరప రక్షణ")}
+              <Sprout className={`w-8 h-8 ${selectedCrop === key ? 'text-[var(--color-brand-accent)]' : 'text-[var(--color-brand-primary)]'}`} />
+              <span className="font-bold uppercase tracking-wider text-sm">
+                {key === 'cotton' ? 'Cotton' :
+                 key === 'rice' ? 'Rice' :
+                 key === 'tomato' ? 'Tomato' :
+                 'Chili'}
+              </span>
             </button>
           ))}
         </div>
 
-        {/* crop details Content */}
+        {/* Content Area */}
         <AnimatePresence mode="wait">
           <motion.div
             key={selectedCrop}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+            transition={{ duration: 0.4 }}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-12 bg-[var(--color-brand-surface)] rounded-3xl overflow-hidden border border-[var(--color-blue-100)] shadow-sm"
           >
-            {/* Visual Panel */}
-            <div className="rounded-[30px] overflow-hidden border border-slate-200 shadow-md aspect-video relative">
+            {/* Visual Panel (Left) */}
+            <div className="lg:col-span-5 relative h-64 lg:h-auto">
               <img src={current.img} alt={current.name} className="w-full h-full object-cover" />
-              <span className="absolute top-4 right-4 bg-rose-50 text-[9px] font-mono tracking-widest font-bold border border-rose-200 px-3 py-1 rounded-full text-rose-600 uppercase shadow-sm">
-                {current.threat}
-              </span>
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-brand-navy)]/80 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <span className="inline-flex items-center gap-1.5 bg-red-500/90 text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest backdrop-blur-sm border border-red-400">
+                  <ShieldAlert className="w-3 h-3" /> {current.threat}
+                </span>
+                <h2 className="text-3xl font-montserrat font-bold text-white mt-4 leading-tight">{current.name}</h2>
+              </div>
             </div>
 
-            {/* Info panel */}
-            <div className="space-y-6">
-              <div>
-                <span className="text-[10px] text-cyan-600 font-mono tracking-widest uppercase font-bold">
-                  {t("SAVAXA SHIELD MATRIX", "సవాక్సా రక్షణ వ్యవస్థ")}
-                </span>
-                <h2 className="text-2xl md:text-4xl font-extrabold text-slate-900 font-display mt-0.5">{current.name}</h2>
-              </div>
-
-              <div className="space-y-4 font-sans text-xs md:text-sm">
-                <div className="bg-slate-50 border border-slate-200/60 p-4 rounded-2xl">
-                  <span className="text-slate-400 block font-mono text-[9px] uppercase font-bold">
-                    {t("Target Pathogens:", "లక్ష్య కీటకాలు / తెగుళ్లు:")}
-                  </span>
-                  <span className="text-slate-700 font-bold block mt-1">{current.pathogen}</span>
-                </div>
-
-                <div className="bg-slate-50 border border-slate-200/60 p-4 rounded-2xl">
-                  <span className="text-slate-400 block font-mono text-[9px] uppercase font-bold">
-                    {t("Biological Damage Symptoms:", "జీవసంబంధ నష్ట లక్షణాలు:")}
-                  </span>
-                  <span className="text-slate-550 font-light block mt-1 leading-relaxed">{current.symptoms}</span>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-slate-50 border border-slate-200/60 p-4 rounded-2xl">
-                    <span className="text-slate-400 block font-mono text-[9px] uppercase font-bold">
-                      {t("Mixing Ratio:", "కలిపే నిష్పత్తి:")}
-                    </span>
-                    <span className="text-cyan-700 font-bold block mt-1">{current.mixingRatio}</span>
+            {/* Info Panel (Right) */}
+            <div className="lg:col-span-7 p-8 md:p-10 space-y-8 flex flex-col justify-center">
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white p-5 rounded-2xl border border-[var(--color-blue-100)] flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0">
+                    <Target className="w-5 h-5 text-red-500" />
                   </div>
-                  <div className="bg-slate-50 border border-slate-200/60 p-4 rounded-2xl">
-                    <span className="text-slate-400 block font-mono text-[9px] uppercase font-bold">
-                      {t("Mixing Formula:", "నివారణ రసాయనం:")}
-                    </span>
-                    <span className="text-blue-700 font-bold block mt-1">{current.formula}</span>
+                  <div>
+                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Target Pathogens</h4>
+                    <p className="text-[var(--color-brand-navy)] font-bold text-sm">{current.pathogen}</p>
                   </div>
                 </div>
 
-                <div className="bg-blue-50/70 border border-blue-200/60 p-4 rounded-2xl">
-                  <span className="text-blue-700 block font-mono text-[9px] uppercase font-bold">
-                    {t("Spraying Intervals:", "పిచికారీ సమయం:")}
-                  </span>
-                  <span className="text-slate-700 font-light block mt-1 leading-relaxed">{current.sprayingInterval}</span>
+                <div className="bg-white p-5 rounded-2xl border border-[var(--color-blue-100)] flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+                    <Activity className="w-5 h-5 text-orange-500" />
+                  </div>
+                  <div>
+                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Damage Symptoms</h4>
+                    <p className="text-slate-600 text-sm leading-relaxed">{current.symptoms}</p>
+                  </div>
                 </div>
               </div>
+
+              <div className="space-y-4">
+                <h3 className="text-xl font-montserrat font-bold text-[var(--color-brand-navy)] uppercase border-b border-[var(--color-blue-100)] pb-2">Savaxa Treatment Protocol</h3>
+                
+                <div className="bg-white p-6 rounded-2xl border border-[var(--color-brand-primary)] shadow-sm space-y-4">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                      <h4 className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-brand-primary)] mb-1">Recommended Formula</h4>
+                      <p className="text-[var(--color-brand-navy)] font-bold">{current.formula}</p>
+                    </div>
+                    <Link to="/products" className="shrink-0 bg-[var(--color-brand-primary)] text-white text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-lg hover:bg-[var(--color-brand-navy)] transition-colors flex items-center gap-1">
+                      View Product <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-[var(--color-blue-100)]">
+                    <div className="flex items-start gap-3">
+                      <Droplet className="w-4 h-4 text-[var(--color-brand-accent)] mt-0.5 shrink-0" />
+                      <div>
+                        <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Mixing Ratio</h4>
+                        <p className="text-slate-700 text-sm font-medium">{current.mixingRatio}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <Clock className="w-4 h-4 text-[var(--color-brand-accent)] mt-0.5 shrink-0" />
+                      <div>
+                        <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Application Timing</h4>
+                        <p className="text-slate-700 text-sm">{current.sprayingInterval}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </motion.div>
         </AnimatePresence>
+
+        {/* CTA Banner */}
+        <div className="mt-20 bg-[var(--color-brand-navy)] rounded-3xl p-10 text-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--color-brand-primary)_0%,transparent_50%)] opacity-40" />
+          <div className="relative z-10 max-w-2xl mx-auto space-y-6">
+            <h2 className="text-3xl font-montserrat font-bold text-white uppercase">Need Custom Agronomy Advice?</h2>
+            <p className="text-blue-100">Our team of agricultural scientists is ready to diagnose your crop issues and recommend precise Savaxa formulations.</p>
+            <Link to="/contact" className="inline-block bg-white text-[var(--color-brand-navy)] font-bold px-8 py-4 rounded-xl uppercase tracking-wider text-sm hover:bg-[var(--color-brand-surface)] transition-colors">
+              Consult an Expert
+            </Link>
+          </div>
+        </div>
 
       </div>
     </div>

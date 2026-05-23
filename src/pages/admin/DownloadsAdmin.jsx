@@ -130,7 +130,7 @@ export default function DownloadsAdmin() {
         </div>
         <button
           onClick={() => { resetForm(); setIsModalOpen(true); }}
-          className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl flex items-center transition duration-300 font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/10"
+          className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl flex items-center transition duration-300 font-bold text-xs uppercase tracking-wider shadow-lg shadow-sky-600/10"
         >
           <FiPlus className="mr-2 text-sm" /> Add Brochure
         </button>
@@ -154,14 +154,14 @@ export default function DownloadsAdmin() {
                 <FiFileText className="text-3xl" />
               </div>
               <div className="flex-1 overflow-hidden pr-8">
-                <span className="text-[8px] font-mono tracking-widest text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-2.5 py-0.5 rounded-full uppercase font-bold mb-2 inline-block">
+                <span className="text-[8px] font-mono tracking-widest text-sky-400 bg-sky-400/10 border border-sky-400/20 px-2.5 py-0.5 rounded-full uppercase font-bold mb-2 inline-block">
                   {item.category || 'Brochure'}
                 </span>
                 <h3 className="text-xl font-extrabold tracking-wide mb-1 font-display line-clamp-1 flex items-center gap-2">
                   {item.title}
                 </h3>
                 <p className="text-xs text-gray-400 mb-4 line-clamp-2 font-light leading-relaxed">{item.description}</p>
-                <a href={item.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-blue-500 hover:text-cyan-400 text-xs font-bold uppercase tracking-wider transition-colors">
+                <a href={item.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-blue-500 hover:text-sky-400 text-xs font-bold uppercase tracking-wider transition-colors">
                   View File &rarr;
                 </a>
               </div>

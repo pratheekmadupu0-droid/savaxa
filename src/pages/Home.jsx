@@ -1,619 +1,363 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useInView } from 'react-intersection-observer'
-import { useLanguage } from '../context/LanguageContext'
-import SEO from '../components/SEO'
-import { 
-  RiShieldCheckLine, 
-  RiSeedlingFill, 
-  RiFlaskLine, 
-  RiArrowRightLine, 
-  RiDoubleQuotesL,
-  RiStarFill,
-  RiDatabaseLine,
-  RiArrowRightUpLine,
-  RiGroupLine,
-  RiAwardLine,
-  RiPlantLine
-} from 'react-icons/ri'
+import CountUp from 'react-countup'
+import {
+  ChevronDown,
+  ArrowRight,
+  ShieldCheck,
+  Leaf,
+  Sprout,
+  Users,
+  Award,
+  BadgeCheck,
+  Microscope
+} from 'lucide-react'
 
-// Standard Animated Counter Component
-function Counter({ value, duration = 2, suffix = "" }) {
-  const [count, setCount] = useState(0)
-  const { ref, inView } = useInView({ triggerOnce: true })
-
-  useEffect(() => {
-    if (inView) {
-      let start = 0
-      const end = parseInt(value)
-      if (start === end) return
-      
-      const totalMiliseconds = duration * 1000
-      const incrementTime = Math.abs(Math.floor(totalMiliseconds / end))
-      
-      const timer = setInterval(() => {
-        start += 1
-        setCount(start)
-        if (start === end) clearInterval(timer)
-      }, incrementTime)
-
-      return () => clearInterval(timer)
-    }
-  }, [inView, value, duration])
-
-  return (
-    <span ref={ref} className="font-display font-extrabold text-4xl md:text-5xl text-blue-600">
-      {count}{suffix}
-    </span>
-  )
-}
+// Testimonials using basic flex overflow for simplicity/reliability
+const testimonials = [
+  {
+    quote: "Deploying Savaxa Shield-Ultra Insecticide saved our cotton crop. We harvested healthy cotton bolls.",
+    author: "Ramesh Goud",
+    role: "Cotton Farmer, Warangal",
+    stars: 5,
+  },
+  {
+    quote: "BioRoot Fungicide cleared the infection completely, and the tomato roots are incredibly strong and healthy.",
+    author: "Sridhar Reddy",
+    role: "Reddy Tomato Farms",
+    stars: 5,
+  },
+  {
+    quote: "The selective herbicides worked wonders in our paddy fields. Wild grasses were controlled perfectly.",
+    author: "N. Venkateswara Rao",
+    role: "Paddy Cultivator",
+    stars: 5,
+  }
+]
 
 export default function Home() {
-  const { language, t } = useLanguage()
-  const [activeLayer, setActiveLayer] = useState('insecticides')
-  const videoRef = useRef(null)
-
-  useEffect(() => {
-    if (videoRef.current) {
-      // Force direct properties for smooth, autoplay, looping video across all browser frameworks
-      videoRef.current.defaultMuted = true
-      videoRef.current.muted = true
-      videoRef.current.loop = true
-      
-      const playPromise = videoRef.current.play()
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          console.log("Cinematic video playing smoothly in loop")
-        }).catch(err => {
-          console.warn("Autoplay block bypass: ", err)
-          // Attempt fallbacks to ensure video always starts
-          if (videoRef.current) {
-            videoRef.current.muted = true
-            videoRef.current.play().catch(e => console.error("Force play failure: ", e))
-          }
-        })
-      }
-    }
-  }, [])
+  const [statsRef, statsInView] = useInView({ triggerOnce: true, threshold: 0.5 })
+  const [heroRef, heroInView] = useInView({ triggerOnce: true })
   
-  // Authentic pesticide and crop care products inspired by tapasyacropcare.com
-  const categories = [
-    {
-      id: 'insecticides',
-      title: t('High-Efficacy Insecticides', 'కీటకనాశకాలు (Insecticides)'),
-      desc: t('Formulated to target chewing and sucking crop pests (thrips, aphids, whiteflies, and bollworms). Delivers rapid insect knockdown with excellent residual control, preserving leaf structure and cotton bolls.', 'నమిలే మరియు పీల్చే పురుగులను (తామర పురుగులు, పేనుబంక, తెల్లదోమ మరియు కాయతొలిచే పురుగులు) నివారించడానికి ప్రత్యేకంగా తయారు చేయబడింది.'),
-      targetPests: t('Thrips, Aphids, Whiteflies, Bollworms', 'తామర పురుగులు, పేనుబంక, తెల్లదోమ, కాయతొలిచే పురుగులు'),
-      dosage: t('1.5 ml per Litre of water', 'లీటరు నీటికి 1.5 మి.లీ'),
-      icon: <RiShieldCheckLine className="text-blue-600 text-3xl" />,
-      color: 'from-blue-500/10 to-cyan-500/10',
-      tag: t('Insect Pest Protection System', 'కీటక నివారణ రక్షణ వ్యవస్థ')
-    },
-    {
-      id: 'herbicides',
-      title: t('Selective Herbicides', 'కలుపు సంహారకాలు (Herbicides)'),
-      desc: t('Highly effective pre and post-emergence weed control. Selectively eliminates unwanted broadleaf weeds and wild grasses in wet paddy and commercial crop fields without affecting crop foliage health.', 'వరి మరియు వాణిజ్య పంట పొలాలలో అవాంఛిత కలుపు మొక్కలను మరియు అడవి గడ్డిని సమర్థవంతంగా నివారిస్తుంది.'),
-      targetPests: t('Barnyard Grass, Sedges, Broadleaf Weeds', 'తుంగ గడ్డి, వెడల్పాటి ఆకు కలుపు, గడ్డి జాతి కలుపు'),
-      dosage: t('80 - 100 ml per Acre', 'ఎకరానికి 80 - 100 మి.లీ'),
-      icon: <RiPlantLine className="text-cyan-600 text-3xl" />,
-      color: 'from-cyan-500/10 to-blue-500/10',
-      tag: t('Selective Weed Control Matrix', 'కలుపు నివారణ ప్రత్యేక వ్యవస్థ')
-    },
-    {
-      id: 'fungicides',
-      title: t('Protective Fungicides', 'శిలీంద్ర నాశకాలు (Fungicides)'),
-      desc: t('Shields agricultural crops against pathogenic leaf rusts, blights, powdery mildews, and nursery damping-off. Encourages healthy root systems and prevents fungal spore multiplication.', 'పంటలను ఆకుమచ్చ తెగులు, బూడిద తెగులు, మరియు నారు కుళ్లు తెగులు నుండి రక్షించి వేరు వ్యవస్థను బలోపేతం చేస్తుంది.'),
-      targetPests: t('Root Rot, Powdery Mildew, Early Blight', 'వేరు కుళ్లు తెగులు, బూడిద తెగులు, ఆకుమచ్చ తెగులు'),
-      dosage: t('1.5 to 2.0 grams per Litre', 'లీటరు నీటికి 1.5 నుండి 2.0 గ్రాములు'),
-      icon: <RiFlaskLine className="text-blue-600 text-3xl" />,
-      color: 'from-blue-500/10 to-sky-500/10',
-      tag: t('Anti-Fungal Crop Shield', 'శిలీంద్ర నివారణ పంట రక్షణ')
-    },
-    {
-      id: 'biostimulants',
-      title: t('Organic Biostimulants', 'సేంద్రీయ ఉత్ప్రేరకాలు (Biostimulants)'),
-      desc: t('Enriched with premium seaweed extracts, amino acids, and vital nutrients. Naturally boosts crop tillering, accelerates flowering, improves chlorophyll levels, and strengthens stress tolerance.', 'సముద్రపు నాచు సారం, అమైనో ఆమ్లాలు మరియు పోషకాలతో సమృద్ధిగా ఉండి పంట పెరుగుదలను, పూతను మరియు అధిక దిగుబడిని ప్రోత్సహిస్తుంది.'),
-      targetPests: t('Stunted Growth, Low Flowering, Weather Stress', 'తక్కువ ఎదుగుదల, తక్కువ పూత, వాతావరణ ఒత్తిడి'),
-      dosage: t('250 ml per Acre (Foliar spray)', 'ఎకరానికి 250 మి.లీ (పిచికారీ ద్వారా)'),
-      icon: <RiSeedlingFill className="text-blue-600 text-3xl" />,
-      color: 'from-blue-500/10 to-cyan-500/10',
-      tag: t('Yield Booster & Growth Catalyst', 'అధిక దిగుబడి మరియు ఎదుగుదల ఉత్ప్రేరకం')
-    }
-  ]
-
-  const currentCategory = categories.find(c => c.id === activeLayer)
-
-  const featuredProducts = [
-    {
-      id: 'sav-ultra-1',
-      name: 'Shield-Ultra Insecticide',
-      category: 'Insecticides',
-      desc: 'Premium insecticide with fast knockdown action targeting destructive bollworms and sucking pests.',
-      tag: 'Farmer Trusted',
-      img: '/cotton_solution.png'
-    },
-    {
-      id: 'sav-weed-2',
-      name: 'Vanquish-X Herbicide',
-      category: 'Herbicides',
-      desc: 'Highly selective weedicide designed to eradicate stubborn grassy weeds in wet rice fields.',
-      tag: 'High Efficacy',
-      img: '/rice_solution.png'
-    },
-    {
-      id: 'sav-fung-3',
-      name: 'BioRoot Fungicide',
-      category: 'Fungicides',
-      desc: 'High CFU bio-fungicide powder to shield nursery beds from Pythium and damp-off rot.',
-      tag: 'Eco-Friendly Spores',
-      img: '/tomato_solution.png'
-    }
-  ]
-
-  const homeSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "SAVAXA Bio-Agri Sciences",
-    "url": "https://savaxa.in",
-    "logo": "https://savaxa.in/savax-logo.png",
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+91-8074660491",
-      "contactType": "sales",
-      "areaServed": "IN",
-      "availableLanguage": ["en", "tel"]
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Survey No. 470, Plot No. 95, Pedda Amberpet Road, Bhuvaneshwari Nagar",
-      "addressLocality": "Hyderabad",
-      "addressRegion": "Telangana",
-      "postalCode": "501505",
-      "addressCountry": "IN"
-    }
-  };
-
   return (
-    <div className="font-sans relative overflow-hidden bg-slate-50">
-      <SEO 
-        title="SAVAXA Agro | Best Pesticide & Crop Protection Company in India"
-        description="SAVAXA Agro provides advanced insecticides, herbicides, fungicides, and organic crop protection bio-stimulants for farmers and distributors across India."
-        keywords="pesticide company in India, best herbicides for crops, fungicides for plants, insecticides for agriculture, crop protection solutions, agricultural chemicals, farming solutions, pest control for crops, bio pesticides, agriculture products India"
-        schema={homeSchema}
-      />
-      {/* Beautiful Subtle Agrochemical Field Backdrop Watermark */}
-      <div className="absolute top-0 left-0 w-full h-[140vh] -z-20 pointer-events-none overflow-hidden">
-        <img 
-          src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1920&q=80" 
-          alt="Lush Paddy & Crop Landscape" 
-          className="w-full h-full object-cover opacity-[0.09] mix-blend-overlay filter saturate-75 contrast-125"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-50/0 via-slate-50/70 to-slate-50" />
+    <div className="bg-white min-h-screen font-inter overflow-hidden">
+      
+      {/* 1. HERO SECTION */}
+      <section className="relative min-h-screen flex items-center bg-white pt-20">
+        <div className="absolute inset-0 z-0 flex">
+          <div className="w-full lg:w-[55%] bg-white h-full relative z-10" />
+          <div className="hidden lg:block w-[45%] h-full relative">
+            <div className="absolute inset-0 bg-[var(--color-brand-primary)] clip-diagonal" style={{ clipPath: 'polygon(15% 0, 100% 0, 100% 100%, 0 100%)' }}>
+              <img 
+                src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1920&q=80" 
+                alt="Farmer spraying crops" 
+                className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60"
+              />
+              <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-brand-navy)]/80 to-[var(--color-brand-primary)]/40 mix-blend-multiply" />
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full py-20 lg:py-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div 
+              ref={heroRef}
+              initial={{ opacity: 0, y: 30 }}
+              animate={heroInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8 }}
+              className="max-w-xl"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-brand-surface)] border border-[var(--color-blue-100)] mb-6">
+                <BadgeCheck className="w-4 h-4 text-[var(--color-brand-primary)]" />
+                <span className="text-xs font-bold text-[var(--color-brand-primary)] tracking-wide uppercase">Trusted Crop Protection Since 2008</span>
+              </div>
+              
+              <h1 className="text-5xl md:text-7xl font-montserrat font-extrabold text-[var(--color-brand-navy)] leading-[1.1] mb-6 tracking-tight">
+                PROTECTING CROPS.<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-primary)] to-[var(--color-brand-accent)]">EMPOWERING FARMERS.</span>
+              </h1>
+              
+              <p className="text-lg text-slate-600 mb-10 leading-relaxed max-w-lg">
+                Savaxa delivers world-class, scientifically formulated agrochemicals that secure harvests and maximize yields for agricultural professionals worldwide.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/products" className="btn-premium px-8 py-4 text-center font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2">
+                  Explore Products <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link to="/dealers" className="btn-ghost px-8 py-4 text-center font-bold uppercase tracking-wider text-sm">
+                  Contact a Dealer
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Scroll Down Indicator */}
+        <motion.div 
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-2"
+        >
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Scroll</span>
+          <div className="w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center border border-slate-100">
+            <ChevronDown className="w-4 h-4 text-[var(--color-brand-primary)]" />
+          </div>
+        </motion.div>
+      </section>
+
+      {/* 2. MARQUEE TRUST BAR */}
+      <div className="bg-[var(--color-brand-white)] border-y border-[var(--color-blue-100)] py-4 overflow-hidden relative z-20">
+        <div className="flex whitespace-nowrap animate-[marquee_20s_linear_infinite]">
+          {/* We duplicate the content to make the scrolling seamless */}
+          {[1, 2].map((i) => (
+            <div key={i} className="flex items-center gap-12 px-6">
+              <span className="text-sm font-bold text-[var(--color-brand-primary)] uppercase tracking-wider flex items-center gap-2">
+                <Award className="w-4 h-4" /> ISO Certified
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-brand-accent)]" />
+              <span className="text-sm font-bold text-[var(--color-brand-primary)] uppercase tracking-wider flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4" /> 15+ Years Experience
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-brand-accent)]" />
+              <span className="text-sm font-bold text-[var(--color-brand-primary)] uppercase tracking-wider flex items-center gap-2">
+                <Users className="w-4 h-4" /> 500+ Dealer Network
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-brand-accent)]" />
+              <span className="text-sm font-bold text-[var(--color-brand-primary)] uppercase tracking-wider flex items-center gap-2">
+                <Leaf className="w-4 h-4" /> 20+ Registered Products
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-brand-accent)]" />
+              <span className="text-sm font-bold text-[var(--color-brand-primary)] uppercase tracking-wider flex items-center gap-2">
+                <Sprout className="w-4 h-4" /> Trusted by 1 Lakh+ Farmers
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-brand-accent)]" />
+            </div>
+          ))}
+        </div>
+        <style>{`
+          @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+          }
+        `}</style>
       </div>
 
-      {/* Soft natural green/blue background overlays */}
-      <div className="absolute top-[10%] left-0 w-96 h-96 bg-blue-100/30 rounded-full blur-[130px] pointer-events-none" />
-      <div className="absolute top-[45%] right-0 w-[500px] h-[500px] bg-cyan-100/30 rounded-full blur-[150px] pointer-events-none" />
-
-      {/* 1. HERO SECTION - Full Screen Cinematic Video Intro */}
-      <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-slate-950">
-        <video 
-          ref={videoRef}
-          src="/savaxa-2.mp4" 
-          autoPlay 
-          muted 
-          loop 
-          playsInline
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
-          style={{ 
-            objectFit: 'cover'
-          }}
-        />
-        {/* Cinematic dark transparent gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950/20 to-slate-950/80 pointer-events-none" />
-
-
-      </section>
-
-      {/* 1.5 MATTER CONTENT SECTION */}
-      <section className="relative py-24 px-4 md:px-8 bg-slate-50 border-b border-slate-200/60 z-10">
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* Left Side: Agrochemical matter details */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="lg:col-span-7 space-y-8 text-left"
-          >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/80">
-              <RiShieldCheckLine className="text-blue-600 text-sm" />
-              <span className="text-[10px] md:text-xs tracking-widest uppercase font-mono text-blue-700 font-bold">
-                {t("Target-Specific Formulations", "లక్ష్య-ఆధారిత ప్రత్యేక రసాయనాలు")}
-              </span>
-            </div>
-
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight font-display uppercase text-slate-900">
-              {t("PIONEERING THE FUTURE OF", "పంటల రక్షణలో")} <span className="text-gradient">{t("CROP PROTECTION", "నూతన విప్లవం")}</span>
-            </h1>
-
-            <p className="text-slate-655 text-base md:text-lg leading-relaxed font-light max-w-xl">
-              {t(
-                "Savaxa Bio-Agri Sciences manufactures world-class pesticide formulations, selective herbicides, protective fungicides, and bio-stimulants designed to secure harvests and increase farming profitability.",
-                "సవాక్సా బయో-ఆగ్రి సైన్సెస్ అత్యుత్తమ నాణ్యత కలిగిన కీటకనాశకాలు, కలుపు సంహారకాలు, శిలీంద్ర నాశకాలు మరియు సేంద్రీయ ఉత్ప్రేరకాలతో రైతుల పంట రక్షణకు, అధిక లాభాలకు తోడ్పడుతుంది."
-              )}
-            </p>
-
-            {/* Agrochemical Trust Marks */}
-            <div className="flex flex-wrap gap-4 pt-2">
-              <div className="flex items-center gap-2 text-xs text-slate-700 bg-white/80 backdrop-blur px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm font-bold">
-                <RiAwardLine className="text-blue-600 text-lg" /> {t("CIB&RC Registered Formulations", "CIB&RC గుర్తింపు పొందినవి")}
-              </div>
-              <div className="flex items-center gap-2 text-xs text-slate-700 bg-white/80 backdrop-blur px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm font-bold">
-                <RiShieldCheckLine className="text-blue-600 text-lg" /> {t("ISO 9001:2015 Certified Mfg.", "ISO 9001:2015 ధృవీకృత తయారీ")}
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <Link 
-                to="/products"
-                className="btn-premium font-bold text-sm tracking-wider uppercase px-8 py-4 rounded-2xl flex items-center justify-center gap-2 group transition duration-300"
-              >
-                {t("Browse Pesticides Catalog", "ఉత్పత్తుల కేటలాగ్ చూడండి")}
-                <RiArrowRightLine className="group-hover:translate-x-1.5 transition duration-300" />
-              </Link>
-              <Link 
-                to="/contact"
-                className="bg-white/80 backdrop-blur hover:bg-slate-50 border border-slate-200 text-slate-800 font-bold text-sm tracking-wider uppercase px-8 py-4 rounded-2xl transition duration-300 flex items-center justify-center hover:scale-[1.02] shadow-sm"
-              >
-                {t("Consult Agri-Experts", "నిపుణుల సలహాలు పొందండి")}
-              </Link>
-            </div>
-
-            {/* Quick Metrics */}
-            <div className="grid grid-cols-3 gap-6 pt-6 border-t border-slate-200/80 max-w-lg">
-              <div>
-                <p className="text-[10px] text-slate-400 font-mono tracking-widest uppercase mb-1">Products Registered</p>
-                <p className="text-2xl font-bold text-slate-800 font-display">75+ Brands</p>
-              </div>
-              <div>
-                <p className="text-[10px] text-slate-400 font-mono tracking-widest uppercase mb-1">Dealers Network</p>
-                <p className="text-2xl font-bold text-blue-600 font-display">500+ Hubs</p>
-              </div>
-              <div>
-                <p className="text-[10px] text-slate-400 font-mono tracking-widest uppercase mb-1">States Covered</p>
-                <p className="text-2xl font-bold text-cyan-600 font-display">12+ States</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Right Side: Authentic Pesticide Product Detail card */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="lg:col-span-5 relative flex items-center justify-center"
-          >
-            {/* Main Product Showcase Box */}
-            <div className="w-full max-w-[500px] h-[490px] rounded-3xl glass-card p-6 flex flex-col justify-between relative shadow-xl overflow-hidden border border-slate-200/80 bg-white">
-              <div className="absolute inset-0 bg-gradient-to-tr from-blue-50/40 via-transparent to-cyan-50/20 pointer-events-none" />
-
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-1.5 font-mono text-[10px] tracking-wider text-blue-600 uppercase font-bold">
-                    <RiDatabaseLine className="text-base" /> Formulation & Efficacy Panel
-                  </div>
-                  <span className="text-[9px] bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-0.5 rounded-full font-mono uppercase font-bold">
-                    Interactive
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200/50">
-                  {categories.map((c) => (
-                    <button
-                      key={c.id}
-                      onClick={() => setActiveLayer(c.id)}
-                      className={`py-2 px-1 text-[9px] font-bold tracking-wider uppercase rounded-lg transition duration-200 ${
-                        activeLayer === c.id 
-                          ? 'bg-blue-600 text-white font-extrabold shadow-sm' 
-                          : 'text-slate-500 hover:text-slate-800 hover:bg-slate-200/60'
-                      }`}
-                    >
-                      {c.id}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Product Info displaying like a physical catalog */}
-              <div className="flex-1 flex flex-col justify-center items-center py-4 text-center space-y-3 z-10">
-                <motion.div
-                  key={currentCategory.id}
-                  initial={{ scale: 0.85, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ type: 'spring', stiffness: 180, damping: 15 }}
-                  className={`w-16 h-16 rounded-2xl bg-gradient-to-tr ${currentCategory.color} flex items-center justify-center border border-slate-200/60 shadow-inner`}
-                >
-                  {currentCategory.icon}
-                </motion.div>
-
-                <div>
-                  <span className="text-[9px] font-mono tracking-widest text-blue-600 uppercase font-bold">{currentCategory.tag}</span>
-                  <h3 className="text-xl font-bold text-slate-850 tracking-wide font-display mt-0.5">{currentCategory.title}</h3>
-                  <p className="text-slate-500 text-xs mt-1.5 px-4 leading-relaxed font-light">{currentCategory.desc}</p>
-                </div>
-              </div>
-
-              {/* Pesticide application Matrix details */}
-              <div className="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/60 font-mono">
-                <div>
-                  <p className="text-[9px] text-slate-400 uppercase tracking-widest font-bold">Target Pests/Weeds</p>
-                  <p className="text-xs font-bold text-slate-800 mt-0.5 line-clamp-1">{currentCategory.targetPests}</p>
-                </div>
-                <div>
-                  <p className="text-[9px] text-slate-400 uppercase tracking-widest font-bold">Recommended Dosage</p>
-                  <p className="text-xs font-bold text-blue-600 mt-0.5">{currentCategory.dosage}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Farm Quality Cert */}
-            <motion.div
-              animate={{ y: [0, -6, 0] }}
-              transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
-              className="absolute -top-4 -right-4 w-44 bg-white p-4 rounded-2xl border border-slate-200 shadow-md text-left hidden md:block"
-            >
-              <div className="flex items-center gap-2 mb-1.5">
-                <RiSeedlingFill className="text-blue-500 text-lg" />
-                <p className="text-[9px] font-mono font-bold tracking-widest text-blue-600 uppercase">Field Checked</p>
-              </div>
-              <p className="text-xs text-slate-800 font-bold">Eco-Safe Soil Profile</p>
-              <p className="text-[9px] text-slate-400 mt-0.5 font-light">Completely selective formulation pathways.</p>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* 2. STATS SECTION */}
-      <section className="py-16 bg-white border-y border-slate-200/60 relative z-10">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-8 grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-          {[
-            { value: "75", suffix: "+", label: "CIB Registered Products", desc: "Insecticides, Herbicides, Fungicides, and Biostimulants" },
-            { value: "500", suffix: "+", label: "Authorized Dealers", desc: "Ensuring timely supply across prime agricultural districts" },
-            { value: "100", suffix: "%", label: "Quality Efficacy", desc: "Rigorous quality check audits for maximum crop safety" },
-            { value: "15", suffix: "M", label: "Acres Protected", desc: "Shielding commercial farms from heavy pest infestation" }
-          ].map((stat, idx) => (
-            <div key={idx} className="space-y-2 p-5 rounded-2xl border border-transparent hover:border-slate-200/60 hover:bg-slate-50 transition duration-300">
-              <Counter value={stat.value} suffix={stat.suffix} />
-              <p className="text-xs font-bold text-slate-700 font-display tracking-wider uppercase pt-1.5">{stat.label}</p>
-              <p className="text-[11px] text-slate-500 font-light leading-relaxed mt-1">{stat.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 3. CROP PROTECTION CATEGORIES */}
-      <section className="py-20 max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
-        <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
-          <p className="text-xs font-mono tracking-widest text-blue-600 uppercase font-bold">Manufactured Solutions</p>
-          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight font-display uppercase">
-            OUR <span className="text-gradient">CROP CARE</span> PORTFOLIO
-          </h2>
-          <p className="text-slate-500 text-sm leading-relaxed font-light">
-            We manufacture advanced crop protection formulations that address severe pest attacks, stubborn weeds, and fungal diseases.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              title: "High-Efficacy Insecticides",
-              desc: "Eradicates sucking and chewing lepidoptera pests (thrips, aphids, bollworms) while ensuring outstanding crop safety.",
-              route: "/products?category=insecticides",
-              color: "border-blue-250 hover:border-blue-450 shadow-sm",
-              img: "/cotton_solution.png"
-            },
-            {
-              title: "Selective Herbicides",
-              desc: "Broad-spectrum weedicides targeting wild weeds and grasses in wet rice paddy fields with zero crop foliage yellowing.",
-              route: "/products?category=herbicides",
-              color: "border-cyan-250 hover:border-cyan-455 shadow-sm",
-              img: "/rice_solution.png"
-            },
-            {
-              title: "Protective Fungicides",
-              desc: "High-performance fungicides shielding crops from powdery mildew, leaf rust, damping-off, and fungal pathogens.",
-              route: "/products?category=fungicides",
-              color: "border-blue-250 hover:border-blue-455 shadow-sm",
-              img: "/tomato_solution.png"
-            }
-          ].map((cat, index) => (
-            <motion.div
-              key={index}
-              className={`glass-card border-glow rounded-3xl overflow-hidden flex flex-col justify-between border ${cat.color} p-6 space-y-6 group`}
-              whileHover={{ y: -6 }}
-            >
-              <div className="space-y-4">
-                <div className="h-48 w-full rounded-2xl overflow-hidden relative">
-                  <img
-                    src={cat.img}
-                    alt={cat.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent" />
-                </div>
-                <h3 className="text-lg font-bold text-slate-800 font-display pt-2 group-hover:text-blue-600 transition duration-200">{cat.title}</h3>
-                <p className="text-xs text-slate-500 font-light leading-relaxed">
-                  {cat.desc}
-                </p>
-              </div>
-
-              <Link
-                to={cat.route}
-                className="py-3 px-5 rounded-xl border border-blue-600 text-blue-600 font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 group-hover:bg-blue-650 group-hover:text-white transition duration-300"
-              >
-                Explore Products Catalog <RiArrowRightLine />
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* 4. WHY FARMERS CHOOSE SAVAXA */}
-      <section className="py-20 bg-white border-t border-slate-200/60 relative z-10">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          
-          <div className="space-y-8">
-            <p className="text-xs font-mono tracking-widest text-blue-600 uppercase font-bold">TRUSTED CHEMISTRY</p>
-            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight font-display uppercase">
-              WHY CROP GROWERS & DEALERS <br />
-              <span className="text-gradient">TRUST SAVAXA</span>
+      {/* 3. PRODUCT CATEGORIES */}
+      <section className="py-24 bg-[var(--color-brand-surface)] relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-montserrat font-bold text-[var(--color-brand-navy)] uppercase tracking-tight">
+              Our Product Range
             </h2>
-            <p className="text-slate-500 text-sm leading-relaxed font-light">
-              We focus on delivering high-efficacy agrochemicals, excellent active ingredient ratios, and outstanding crop protection services.
-            </p>
+            <div className="w-24 h-1.5 bg-[var(--color-brand-primary)] mx-auto mt-6 rounded-full" />
+          </div>
 
-            <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Insecticides",
+                desc: "High-efficacy targeting against chewing and sucking crop pests.",
+                icon: <Microscope className="w-10 h-10 text-[var(--color-brand-primary)]" />,
+                route: "/products/insecticides"
+              },
+              {
+                title: "Herbicides",
+                desc: "Selective weed blockades tailored for rich crop yields.",
+                icon: <Leaf className="w-10 h-10 text-[var(--color-brand-primary)]" />,
+                route: "/products/herbicides"
+              },
+              {
+                title: "Fungicides",
+                desc: "Advanced defense systems preventing severe fungal spreads.",
+                icon: <ShieldCheck className="w-10 h-10 text-[var(--color-brand-primary)]" />,
+                route: "/products/fungicides"
+              }
+            ].map((cat, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(0,71,171,0.15)' }}
+                className="glass-card p-8 flex flex-col items-center text-center bg-white group cursor-pointer"
+              >
+                <div className="w-20 h-20 rounded-2xl bg-[var(--color-brand-surface)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  {cat.icon}
+                </div>
+                <h3 className="text-2xl font-montserrat font-bold text-[var(--color-brand-navy)] mb-3">{cat.title}</h3>
+                <p className="text-slate-600 mb-8 flex-1">{cat.desc}</p>
+                <Link to={cat.route} className="inline-flex items-center gap-2 text-[var(--color-brand-primary)] font-bold uppercase tracking-wider text-sm group-hover:text-[var(--color-brand-secondary)] transition-colors">
+                  View Products <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. WHY CHOOSE SAVAXA */}
+      <section className="py-24 bg-white relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-6">
+              <h2 className="text-4xl md:text-5xl font-montserrat font-bold text-[var(--color-brand-navy)] uppercase tracking-tight">
+                Why Choose <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-primary)] to-[var(--color-brand-accent)]">Savaxa?</span>
+              </h2>
+              <div className="w-24 h-1.5 bg-[var(--color-brand-primary)] rounded-full" />
+              <p className="text-lg text-slate-600 leading-relaxed pt-4">
+                We bridge the gap between advanced scientific research and practical farming. Our formulations undergo rigorous trials to ensure they deliver maximum efficacy while preserving soil health.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               {[
-                { title: "CIB&RC Registered Pesticides", desc: "Every formulation is fully compliant with federal agrochemical standards and undergoes strict farm trials.", icon: <RiAwardLine className="text-blue-600" /> },
-                { title: "Guaranteed Higher Crop Yields", desc: "Formulated to optimize crop density, enhance tillering, and protect fruit and cotton bolls from pest damage.", icon: <RiPlantLine className="text-cyan-500" /> },
-                { title: "Eco-Conscious Chemistry", desc: "Selective action modes that hit targets directly, keeping the surrounding soil ecosystem active and healthy.", icon: <RiSeedlingFill className="text-blue-600" /> }
-              ].map((point, index) => (
-                <div key={index} className="flex gap-4 p-4 bg-slate-50 border border-slate-100 rounded-2xl hover:border-slate-200/80 transition duration-300">
-                  <div className="w-10 h-10 rounded-xl bg-white border border-slate-200/60 flex items-center justify-center text-lg shrink-0 shadow-sm">
-                    {point.icon}
+                { title: "Scientifically Formulated", icon: <Microscope className="w-8 h-8 text-[var(--color-brand-primary)]" /> },
+                { title: "Eco-Safe Profile", icon: <Leaf className="w-8 h-8 text-[var(--color-brand-primary)]" /> },
+                { title: "Affordable Pricing", icon: <Award className="w-8 h-8 text-[var(--color-brand-primary)]" /> },
+                { title: "Expert Support", icon: <Users className="w-8 h-8 text-[var(--color-brand-primary)]" /> }
+              ].map((item, i) => (
+                <div key={i} className="flex flex-col space-y-4 p-6 bg-[var(--color-brand-surface)] rounded-2xl border border-[var(--color-blue-100)]">
+                  <div className="w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center">
+                    {item.icon}
                   </div>
-                  <div>
-                    <h4 className="text-xs font-bold text-slate-700 tracking-wider uppercase font-display">{point.title}</h4>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed font-light">{point.desc}</p>
-                  </div>
+                  <h4 className="font-montserrat font-bold text-[var(--color-brand-navy)] text-lg">{item.title}</h4>
                 </div>
               ))}
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* High-quality pesticide demonstration images */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {featuredProducts.map((prod) => (
-              <div 
-                key={prod.id} 
-                className="glass-card border border-slate-200/50 rounded-3xl overflow-hidden flex flex-col justify-between p-4 space-y-4 group"
+      {/* 5. CROP SOLUTIONS PREVIEW */}
+      <section className="py-24 bg-[var(--color-brand-surface)] relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-montserrat font-bold text-[var(--color-brand-navy)] uppercase tracking-tight">
+              Crop Solutions
+            </h2>
+            <div className="w-24 h-1.5 bg-[var(--color-brand-primary)] mx-auto mt-6 rounded-full" />
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {['Rice', 'Wheat', 'Cotton', 'Vegetables', 'Pulses', 'Fruits'].map((crop, i) => (
+              <Link 
+                key={i} 
+                to="/crop-solutions"
+                className="group bg-white rounded-2xl overflow-hidden border border-[var(--color-blue-100)] hover:border-[var(--color-brand-primary)] transition-all shadow-sm hover:shadow-lg"
               >
-                <div className="relative h-44 rounded-2xl overflow-hidden">
-                  <img src={prod.img} alt={prod.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
-                  <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[8px] font-mono tracking-widest text-blue-600 font-bold border border-blue-200 px-2 py-0.5 rounded-full uppercase">
-                    {prod.tag}
-                  </span>
+                <div className="h-32 bg-slate-200 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-brand-primary)]/40 to-transparent mix-blend-multiply group-hover:opacity-80 transition-opacity" />
+                  <img src={`https://source.unsplash.com/400x300/?${crop.toLowerCase()},farm`} alt={crop} className="w-full h-full object-cover" onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400&q=80" }} />
                 </div>
-                <div>
-                  <p className="text-[9px] text-slate-400 font-mono tracking-widest uppercase font-bold">{prod.category}</p>
-                  <h4 className="text-sm font-bold text-slate-800 mt-1 group-hover:text-blue-600 transition duration-200 font-display">{prod.name}</h4>
-                  <p className="text-xs text-slate-500 mt-1.5 leading-relaxed font-light line-clamp-2">{prod.desc}</p>
+                <div className="p-4 text-center">
+                  <h4 className="font-montserrat font-bold text-[var(--color-brand-navy)] mb-2">{crop}</h4>
+                  <span className="text-[10px] font-bold text-[var(--color-brand-primary)] uppercase tracking-wider group-hover:text-[var(--color-brand-accent)] transition-colors">View Solutions →</span>
                 </div>
-                <Link 
-                  to={`/products/details?id=${prod.id}`} 
-                  className="w-full py-2.5 bg-slate-50 hover:bg-blue-600 border border-slate-200/60 hover:border-blue-500 hover:text-white font-bold text-[9px] tracking-widest uppercase rounded-xl transition duration-300 flex items-center justify-center gap-1.5"
-                >
-                  View Application Guide <RiArrowRightUpLine />
-                </Link>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6. STATS SECTION */}
+      <section className="py-20 bg-[var(--color-brand-primary)] relative z-10" ref={statsRef}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x-0 md:divide-x divide-white/20">
+            {[
+              { val: 100000, label: "Farmers", suffix: "+" },
+              { val: 20, label: "Products", suffix: "+" },
+              { val: 500, label: "Dealers", suffix: "+" },
+              { val: 15, label: "Years", suffix: "+" }
+            ].map((stat, i) => (
+              <div key={i} className="text-center px-4 space-y-2">
+                <div className="text-4xl md:text-5xl font-montserrat font-extrabold text-white">
+                  {statsInView ? <CountUp end={stat.val} duration={2.5} separator="," /> : '0'}
+                  {stat.suffix}
+                </div>
+                <p className="text-sm font-bold text-blue-200 uppercase tracking-widest">{stat.label}</p>
               </div>
             ))}
           </div>
-
         </div>
       </section>
 
-      {/* 5. CROP GROWERS TESTIMONIALS */}
-      <section className="py-20 max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
-        <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
-          <p className="text-xs font-mono tracking-widest text-blue-600 uppercase font-bold">FARMERS VOICES</p>
-          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight font-display">
-            TRUSTED BY GROWERS
-          </h2>
-          <p className="text-slate-500 text-sm leading-relaxed font-light">
-            Real farm stories and crop yield improvements from commercial cultivators.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              quote: "Deploying Savaxa Shield-Ultra Insecticide saved our cotton crop. The chewing bollworms were eradicated within 24 hours of spraying, and we harvested healthy cotton bolls.",
-              author: "Ramesh Goud",
-              role: "Cotton Farmer, Warangal Rural",
-              stars: 5,
-              avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
-            },
-            {
-              quote: "Early blight and damping-off rot were ruining our tomato nurseries. BioRoot Fungicide cleared the infection completely, and the tomato roots are incredibly strong and healthy.",
-              author: "Sridhar Reddy",
-              role: "Owner, Reddy Tomato Farms",
-              stars: 5,
-              avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80"
-            },
-            {
-              quote: "The selective herbicides worked wonders in our paddy fields. Wild grasses were controlled perfectly, saving us huge costs on manual labour weed-clearing.",
-              author: "N. Venkateswara Rao",
-              role: "Paddy Cultivator, Guntur Delta",
-              stars: 5,
-              avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80"
-            }
-          ].map((t, idx) => (
-            <div key={idx} className="glass-card rounded-3xl p-6 border border-slate-200/60 flex flex-col justify-between space-y-6 relative">
-              <RiDoubleQuotesL className="text-blue-600/10 text-5xl absolute top-6 right-6 pointer-events-none" />
-              <div className="space-y-4">
-                <div className="flex gap-1">
-                  {[...Array(t.stars)].map((_, i) => <RiStarFill key={i} className="text-amber-400 text-xs" />)}
-                </div>
-                <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-light italic">
-                  "{t.quote}"
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3.5 pt-4 border-t border-slate-100">
-                <img src={t.avatar} alt={t.author} className="w-10 h-10 rounded-full object-cover border border-blue-400/20 shadow-sm" />
-                <div>
-                  <h4 className="text-xs font-bold text-slate-800 font-display">{t.author}</h4>
-                  <p className="text-[9px] text-slate-400 font-mono tracking-wider">{t.role}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 6. CALL-TO-ACTION BANNER */}
-      <section className="py-20 max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
-        <div className="rounded-[35px] bg-gradient-to-r from-blue-600 to-cyan-700 p-10 md:p-14 text-center relative overflow-hidden shadow-lg flex flex-col items-center">
-          <div className="absolute -top-12 -right-12 w-64 h-64 bg-white/10 rounded-full filter blur-2xl pointer-events-none" />
-          <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-blue-300/20 rounded-full filter blur-2xl pointer-events-none" />
-
-          <div className="max-w-2xl space-y-6 relative z-10 text-white">
-            <p className="text-[10px] font-mono tracking-widest text-blue-200 uppercase font-bold">Dealer & Distributor Network</p>
-            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight font-display">
-              READY TO GROW WITH SAVAXA?
+      {/* 7. TESTIMONIALS */}
+      <section className="py-24 bg-white relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-montserrat font-bold text-[var(--color-brand-navy)] uppercase tracking-tight">
+              Trusted by Growers
             </h2>
-            <p className="text-blue-100 text-xs md:text-sm leading-relaxed font-light">
-              Become an authorized dealer or consult our agricultural experts for optimized spray charts and product specifications.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center">
-              <Link 
-                to="/dealers" 
-                className="bg-white hover:bg-slate-50 text-blue-700 font-bold text-xs tracking-widest uppercase px-8 py-3.5 rounded-xl shadow-md transition duration-300 hover:scale-[1.02]"
-              >
-                Apply for Dealership
-              </Link>
-              <Link 
-                to="/contact" 
-                className="border border-white/40 text-white hover:bg-white/10 font-bold text-xs tracking-widest uppercase px-8 py-3.5 rounded-xl transition duration-300 hover:scale-[1.02]"
-              >
-                Consult Our Agronomist
-              </Link>
-            </div>
+            <div className="w-24 h-1.5 bg-[var(--color-brand-primary)] mx-auto mt-6 rounded-full" />
           </div>
+
+          <div className="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory hide-scrollbar">
+            {testimonials.map((t, i) => (
+              <div key={i} className="min-w-[300px] md:min-w-[400px] snap-center glass-card border-l-4 border-l-[var(--color-brand-primary)] p-8 flex flex-col space-y-6">
+                <div className="flex text-amber-400">
+                  {[...Array(t.stars)].map((_, idx) => <span key={idx}>★</span>)}
+                </div>
+                <p className="text-slate-600 italic leading-relaxed flex-1">"{t.quote}"</p>
+                <div>
+                  <h4 className="font-montserrat font-bold text-[var(--color-brand-navy)]">{t.author}</h4>
+                  <p className="text-xs text-slate-500">{t.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 8. LATEST BLOG PREVIEW */}
+      <section className="py-24 bg-[var(--color-brand-surface)] relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-end mb-12">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-montserrat font-bold text-[var(--color-brand-navy)] uppercase tracking-tight">
+                Latest Insights
+              </h2>
+              <div className="w-24 h-1.5 bg-[var(--color-brand-primary)] mt-6 rounded-full" />
+            </div>
+            <Link to="/blog" className="hidden md:flex items-center gap-2 text-[var(--color-brand-primary)] font-bold uppercase tracking-wider text-sm hover:text-[var(--color-brand-navy)] transition-colors">
+              View All <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[1, 2, 3].map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl overflow-hidden border border-[var(--color-blue-100)] shadow-sm hover:shadow-lg transition-shadow group">
+                <div className="h-48 bg-slate-200 relative overflow-hidden">
+                  <img src={`https://source.unsplash.com/600x400/?agriculture,farm,${i}`} alt="Blog" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&q=80" }}/>
+                  <div className="absolute top-4 left-4 bg-[var(--color-brand-primary)] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Farming Tips</div>
+                </div>
+                <div className="p-6">
+                  <span className="text-xs text-slate-400 mb-2 block">October 12, 2024</span>
+                  <h3 className="text-xl font-montserrat font-bold text-[var(--color-brand-navy)] mb-3 group-hover:text-[var(--color-brand-primary)] transition-colors line-clamp-2">Maximizing Crop Yields During Monsoon Season</h3>
+                  <p className="text-slate-600 text-sm mb-4 line-clamp-2">Learn the best practices and essential preventative sprays to keep your crops safe during heavy rains.</p>
+                  <Link to="/blog/1" className="text-[var(--color-brand-primary)] font-bold text-sm uppercase tracking-wider flex items-center gap-1 group-hover:gap-2 transition-all">Read More <ArrowRight className="w-4 h-4" /></Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 9. CTA BANNER */}
+      <section className="py-24 bg-[var(--color-brand-navy)] relative z-10 text-center px-4">
+        <div className="max-w-3xl mx-auto space-y-8">
+          <h2 className="text-4xl md:text-5xl font-montserrat font-extrabold text-white tracking-tight leading-tight">
+            READY TO PROTECT YOUR CROPS?
+          </h2>
+          <p className="text-blue-100 text-lg leading-relaxed">
+            Join thousands of successful farmers who trust Savaxa for their agricultural needs. Get in touch with our experts today.
+          </p>
+          <Link to="/contact" className="inline-block btn-premium px-10 py-4 text-lg font-bold uppercase tracking-wider">
+            Get In Touch
+          </Link>
         </div>
       </section>
 

@@ -1,19 +1,43 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useLanguage } from '../context/LanguageContext'
-import { RiSearchLine, RiArrowRightLine, RiFilterLine, RiSeedlingLine } from 'react-icons/ri'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { ArrowRight, Search, Microscope, Leaf, ShieldCheck } from 'lucide-react'
 import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../firebase'
 import toast, { Toaster } from 'react-hot-toast'
-import SEO from '../components/SEO'
 
 export default function Products() {
-  const { t } = useLanguage()
   const [productsList, setProductsList] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-  const [activeCategory, setActiveCategory] = useState('all')
   const [selectedProduct, setSelectedProduct] = useState(null)
+  
+  const location = useLocation()
+  const navigate = useNavigate()
+  
+  // Determine category from URL or default to 'all'
+  const getCategoryFromPath = () => {
+    const path = location.pathname;
+    if (path.includes('/insecticides')) return 'insecticides';
+    if (path.includes('/herbicides')) return 'herbicides';
+    if (path.includes('/fungicides')) return 'fungicides';
+    return 'all';
+  }
+  
+  const [activeCategory, setActiveCategory] = useState(getCategoryFromPath())
+
+  useEffect(() => {
+    setActiveCategory(getCategoryFromPath())
+  }, [location.pathname])
+
+  const handleTabSwitch = (cat) => {
+    setActiveCategory(cat)
+    if (cat === 'all') {
+      navigate('/products')
+    } else {
+      navigate(`/products/${cat}`)
+    }
+  }
 
   useEffect(() => {
     if (!db) {
@@ -24,7 +48,6 @@ export default function Products() {
 
     const unsubscribe = onSnapshot(collection(db, 'products'), (snapshot) => {
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-      // Sort by createdAt descending
       const sorted = data.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
       setProductsList(sorted)
       setLoading(false)
@@ -38,7 +61,7 @@ export default function Products() {
   }, [])
 
   const filteredProducts = productsList.filter(prod => {
-    const matchesCategory = activeCategory === 'all' || prod.category === activeCategory;
+    const matchesCategory = activeCategory === 'all' || prod.category?.toLowerCase() === activeCategory;
     if (!searchQuery) return matchesCategory;
 
     const query = searchQuery.toLowerCase();
@@ -49,256 +72,186 @@ export default function Products() {
     return matchesCategory && (nameMatch || descMatch || usageMatch);
   });
 
+  const categoryIcons = {
+    insecticides: <Microscope className="w-5 h-5" />,
+    herbicides: <Leaf className="w-5 h-5" />,
+    fungicides: <ShieldCheck className="w-5 h-5" />
+  }
+
   return (
-    <div className="font-sans pt-32 pb-20 relative overflow-hidden bg-slate-50 min-h-screen text-slate-800">
-      <SEO 
-        title="Products Catalog | Insecticides, Fungicides, Herbicides | SAVAXA"
-        description="Explore the complete SAVAXA crop care catalog. Learn about our advanced herbicides, high-efficacy insecticides, bio-stimulants, and protective plant fungicides."
-        keywords="insecticides for agriculture, fungicides for plants, best herbicides for crops, selective weedicides, bio-stimulants, crop protection india"
-      />
+    <div className="font-inter bg-[var(--color-brand-surface)] min-h-screen pt-32 pb-24">
       <Toaster position="top-right" />
       
-      {/* Meadow Watermark */}
-      <div className="absolute top-0 left-0 w-full h-[120vh] -z-20 pointer-events-none overflow-hidden">
-        <img 
-          src="https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=1920&q=80" 
-          alt="Crop Pattern Watermark" 
-          className="w-full h-full object-cover opacity-[0.07] mix-blend-overlay filter saturate-75 contrast-125"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-50/0 via-slate-50/70 to-slate-50" />
-      </div>
-
-      <div className="absolute top-[10%] left-0 w-96 h-96 bg-blue-100/20/20 rounded-full blur-[130px] pointer-events-none" />
-      <div className="absolute top-[45%] right-0 w-[500px] h-[500px] bg-teal-100/20 rounded-full blur-[150px] pointer-events-none" />
-
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header Block */}
-        <div className="text-center max-w-2xl mx-auto space-y-4 mb-12">
-          <p className="text-xs font-mono tracking-widest text-blue-650 uppercase font-bold">
-            {t("SAVAXA CROP CARE PORTFOLIO", "సవాక్సా పంట రక్షణ శ్రేణి")}
-          </p>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-display">
-            {t("OUR PRODUCTS", "మా ఉత్పత్తులు")}
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-montserrat font-bold text-[var(--color-brand-navy)] uppercase tracking-tight">
+            Our Products
           </h1>
-          <p className="text-slate-550 text-sm leading-relaxed font-light">
-            {t(
-              "Browse our range of high-efficacy pesticides, selective weedicides, protective fungicides, and premium organic biostimulants.",
-              "ఉత్తమ నాణ్యత కలిగిన పురుగుమందులు, కలుపునాశనులు, శిలీంద్రనాశనులు మరియు సేంద్రీయ ఉత్ప్రేరకాల శ్రేణిని ఇక్కడ చూడండి."
-            )}
+          <div className="w-24 h-1.5 bg-[var(--color-brand-primary)] mx-auto mt-6 rounded-full mb-6" />
+          <p className="text-slate-600 max-w-2xl mx-auto text-lg">
+            High-efficacy agrochemicals scientifically formulated to protect your crops and ensure maximum yield.
           </p>
         </div>
 
-        {/* Filter & Search Bar */}
-        <div className="glass-panel p-4 rounded-3xl border border-slate-200/60 flex flex-col md:flex-row gap-4 items-center justify-between mb-12 shadow-sm bg-white/70">
-          <div className="flex gap-2 w-full md:w-auto overflow-x-auto whitespace-nowrap scrollbar-none pb-2 md:pb-0">
+        {/* Tab Switcher & Search */}
+        <div className="bg-white p-4 rounded-2xl border border-[var(--color-blue-100)] flex flex-col md:flex-row justify-between items-center gap-6 mb-12 shadow-sm">
+          <div className="flex gap-2 w-full md:w-auto overflow-x-auto hide-scrollbar">
             {[
-              { id: 'all', name: t('All Crop Protection', 'అన్ని ఉత్పత్తులు') },
-              { id: 'insecticides', name: t('Insecticides', 'కీటకనాశకాలు') },
-              { id: 'herbicides', name: t('Herbicides', 'కలుపునాశకాలు') },
-              { id: 'fungicides', name: t('Fungicides', 'శిలీంద్రనాశకాలు') },
-              { id: 'biostimulants', name: t('Biostimulants', 'బయో-ఉత్ప్రేరకాలు') }
+              { id: 'all', name: 'All Products' },
+              { id: 'insecticides', name: 'Insecticides' },
+              { id: 'herbicides', name: 'Herbicides' },
+              { id: 'fungicides', name: 'Fungicides' }
             ].map(cat => (
               <button
                 key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={`px-4 py-2.5 rounded-xl text-xs tracking-wider uppercase font-bold transition duration-300 border ${
+                onClick={() => handleTabSwitch(cat.id)}
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-sm transition-all whitespace-nowrap ${
                   activeCategory === cat.id
-                    ? 'bg-blue-600 text-white border-blue-600 font-bold shadow-sm'
-                    : 'text-slate-550 hover:text-slate-800 hover:bg-slate-100 border-slate-200/60'
+                    ? 'bg-[var(--color-brand-primary)] text-white shadow-md'
+                    : 'bg-[var(--color-brand-surface)] text-[var(--color-brand-navy)] hover:bg-[var(--color-blue-100)]'
                 }`}
               >
+                {cat.id !== 'all' && categoryIcons[cat.id]}
                 {cat.name}
               </button>
             ))}
           </div>
 
           <div className="relative w-full md:w-80">
-            <RiSearchLine className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input
               type="text"
-              placeholder={t("Search products, usage...", "ఉత్పత్తులు లేదా ఉపయోగాల కొరకు వెతకండి...")}
+              placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200/60 rounded-xl pl-11 pr-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-blue-600 transition duration-300 shadow-inner"
+              className="w-full bg-[var(--color-brand-surface)] border border-[var(--color-blue-100)] rounded-xl pl-12 pr-4 py-3 text-sm text-[var(--color-brand-navy)] focus:outline-none focus:border-[var(--color-brand-primary)] transition-colors"
             />
           </div>
         </div>
 
-        {/* Products Grid */}
-        {filteredProducts.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-slate-200 space-y-4 shadow-sm">
-            <h3 className="text-lg font-bold text-slate-800 font-display">
-              {t("NO PRODUCTS FOUND", "ఉత్పత్తులేవీ లభించలేదు")}
-            </h3>
-            <p className="text-slate-500 text-xs font-light max-w-sm mx-auto">
-              We couldn't find any products matching your specific query. Try clearing filters or altering search keywords.
-            </p>
-            <button
-              onClick={() => { setActiveCategory('all'); setSearchQuery(''); }}
-              className="bg-blue-600 hover:bg-emerald-555 text-white px-5 py-2.5 rounded-xl font-bold text-[10px] tracking-widest uppercase shadow-sm transition duration-300"
-            >
-              Reset Filters
-            </button>
+        {/* Product Grid */}
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--color-brand-primary)]"></div>
+          </div>
+        ) : filteredProducts.length === 0 ? (
+          <div className="text-center py-20 bg-white rounded-2xl border border-[var(--color-blue-100)]">
+            <h3 className="text-xl font-montserrat font-bold text-[var(--color-brand-navy)] mb-2">No Products Found</h3>
+            <p className="text-slate-500">Try adjusting your filters or search query.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <AnimatePresence mode="popLayout">
               {filteredProducts.map((prod) => (
                 <motion.div
                   layout
                   key={prod.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.35 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-white rounded-2xl border border-[var(--color-blue-100)] overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col group cursor-pointer"
                   onClick={() => setSelectedProduct(prod)}
-                  className="glass-card border border-slate-200/60 rounded-3xl overflow-hidden flex flex-col justify-between p-5 space-y-6 group shadow-sm hover:border-slate-350 transition duration-300 cursor-pointer"
                 >
-                  <div className="space-y-4">
-                    {/* Photo */}
-                    <div className="h-52 rounded-2xl overflow-hidden relative">
-                      <img src={prod.img} alt={prod.name} className="w-full h-full object-cover group-hover:scale-103 transition duration-500" />
-                      <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[8px] font-mono tracking-widest font-extrabold border border-emerald-255 px-2.5 py-0.5 rounded-full text-blue-600 uppercase">
-                        {prod.category}
-                      </span>
+                  <div className="h-64 relative bg-slate-100 overflow-hidden p-6 flex items-center justify-center">
+                    <img src={prod.img} alt={prod.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=400&q=80" }} />
+                    <div className="absolute top-4 left-4 bg-[var(--color-brand-surface)] text-[var(--color-brand-primary)] text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest border border-[var(--color-blue-100)]">
+                      {prod.category}
                     </div>
-
-                    {/* Title & Desc */}
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-800 font-display group-hover:text-blue-600 transition duration-200 leading-snug">
-                        {prod.name}
-                      </h3>
-                      <p className="text-xs text-slate-500 mt-2 leading-relaxed font-light font-sans line-clamp-3">
-                        {prod.description}
-                      </p>
-                    </div>
-
-                    {/* Quick Specs */}
-                    {prod.usage && (
-                      <div className="pt-2 border-t border-slate-100 text-[11px] font-mono flex justify-between">
-                        <span className="text-slate-400 uppercase font-bold">Usage Summary:</span>
-                        <span className="text-slate-700 font-sans font-bold truncate max-w-[200px]">{prod.usage}</span>
-                      </div>
-                    )}
                   </div>
-
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setSelectedProduct(prod)
-                    }}
-                    className="w-full py-3 bg-slate-50 hover:bg-blue-600 border border-slate-200 hover:border-blue-500 text-slate-700 hover:text-white font-bold text-xs tracking-widest uppercase rounded-xl transition duration-300 flex items-center justify-center gap-1.5 shadow-inner"
-                  >
-                    {t("View Application Guide", "వాడే పద్ధతులు చూడండి")} <RiArrowRightLine />
-                  </button>
+                  
+                  <div className="p-6 flex-1 flex flex-col">
+                    <h3 className="text-xl font-montserrat font-bold text-[var(--color-brand-navy)] mb-2 group-hover:text-[var(--color-brand-primary)] transition-colors line-clamp-1">{prod.name}</h3>
+                    
+                    {prod.targetPests && (
+                      <p className="text-sm text-slate-600 mb-4 line-clamp-2 flex-1">
+                        <span className="font-bold text-slate-800">Targets:</span> {prod.targetPests}
+                      </p>
+                    )}
+                    
+                    <div className="mt-auto pt-4 border-t border-[var(--color-blue-100)]">
+                      <button className="flex items-center justify-center w-full gap-2 text-[var(--color-brand-primary)] font-bold text-sm uppercase tracking-wider group-hover:bg-[var(--color-brand-primary)] group-hover:text-white py-3 rounded-lg transition-colors">
+                        View Details <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </AnimatePresence>
-          </div>
+          </motion.div>
         )}
-
       </div>
 
-      {/* Product Details Modal Window */}
-      {selectedProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 w-full max-w-2xl shadow-2xl relative my-8 animate-scale-in max-h-[90vh] overflow-y-auto">
-            <button
-              onClick={() => setSelectedProduct(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-2xl z-10"
+      {/* Product Details Modal */}
+      <AnimatePresence>
+        {selectedProduct && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-brand-navy)]/80 backdrop-blur-sm p-4 overflow-y-auto"
+            onClick={() => setSelectedProduct(null)}
+          >
+            <motion.div 
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl relative my-8"
             >
-              &times;
-            </button>
-
-            <div className="space-y-6">
-              {/* Header Image */}
-              <div className="h-64 md:h-80 w-full rounded-2xl overflow-hidden border border-slate-100 relative">
-                <img src={selectedProduct.img} alt={selectedProduct.name} className="w-full h-full object-cover" />
-                <span className="absolute bottom-4 left-4 bg-blue-600 text-white text-[10px] font-mono tracking-widest font-extrabold px-3 py-1 rounded-full uppercase">
-                  {selectedProduct.category}
-                </span>
-              </div>
-
-              {/* Title */}
-              <div>
-                <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 font-display">{selectedProduct.name}</h2>
-              </div>
-
-              {/* Content Grid */}
-              <div className="space-y-4 text-sm text-slate-700 leading-relaxed">
-                <div>
-                  <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Product Description</h4>
-                  <p className="font-light">{selectedProduct.description}</p>
+              <button
+                onClick={() => setSelectedProduct(null)}
+                className="absolute top-6 right-6 w-10 h-10 bg-[var(--color-brand-surface)] text-[var(--color-brand-navy)] rounded-full flex items-center justify-center font-bold text-xl hover:bg-[var(--color-blue-100)] transition-colors z-10"
+              >
+                &times;
+              </button>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2">
+                <div className="bg-slate-100 p-8 flex items-center justify-center">
+                  <img src={selectedProduct.img} alt={selectedProduct.name} className="max-w-full h-auto object-contain" />
                 </div>
-
-                {selectedProduct.dosage && (
+                <div className="p-8 md:p-10 space-y-6">
                   <div>
-                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Dosage</h4>
-                    <p className="font-light">{selectedProduct.dosage}</p>
+                    <span className="bg-[var(--color-blue-100)] text-[var(--color-brand-primary)] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest inline-block mb-3">
+                      {selectedProduct.category}
+                    </span>
+                    <h2 className="text-3xl font-montserrat font-bold text-[var(--color-brand-navy)]">{selectedProduct.name}</h2>
                   </div>
-                )}
-
-                {selectedProduct.specifications && (
-                  <div>
-                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Specifications</h4>
-                    <p className="font-light">{selectedProduct.specifications}</p>
+                  
+                  <div className="space-y-4">
+                    {selectedProduct.description && (
+                      <div>
+                        <h4 className="text-xs uppercase font-bold tracking-widest text-slate-400 mb-1">Description</h4>
+                        <p className="text-slate-700">{selectedProduct.description}</p>
+                      </div>
+                    )}
+                    {selectedProduct.dosage && (
+                      <div>
+                        <h4 className="text-xs uppercase font-bold tracking-widest text-slate-400 mb-1">Dosage</h4>
+                        <p className="text-slate-700">{selectedProduct.dosage}</p>
+                      </div>
+                    )}
+                    {selectedProduct.targetPests && (
+                      <div>
+                        <h4 className="text-xs uppercase font-bold tracking-widest text-slate-400 mb-1">Target Pests</h4>
+                        <p className="text-slate-700">{selectedProduct.targetPests}</p>
+                      </div>
+                    )}
+                    {selectedProduct.usage && (
+                      <div>
+                        <h4 className="text-xs uppercase font-bold tracking-widest text-slate-400 mb-1">Usage Instructions</h4>
+                        <p className="text-slate-700">{selectedProduct.usage}</p>
+                      </div>
+                    )}
                   </div>
-                )}
-
-                {selectedProduct.cropDetails && (
-                  <div>
-                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Target Crops / Crop Details</h4>
-                    <p className="font-light">{selectedProduct.cropDetails}</p>
-                  </div>
-                )}
-
-                {selectedProduct.usage && (
-                  <div>
-                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Usage</h4>
-                    <p className="font-light">{selectedProduct.usage}</p>
-                  </div>
-                )}
-
-                {selectedProduct.howToBeUsed && (
-                  <div>
-                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Directions (How to be used)</h4>
-                    <p className="font-light">{selectedProduct.howToBeUsed}</p>
-                  </div>
-                )}
-
-                {selectedProduct.cropEffects && (
-                  <div>
-                    <h4 className="text-xs uppercase font-mono tracking-wider font-extrabold text-blue-600 mb-1">Effects to the plant / crop</h4>
-                    <p className="font-light">{selectedProduct.cropEffects}</p>
-                  </div>
-                )}
+                </div>
               </div>
-
-              <div className="pt-4 border-t border-slate-100 flex justify-between items-center">
-                {selectedProduct.brochurePdf ? (
-                  <a
-                    href={selectedProduct.brochurePdf}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-500 font-bold text-xs uppercase tracking-widest transition-colors"
-                  >
-                    View Brochure PDF &rarr;
-                  </a>
-                ) : (
-                  <div></div>
-                )}
-                <button
-                  onClick={() => setSelectedProduct(null)}
-                  className="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition duration-300 shadow-sm"
-                >
-                  Close Window
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

@@ -1,117 +1,120 @@
 import { motion } from 'framer-motion'
-import { RiFilePdfLine, RiDownloadLine, RiFolderZipLine, RiShieldCheckLine } from 'react-icons/ri'
-import { useLanguage } from '../context/LanguageContext'
+import SEO from '../components/SEO'
+import { FileText, Download, FolderArchive, ShieldAlert, BookOpen, Layers } from 'lucide-react'
 
 export default function Downloads() {
-  const { t } = useLanguage()
 
   const downloadItems = [
     {
-      title: t("Savaxa Product Catalog 2026", "సవాక్సా ప్రొడక్ట్ క్యాటలాగ్ 2026"),
-      desc: t("Full product catalog containing crop protection specs, host crops, and dosage matrices.", "సవాక్సా ఉత్పత్తుల సమాచారం, వాడాల్సిన పంటలు మరియు ఎకరా మోతాదుల పట్టికల పూర్తి సమాచార పత్రం."),
+      title: "Savaxa Product Catalog 2026",
+      desc: "Full product catalog containing crop protection specs, host crops, and dosage matrices.",
       size: "8.4 MB",
-      type: t("Product Brochure (PDF)", "ఉత్పత్తుల బ్రోచర్ (PDF)"),
-      icon: <RiFilePdfLine className="text-blue-600 text-3xl" />
+      type: "Product Brochure (PDF)",
+      icon: <BookOpen className="w-8 h-8 text-[var(--color-brand-primary)]" />,
+      color: "blue"
     },
     {
-      title: t("Shield-Ultra Safety SDS Sheet", "షీల్డ్-అల్ట్రా సేఫ్టీ SDS షీట్"),
-      desc: t("Material Safety Data Sheet (MSDS) guidelines, toxicology classification, and antidote directions.", "మెటీరియల్ సేఫ్టీ డాటా షీట్ (MSDS) సూచనలు, రసాయన వర్గీకరణ మరియు అత్యవసర చికిత్స పద్ధతులు."),
+      title: "Shield-Ultra Safety SDS Sheet",
+      desc: "Material Safety Data Sheet (MSDS) guidelines, toxicology classification, and antidote directions.",
       size: "1.2 MB",
-      type: t("Safety SDS Document (PDF)", "సురక్షిత సమాచార పత్రం (PDF)"),
-      icon: <RiFilePdfLine className="text-rose-500 text-3xl" />
+      type: "Safety SDS Document (PDF)",
+      icon: <ShieldAlert className="w-8 h-8 text-red-500" />,
+      color: "red"
     },
     {
-      title: t("Bollgard-Zap SDS Document", "బోల్గార్డ్-జాప్ SDS డాక్యుమెంట్"),
-      desc: t("Occupational safety standards, protective suit requirements, and water body safety bounds.", "పనిచేసేటప్పుడు పాటించవలసిన భద్రతా ప్రమాణాలు, రక్షణ దుస్తుల వివరాలు మరియు పర్యావరణ సూచనలు."),
+      title: "Bollgard-Zap SDS Document",
+      desc: "Occupational safety standards, protective suit requirements, and water body safety bounds.",
       size: "1.1 MB",
-      type: t("Safety SDS Document (PDF)", "సురక్షిత సమాచార పత్రం (PDF)"),
-      icon: <RiFilePdfLine className="text-rose-500 text-3xl" />
+      type: "Safety SDS Document (PDF)",
+      icon: <ShieldAlert className="w-8 h-8 text-red-500" />,
+      color: "red"
     },
     {
-      title: t("Vanquish-X Weed Spray SDS Sheet", "వాన్క్విష్-X కలుపునాశక పిచికారీ SDS షీట్"),
-      desc: t("Post-emergent herbicide spraying intervals, soil degradation charts, and standing water safety.", "మొలకెత్తిన తర్వాత కలుపు పిచికారీ సమయాలు, భూమి రక్షణ చార్టులు మరియు నీటి వాడకం భద్రతా సూచనలు."),
+      title: "Vanquish-X Weed Spray SDS Sheet",
+      desc: "Post-emergent herbicide spraying intervals, soil degradation charts, and standing water safety.",
       size: "1.5 MB",
-      type: t("Safety SDS Document (PDF)", "సురక్షిత సమాచార పత్రం (PDF)"),
-      icon: <RiFilePdfLine className="text-rose-500 text-3xl" />
+      type: "Safety SDS Document (PDF)",
+      icon: <ShieldAlert className="w-8 h-8 text-red-500" />,
+      color: "red"
     },
     {
-      title: t("Organic Bio-Inoculants Manual", "సేంద్రీయ జీవ రసాయనాల గైడ్"),
-      desc: t("Application guide for BioRoot Protect Trichoderma spores in vegetable nurseries.", "కూరగాయల నారుమడులలో బయోరూట్ ట్రైకోడెర్మా స్పోర్స్ ఉపయోగించే పద్ధతుల పూర్తి గైడ్."),
+      title: "Organic Bio-Inoculants Manual",
+      desc: "Application guide for BioRoot Protect Trichoderma spores in vegetable nurseries.",
       size: "4.2 MB",
-      type: t("Agronomy Handbook (PDF)", "వ్యవసాయ సాంకేతిక గైడ్ (PDF)"),
-      icon: <RiFilePdfLine className="text-blue-600 text-3xl" />
+      type: "Agronomy Handbook (PDF)",
+      icon: <FileText className="w-8 h-8 text-[var(--color-brand-primary)]" />,
+      color: "blue"
     },
     {
-      title: t("Full Agronomy Safety Pack", "పూర్తి వ్యవసాయ భద్రతా సమాచార ప్యాక్"),
-      desc: t("All safety sheets and dosage manuals packaged in a convenient digital ZIP folder.", "అన్ని భద్రతా పత్రాలు మరియు మోతాదు వివరాలు కలిగిన డిజిటల్ జిప్ (ZIP) ఫోల్డర్."),
+      title: "Full Agronomy Safety Pack",
+      desc: "All safety sheets and dosage manuals packaged in a convenient digital ZIP folder.",
       size: "14.8 MB",
-      type: t("System Bundle (ZIP)", "సిస్టమ్ బండిల్ (ZIP)"),
-      icon: <RiFolderZipLine className="text-amber-500 text-3xl" />
+      type: "System Bundle (ZIP)",
+      icon: <FolderArchive className="w-8 h-8 text-[var(--color-brand-accent)]" />,
+      color: "cyan"
     }
   ]
 
   return (
-    <div className="font-sans pt-32 pb-20 relative overflow-hidden bg-slate-50">
-      {/* Beautiful Subtle Agrochemical Leaf Backdrop Watermark */}
-      <div className="absolute top-0 left-0 w-full h-[120vh] -z-20 pointer-events-none overflow-hidden">
-        <img 
-          src="https://images.unsplash.com/photo-1444858291040-58f756a3bdd6?auto=format&fit=crop&w=1920&q=80" 
-          alt="Fresh Green Leaves Watermark" 
-          className="w-full h-full object-cover opacity-[0.09] mix-blend-overlay filter saturate-75 contrast-125"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-50/0 via-slate-50/70 to-slate-50" />
-      </div>
-
-      {/* Decorative Warm Organic Blur Circles */}
-      <div className="absolute top-[10%] left-0 w-96 h-96 bg-blue-100/20/30 rounded-full filter blur-[130px] pointer-events-none" />
-
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 relative z-10">
+    <div className="font-inter bg-[var(--color-brand-surface)] min-h-screen pt-32 pb-24">
+      <SEO 
+        title="Download Center | SAVAXA Crop Care"
+        description="Access secure downloads of our pesticide safety data sheets (SDS), dosage charts, and full agronomist handbooks."
+      />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Block */}
-        <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
-          <p className="text-xs font-mono tracking-widest text-blue-650 uppercase font-bold">
-            {t("SAVAXA RESOURCE ARCHIVES", "సవాక్సా రిసోర్స్ ఫైల్స్")}
-          </p>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 font-display">
-            {t("DOWNLOAD CENTER", "డౌన్‌లోడ్ సెంటర్")}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-montserrat font-bold text-[var(--color-brand-navy)] uppercase tracking-tight">
+            Download Center
           </h1>
-          <p className="text-slate-500 text-sm leading-relaxed font-light">
-            {t(
-              "Access secure downloads of our pesticide safety data sheets (SDS), dosage charts, and full agronomist handbooks.",
-              "పురుగుమందుల సేఫ్టీ డాటా షీట్లు (SDS), పంటల మోతాదు వివరాలు మరియు వ్యవసాయ సమాచార పుస్తకాలను ఇక్కడ డౌన్‌లోడ్ చేసుకోండి."
-            )}
+          <div className="w-24 h-1.5 bg-[var(--color-brand-primary)] mx-auto mt-6 rounded-full mb-6" />
+          <p className="text-slate-600 max-w-2xl mx-auto text-lg">
+            Access secure downloads of our pesticide safety data sheets (SDS), dosage charts, and full agronomist handbooks.
           </p>
         </div>
 
-        {/* Downloads cards Grid */}
+        {/* Downloads Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {downloadItems.map((item, index) => (
             <motion.div
               key={index}
-              className="glass-card border border-slate-200/60 rounded-3xl p-6 flex flex-col justify-between space-y-6 group shadow-sm bg-white/70"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
               whileHover={{ y: -5 }}
-              transition={{ duration: 0.3 }}
+              className="bg-white border border-[var(--color-blue-100)] rounded-3xl p-8 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-xl transition-all group relative overflow-hidden"
             >
-              <div className="space-y-4">
-                <div className="w-14 h-14 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-center shadow-inner">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-brand-surface)] rounded-full blur-3xl" />
+              
+              <div className="space-y-6 relative z-10">
+                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border ${
+                  item.color === 'red' ? 'bg-red-50 border-red-100' :
+                  item.color === 'cyan' ? 'bg-cyan-50 border-cyan-100' :
+                  'bg-[var(--color-brand-surface)] border-[var(--color-blue-100)]'
+                }`}>
                   {item.icon}
                 </div>
                 <div>
-                  <span className="text-[9px] font-mono tracking-widest text-slate-400 uppercase font-bold">{item.type}</span>
-                  <h3 className="text-lg font-bold text-slate-800 mt-1 group-hover:text-blue-600 transition duration-200 font-display leading-snug">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest block mb-2">{item.type}</span>
+                  <h3 className="text-xl font-montserrat font-bold text-[var(--color-brand-navy)] mb-3 group-hover:text-[var(--color-brand-primary)] transition-colors leading-snug">
                     {item.title}
                   </h3>
-                  <p className="text-xs text-slate-500 mt-2 leading-relaxed font-light">
+                  <p className="text-sm text-slate-600 leading-relaxed">
                     {item.desc}
                   </p>
                 </div>
               </div>
 
-              {/* download action bar */}
-              <div className="flex justify-between items-center pt-4 border-t border-slate-100 text-[10px] font-mono">
-                <span className="text-slate-455 uppercase">{t("File size:", "ఫైల్ సైజు:")} <strong className="text-slate-700 font-bold">{item.size}</strong></span>
-                <button className="py-2.5 px-4 bg-blue-600 hover:bg-blue-500 text-white font-bold tracking-widest uppercase rounded-xl transition duration-200 flex items-center gap-1.5 shadow-sm hover:scale-[1.01]">
-                  {t("Download", "డౌన్‌లోడ్")} <RiDownloadLine />
+              {/* Download Action */}
+              <div className="flex justify-between items-center pt-6 border-t border-[var(--color-blue-100)] relative z-10">
+                <span className="text-xs text-slate-500 font-bold flex items-center gap-1.5 uppercase tracking-widest">
+                  <Layers className="w-4 h-4" /> {item.size}
+                </span>
+                <button className="flex items-center gap-2 bg-[var(--color-brand-surface)] text-[var(--color-brand-primary)] hover:bg-[var(--color-brand-primary)] hover:text-white px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors border border-[var(--color-blue-100)]">
+                  Download <Download className="w-4 h-4" />
                 </button>
               </div>
 

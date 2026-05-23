@@ -192,19 +192,19 @@ export default function DealersAdmin() {
         </div>
         <button
           onClick={() => { resetForm(); setIsModalOpen(true); }}
-          className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl flex items-center transition duration-300 font-bold text-xs uppercase tracking-wider shadow-lg shadow-emerald-600/10"
+          className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl flex items-center transition duration-300 font-bold text-xs uppercase tracking-wider shadow-lg shadow-sky-600/10"
         >
           <FiPlus className="mr-2 text-sm" /> Add New Hub
         </button>
       </div>
 
       {error && (
-        <div className="mb-8 bg-amber-500/10 border border-amber-500/20 p-5 rounded-2xl text-amber-400 text-xs space-y-2">
+        <div className="mb-8 bg-red-500/10 border border-red-500/20 p-5 rounded-2xl text-red-400 text-xs space-y-2">
           <h4 className="font-extrabold text-sm flex items-center gap-1.5 uppercase">
             <FiClock /> Database Connectivity Diagnostics
           </h4>
           <p className="leading-relaxed">
-            There was an issue connecting to your Firestore database. Detail: <code className="bg-amber-950 px-1.5 py-0.5 rounded font-mono text-[10px] text-amber-200">{error}</code>
+            There was an issue connecting to your Firestore database. Detail: <code className="bg-red-950 px-1.5 py-0.5 rounded font-mono text-[10px] text-red-200">{error}</code>
           </p>
         </div>
       )}
@@ -240,9 +240,9 @@ export default function DealersAdmin() {
                   <div className="flex flex-col items-end gap-1.5 mr-16">
                     <span className="text-[8px] font-mono tracking-widest text-blue-500 bg-blue-500/10 border border-blue-500/20 px-2.5 py-0.5 rounded-full uppercase font-bold">{dealer.type || 'Platinum Hub'}</span>
                     {dealer.status === 'Verified' ? (
-                      <span className="inline-flex items-center gap-1 text-[8px] font-mono tracking-widest text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-2.5 py-0.5 rounded-full uppercase font-bold"><FiCheckCircle className="text-[10px]" /> Verified</span>
+                      <span className="inline-flex items-center gap-1 text-[8px] font-mono tracking-widest text-sky-400 bg-sky-400/10 border border-sky-400/20 px-2.5 py-0.5 rounded-full uppercase font-bold"><FiCheckCircle className="text-[10px]" /> Verified</span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 text-[8px] font-mono tracking-widest text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2.5 py-0.5 rounded-full uppercase font-bold"><FiClock className="text-[10px]" /> Pending</span>
+                      <span className="inline-flex items-center gap-1 text-[8px] font-mono tracking-widest text-indigo-400 bg-indigo-400/10 border border-indigo-400/20 px-2.5 py-0.5 rounded-full uppercase font-bold"><FiClock className="text-[10px]" /> Pending</span>
                     )}
                   </div>
                 </div>
@@ -259,7 +259,7 @@ export default function DealersAdmin() {
               </div>
 
               {dealer.status !== 'Verified' && (
-                <button onClick={() => handleVerifyDealer(dealer.id)} className="w-full mt-5 py-2.5 bg-blue-600/10 hover:bg-blue-600 text-emerald-450 hover:text-white border border-blue-500/20 hover:border-transparent font-bold text-xs uppercase tracking-wider rounded-xl transition duration-300 flex items-center justify-center gap-2">
+                <button onClick={() => handleVerifyDealer(dealer.id)} className="w-full mt-5 py-2.5 bg-blue-600/10 hover:bg-blue-600 text-sky-400 hover:text-white border border-blue-500/20 hover:border-transparent font-bold text-xs uppercase tracking-wider rounded-xl transition duration-300 flex items-center justify-center gap-2">
                   <FiCheckCircle /> Approve Store
                 </button>
               )}

@@ -1,113 +1,95 @@
 import { Link } from 'react-router-dom'
 import { RiMailSendLine, RiPhoneLine, RiMapPinLine, RiCopyrightLine } from 'react-icons/ri'
-import { useLanguage } from '../context/LanguageContext'
 
 export default function Footer() {
-  const { t } = useLanguage()
-
   return (
-    <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 relative z-10 pt-20 pb-10 font-sans">
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+    <footer className="bg-[var(--color-brand-navy)] text-white border-t-[3px] border-[var(--color-brand-primary)] relative z-10 pt-20 pb-8 font-inter">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
         
-        {/* Logo and about section */}
+        {/* Column 1: Logo and Tagline */}
         <div className="space-y-6">
           <Link to="/" className="inline-block">
-            {/* White-contrast logo styling for dark footers */}
-            <img 
-              src="/savax-logo.png" 
-              alt="Savax Logo" 
-              className="h-12 w-auto object-contain brightness-0 invert" 
-            />
+            <span className="font-montserrat font-bold text-3xl text-white tracking-tight">SAVAXA</span>
           </Link>
-          <p className="text-xs text-slate-400 leading-relaxed font-light">
-            {t(
-              "Savaxa Bio-Agri Sciences delivers advanced bio-stimulants, crop protection products, and micronutrient solutions trusted by farmers and dealers worldwide.",
-              "సవాక్సా బయో-ఆగ్రి సైన్సెస్ ప్రపంచవ్యాప్తంగా రైతులు మరియు డీలర్ల నమ్మకాన్ని పొందిన బయో-ఉత్ప్రేరకాలు, పంట సంరక్షణ రసాయనాలు మరియు సూక్ష్మపోషకాల పరిష్కారాలను అందిస్తుంది."
-            )}
+          <p className="text-sm text-blue-100/80 leading-relaxed font-light">
+            Protecting Crops. Empowering Farmers. Savaxa delivers advanced scientific crop protection products trusted by agricultural professionals worldwide.
           </p>
-          <div className="space-y-2 text-xs font-mono">
-            <p className="flex items-center gap-2"><RiPhoneLine className="text-cyan-400" /> +91 8074 660 491</p>
-            <p className="flex items-center gap-2"><RiMailSendLine className="text-cyan-400" /> savaxacropcare2023@gmail.com</p>
+          <div className="flex gap-4 pt-2">
+            {/* Social Icons placeholder */}
+            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--color-brand-primary)] cursor-pointer transition-colors">in</div>
+            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--color-brand-primary)] cursor-pointer transition-colors">fb</div>
+            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--color-brand-primary)] cursor-pointer transition-colors">ig</div>
+            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-[var(--color-brand-primary)] cursor-pointer transition-colors">yt</div>
           </div>
         </div>
 
-        {/* Product categories */}
+        {/* Column 2: Quick Links */}
         <div className="space-y-6">
-          <h4 className="text-sm font-bold text-white tracking-widest uppercase font-display border-l-2 border-cyan-400 pl-3">
-            {t("Crop Solutions", "పంటల రక్షణ")}
+          <h4 className="text-sm font-montserrat font-bold text-white uppercase tracking-wider mb-6">
+            Quick Links
           </h4>
-          <ul className="space-y-2.5 text-xs">
-            <li><Link to="/products?category=biostimulants" className="hover:text-cyan-400 transition">{t("Biostimulants", "బయో-ఉత్ప్రేరకాలు (Biostimulants)")}</Link></li>
-            <li><Link to="/products?category=insecticides" className="hover:text-cyan-400 transition">{t("Insecticides", "కీటకనాశినులు (Insecticides)")}</Link></li>
-            <li><Link to="/products?category=herbicides" className="hover:text-cyan-400 transition">{t("Herbicides", "కలుపునాశినులు (Herbicides)")}</Link></li>
-            <li><Link to="/products?category=fungicides" className="hover:text-cyan-400 transition">{t("Fungicides", "శిలీంధ్రనాశినులు (Fungicides)")}</Link></li>
-            <li><Link to="/products?category=micronutrients" className="hover:text-cyan-400 transition">{t("Micronutrients", "సూక్ష్మపోషకాలు (Micronutrients)")}</Link></li>
+          <ul className="space-y-3 text-sm text-blue-100/80">
+            <li><Link to="/about" className="hover:text-[var(--color-brand-accent)] transition-colors">About Us</Link></li>
+            <li><Link to="/dealers" className="hover:text-[var(--color-brand-accent)] transition-colors">Our Dealers</Link></li>
+            <li><Link to="/crop-solutions" className="hover:text-[var(--color-brand-accent)] transition-colors">Crop Solutions</Link></li>
+            <li><Link to="/downloads" className="hover:text-[var(--color-brand-accent)] transition-colors">Downloads</Link></li>
+            <li><Link to="/certifications" className="hover:text-[var(--color-brand-accent)] transition-colors">Certifications</Link></li>
+            <li><Link to="/blog" className="hover:text-[var(--color-brand-accent)] transition-colors">Blog & News</Link></li>
           </ul>
         </div>
 
-        {/* Corporate navigation links */}
+        {/* Column 3: Products */}
         <div className="space-y-6">
-          <h4 className="text-sm font-bold text-white tracking-widest uppercase font-display border-l-2 border-cyan-400 pl-3">
-            {t("Company", "కంపెనీ")}
+          <h4 className="text-sm font-montserrat font-bold text-white uppercase tracking-wider mb-6">
+            Products
           </h4>
-          <ul className="space-y-2.5 text-xs">
-            <li><Link to="/about" className="hover:text-cyan-400 transition">{t("About Us", "మా గురించి")}</Link></li>
-            <li><Link to="/dealers" className="hover:text-cyan-400 transition">{t("Dealers Enquiry", "డీలర్స్ విచారణ")}</Link></li>
-            <li><Link to="/blog" className="hover:text-cyan-400 transition">{t("Agri-Tech Intel", "వ్యవసాయ సాంకేతిక వార్తలు")}</Link></li>
-            <li><Link to="/downloads" className="hover:text-cyan-400 transition">{t("Downloads Center", "డౌన్‌లోడ్ సెంటర్")}</Link></li>
-            <li><Link to="/certifications" className="hover:text-cyan-400 transition">{t("Certifications", "ధృవీకరణ పత్రాలు")}</Link></li>
-            <li><Link to="/faqs" className="hover:text-cyan-400 transition">{t("FAQ", "తరచుగా అడిగే ప్రశ్నలు")}</Link></li>
+          <ul className="space-y-3 text-sm text-blue-100/80">
+            <li><Link to="/products" className="hover:text-[var(--color-brand-accent)] transition-colors">All Products</Link></li>
+            <li><Link to="/products/insecticides" className="hover:text-[var(--color-brand-accent)] transition-colors">Insecticides</Link></li>
+            <li><Link to="/products/herbicides" className="hover:text-[var(--color-brand-accent)] transition-colors">Herbicides</Link></li>
+            <li><Link to="/products/fungicides" className="hover:text-[var(--color-brand-accent)] transition-colors">Fungicides</Link></li>
+            <li><Link to="/pest-control" className="hover:text-[var(--color-brand-accent)] transition-colors">Pest Control Guide</Link></li>
           </ul>
         </div>
 
-        {/* Newsletter submit form */}
+        {/* Column 4: Contact Info */}
         <div className="space-y-6">
-          <h4 className="text-sm font-bold text-white tracking-widest uppercase font-display border-l-2 border-cyan-400 pl-3">
-            {t("Newsletter", "వార్తా పత్రం")}
+          <h4 className="text-sm font-montserrat font-bold text-white uppercase tracking-wider mb-6">
+            Contact Info
           </h4>
-          <p className="text-xs text-slate-400 leading-relaxed font-light">
-            {t(
-              "Subscribe to receive direct scientific bulletins, dosage guides, and agricultural yield tips.",
-              "వ్యవసాయ సమాచారం, మోతాదు గైడ్లు మరియు పంట దిగుబడి చిట్కాలను పొందడానికి సబ్‌స్క్రైబ్ చేయండి."
-            )}
+          <div className="space-y-4 text-sm text-blue-100/80">
+            <p className="flex items-start gap-3">
+              <RiMapPinLine className="text-[var(--color-brand-accent)] text-xl shrink-0 mt-0.5" />
+              <span>Survey No. 470, Plot No. 95, Pedda Amberpet Road, Bhuvaneshwari Nagar, Hyderabad, Telangana 501505</span>
+            </p>
+            <p className="flex items-center gap-3">
+              <RiPhoneLine className="text-[var(--color-brand-accent)] text-xl shrink-0" />
+              <span>+91 8074 660 491</span>
+            </p>
+            <p className="flex items-center gap-3">
+              <RiMailSendLine className="text-[var(--color-brand-accent)] text-xl shrink-0" />
+              <span>savaxacropcare2023@gmail.com</span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Bottom Strip */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="pt-8 border-t border-white/10 text-xs text-blue-200/60 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="flex items-center gap-1.5">
+            <RiCopyrightLine /> 2026 Savaxa Bio-Agri Sciences. All Rights Reserved.
           </p>
-          <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">
-            <input 
-              type="email" 
-              placeholder={t("Your email address...", "మీ ఈమెయిల్ చిరునామా...")}
-              required
-              className="bg-slate-800 border border-slate-700/60 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400 transition w-full"
-            />
-            <button className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-4 py-2.5 rounded-xl transition flex items-center justify-center shrink-0">
-              <RiMailSendLine className="text-base" />
-            </button>
-          </form>
+          <p className="font-medium tracking-wide">
+            Registered under CIB&RC India
+          </p>
+          <p className="flex items-center gap-4">
+            <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
+          </p>
         </div>
-
       </div>
-
-      {/* Address and Copyright Bar */}
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 pt-8 border-t border-slate-800 text-[10px] font-mono text-slate-500 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="flex items-center gap-1.5">
-          <RiMapPinLine className="text-cyan-400 text-sm" />
-          {t(
-            "Survey No. 470, Plot No. 95, Pedda Amberpet Road, Bhuvaneshwari Nagar, Hyderabad, Telangana 501505",
-            "సర్వే నం. 470, ప్లాట్ నం. 95, పెద్ద అంబర్‌పేట్ రోడ్, భువనేశ్వరి నగర్, హైదరాబాద్, తెలంగాణ 501505"
-          )}
-        </p>
-        <p className="flex items-center gap-4">
-          <Link to="/privacy-policy" className="hover:text-cyan-400 transition">{t("Privacy Policy", "గోప్యతా విధానం")}</Link>
-          <span>|</span>
-          <Link to="/terms-of-service" className="hover:text-cyan-400 transition">{t("Terms of Service", "సేవా నిబంధనలు")}</Link>
-          <span>|</span>
-          <RiCopyrightLine />
-          {t(
-            "2026 Savaxa Bio-Agri Sciences. All Rights Reserved.",
-            "2026 సవాక్సా బయో-ఆగ్రి సైన్సెస్. సర్వ హక్కులూ ప్రత్యేకించబడినవి."
-          )}
-        </p>
-      </div>
-
     </footer>
   )
 }

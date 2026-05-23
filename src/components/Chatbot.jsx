@@ -96,16 +96,16 @@ export default function Chatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.85 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
-            className="w-[360px] md:w-[380px] h-[500px] rounded-2xl glass-panel shadow-2xl flex flex-col overflow-hidden mb-4 border border-cyan-500/25 relative"
+            className="w-[360px] md:w-[380px] h-[500px] rounded-2xl glass-panel shadow-2xl flex flex-col overflow-hidden mb-4 border border-[var(--color-brand-primary)]/25 relative"
             style={{
-              boxShadow: '0 0 30px rgba(6, 182, 212, 0.15)'
+              boxShadow: '0 0 30px rgba(0, 71, 171, 0.15)'
             }}
           >
             {/* Header */}
-            <div className="bg-gradient-to-r from-sky-950/80 to-cyan-950/80 px-4 py-3 flex items-center justify-between border-b border-white/10">
+            <div className="bg-gradient-to-r from-[var(--color-brand-navy)] to-[var(--color-brand-primary)] px-4 py-3 flex items-center justify-between border-b border-white/10">
               <div className="flex items-center gap-2">
                 <div className="relative">
-                  <div className="w-8 h-8 rounded-full bg-cyan-500 flex items-center justify-center text-slate-900 shadow-[0_0_10px_rgba(6,182,212,0.6)]">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[var(--color-brand-primary)] shadow-[0_0_10px_rgba(0,71,171,0.6)]">
                     <RiRobot2Fill className="text-lg" />
                   </div>
                   <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-blue-500 border-2 border-slate-950 rounded-full animate-ping" />
@@ -113,9 +113,9 @@ export default function Chatbot() {
                 </div>
                 <div>
                   <h3 className="text-white text-sm font-semibold tracking-wider flex items-center gap-1 font-display">
-                    BioShield AI <RiSeedlingFill className="text-emerald-400" />
+                    BioShield AI <RiSeedlingFill className="text-[var(--color-brand-accent)]" />
                   </h3>
-                  <p className="text-[10px] text-cyan-400/80 tracking-widest font-mono">AGRI-SCIENCE EXPERT</p>
+                  <p className="text-[10px] text-blue-200 tracking-widest font-mono">AGRI-SCIENCE EXPERT</p>
                 </div>
               </div>
               <button 
@@ -150,9 +150,9 @@ export default function Chatbot() {
                 <div className="flex justify-start">
                   <div className="bg-slate-900/90 rounded-xl rounded-tl-none px-4 py-3 border border-white/5">
                     <div className="flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      <span className="w-1.5 h-1.5 bg-[var(--color-brand-primary)] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-1.5 h-1.5 bg-[var(--color-brand-primary)] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="w-1.5 h-1.5 bg-[var(--color-brand-primary)] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                     </div>
                   </div>
                 </div>
@@ -183,11 +183,11 @@ export default function Chatbot() {
                 placeholder="Ask BioShield AI..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                className="flex-1 bg-slate-900 border border-white/10 focus:border-cyan-500/60 text-white rounded-xl px-4 py-2 text-sm focus:outline-none"
+                className="flex-1 bg-slate-900 border border-white/10 focus:border-[var(--color-brand-primary)] text-white rounded-xl px-4 py-2 text-sm focus:outline-none"
               />
               <button 
                 type="submit" 
-                className="bg-cyan-500 hover:bg-cyan-400 text-slate-950 p-2 rounded-xl transition duration-200 cursor-pointer shadow-[0_0_10px_rgba(6,182,212,0.4)]"
+                className="bg-[var(--color-brand-primary)] hover:bg-blue-600 text-white p-2 rounded-xl transition duration-200 cursor-pointer shadow-[0_0_10px_rgba(0,71,171,0.4)]"
               >
                 <RiSendPlaneFill className="text-base" />
               </button>
@@ -199,15 +199,15 @@ export default function Chatbot() {
       {/* Floating Button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-gradient-to-br from-sky-500 to-cyan-500 rounded-full flex items-center justify-center shadow-lg relative cursor-pointer group"
+        className="w-14 h-14 bg-gradient-to-br from-[var(--color-brand-primary)] to-blue-600 rounded-full flex items-center justify-center shadow-lg relative cursor-pointer group"
         style={{
-          boxShadow: '0 0 25px rgba(6, 182, 212, 0.45)'
+          boxShadow: '0 0 25px rgba(0, 71, 171, 0.45)'
         }}
         whileHover={{ scale: 1.1, rotate: 10 }}
         whileTap={{ scale: 0.95 }}
       >
-        <RiRobot2Fill className="text-2xl text-slate-950 group-hover:scale-110 transition duration-300" />
-        <span className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full border-2 border-brand-dark animate-pulse" />
+        <RiRobot2Fill className="text-2xl text-white group-hover:scale-110 transition duration-300" />
+        <span className="absolute -top-1 -right-1 w-4 h-4 bg-sky-400 rounded-full border-2 border-white animate-pulse" />
       </motion.button>
     </div>
   )

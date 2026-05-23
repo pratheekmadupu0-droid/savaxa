@@ -45,7 +45,7 @@ export default function CustomCursor() {
       />
       {/* Tiny center dot */}
       <motion.div
-        className="fixed top-0 left-0 w-2 h-2 bg-cyan-400 rounded-full pointer-events-none z-[9999] hidden md:block"
+        className="fixed top-0 left-0 w-2 h-2 bg-[var(--color-brand-primary)] rounded-full pointer-events-none z-[9999] hidden md:block"
         style={{
           x: useSpring(useMotionValue(0), springConfig),
           y: useSpring(useMotionValue(0), springConfig),

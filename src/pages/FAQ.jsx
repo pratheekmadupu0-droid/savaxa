@@ -1,48 +1,32 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, Search, MessageCircleQuestion } from 'lucide-react';
 import SEO from '../components/SEO';
-import { useLanguage } from '../context/LanguageContext';
-import { FiChevronDown, FiChevronUp, FiSearch } from 'react-icons/fi';
 
 export default function FAQ() {
-  const { t } = useLanguage();
   const [search, setSearch] = useState('');
   const [openIndex, setOpenIndex] = useState(null);
 
   const faqsList = [
     {
-      q: t("What is SAVAXA Crop Care?", "సవాక్సా పంట రక్షణ అంటే ఏమిటి?"),
-      a: t(
-        "SAVAXA is a next-generation bio-agricultural technology brand providing high-efficacy pesticides, fungicides, herbicides, and premium biostimulants designed to increase crop yield and protect farms.",
-        "సవాక్సా అనేది పంట దిగుబడిని పెంచడానికి మరియు పొలాలను రక్షించడానికి రూపొందించబడిన అధిక సామర్థ్యం గల పురుగుమందులు, శిలీంద్రనాశకాలు, కలుపునాశనులు మరియు బయో-ఉత్ప్రేరకాలను అందించే ఆధునిక వ్యవసాయ సాంకేతిక బ్రాండ్."
-      )
+      q: "What is SAVAXA Crop Care?",
+      a: "SAVAXA is a next-generation bio-agricultural technology brand providing high-efficacy pesticides, fungicides, herbicides, and premium biostimulants designed to increase crop yield and protect farms."
     },
     {
-      q: t("Are your agricultural chemicals safe for all crops?", "మీ వ్యవసాయ రసాయనాలు అన్ని పంటలకు సురక్షితమేనా?"),
-      a: t(
-        "Yes, our formulations are selectively tailored for specific crop families. Every product has custom guidelines on dosage and application methods. Refer to our detailed Products catalog and downloadable application guides.",
-        "అవును, మా ఉత్పత్తులు నిర్దిష్ట పంటల కొరకు ప్రత్యేకంగా తయారుచేయబడ్డాయి. ప్రతి ఉత్పత్తికి మోతాదు మరియు అప్లికేషన్ పద్ధతులపై వివరణాత్మక మార్గదర్శకాలు ఉంటాయి. మా ఉత్పత్తుల కేటలాగ్ చూడండి."
-      )
+      q: "Are your agricultural chemicals safe for all crops?",
+      a: "Yes, our formulations are selectively tailored for specific crop families. Every product has custom guidelines on dosage and application methods. Refer to our detailed Products catalog and downloadable application guides."
     },
     {
-      q: t("How can I register as an authorized SAVAXA dealer?", "నేను సవాక్సా అధీకృత డీలర్‌గా ఎలా నమోదు చేసుకోవాలి?"),
-      a: t(
-        "Dealers can easily register via our 'Dealers Portal'. Simply click Google Sign-In, fill in your business name, license details, and phone number. Our team will verify and list your hub.",
-        "మా డీలర్స్ పోర్టల్ ద్వారా డీలర్లు సులభంగా నమోదు చేసుకోవచ్చు. గూగుల్ సైన్-ఇన్ క్లిక్ చేసి, మీ వ్యాపార వివరాలు నమోదు చేయండి. మా బృందం వాటిని ధృవీకరిస్తుంది."
-      )
+      q: "How can I register as an authorized SAVAXA dealer?",
+      a: "Dealers can easily register via our 'Dealers Portal'. Simply click Google Sign-In, fill in your business name, license details, and phone number. Our team will verify and list your hub."
     },
     {
-      q: t("What are the best bio-stimulants for rice and tomato crops?", "వరి మరియు టమోటా పంటలకు ఉత్తమమైన బయో-ఉత్ప్రేరకాలు ఏవి?"),
-      a: t(
-        "SAVAXA Biostimulants are outstanding for boosting green mass, increasing chlorophyll, and promoting root density in rice paddies and vegetable crops like tomatoes.",
-        "ఆకుపచ్చదనాన్ని పెంచడానికి, క్లోరోఫిల్‌ను పెంచడానికి మరియు వరి, టమోటా వంటి కూరగాయల పంటలలో వేర్ల సాంద్రతను ప్రోత్సహించడానికి సవాక్సా బయో-ఉత్ప్రేరకాలు అద్భుతంగా పనిచేస్తాయి."
-      )
+      q: "What are the best bio-stimulants for rice and tomato crops?",
+      a: "SAVAXA Biostimulants are outstanding for boosting green mass, increasing chlorophyll, and promoting root density in rice paddies and vegetable crops like tomatoes."
     },
     {
-      q: t("Where can I download the product catalog brochures?", "నేను ఉత్పత్తి కేటలాగ్ బ్రోచర్‌లను ఎక్కడ డౌన్‌లోడ్ చేసుకోవచ్చు?"),
-      a: t(
-        "All our crop protection guidelines, chemical properties, and formulation brochures are available as PDF downloads on our 'Downloads' page.",
-        "మా పంట రక్షణ మార్గదర్శకాలు, రసాయన లక్షణాలు మరియు ఫార్ములేషన్ల బ్రోచర్‌లు మా డౌన్‌లోడ్ల పేజీలో PDF ఫార్మాట్‌లో అందుబాటులో ఉన్నాయి."
-      )
+      q: "Where can I download the product catalog brochures?",
+      a: "All our crop protection guidelines, chemical properties, and formulation brochures are available as PDF downloads on our 'Downloads' page."
     }
   ];
 
@@ -52,7 +36,6 @@ export default function FAQ() {
       faq.a.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Generate Google Schema Markup for FAQ Page
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -67,76 +50,93 @@ export default function FAQ() {
   };
 
   return (
-    <div className="font-sans pt-32 pb-20 bg-slate-50 text-slate-800 min-h-screen relative overflow-hidden">
+    <div className="font-inter bg-[var(--color-brand-surface)] min-h-screen pt-32 pb-24 relative overflow-hidden">
       <SEO 
         title="Frequently Asked Questions (FAQ) | SAVAXA Crop Care Solutions"
         description="Find answers to common questions about agricultural pesticides, herbicides, dealer registration, and plant protection methodologies."
-        keywords="agriculture faq, crop protection questions, best pesticide brand, pesticide company in india, savaxa crop care"
         schema={faqSchema}
       />
 
-      {/* Decorative patterns */}
-      <div className="absolute top-[10%] left-0 w-96 h-96 bg-blue-100/20/10 rounded-full blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-[20%] right-0 w-96 h-96 bg-teal-100/10 rounded-full blur-[130px] pointer-events-none" />
-
-      <div className="max-w-3xl mx-auto px-4 md:px-8 relative z-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header Block */}
-        <div className="text-center space-y-4 mb-12">
-          <p className="text-xs font-mono tracking-widest text-blue-600 uppercase font-bold">
-            {t("QUESTIONS & ANSWERS", "ప్రశ్నలు & సమాధానాలు")}
-          </p>
-          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 font-display">
-            {t("Frequently Asked Questions", "తరచుగా అడిగే ప్రశ్నలు")}
+        <div className="text-center space-y-4 mb-16">
+          <div className="w-16 h-16 bg-white border border-[var(--color-blue-100)] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
+            <MessageCircleQuestion className="w-8 h-8 text-[var(--color-brand-primary)]" />
+          </div>
+          <h1 className="text-4xl md:text-5xl font-montserrat font-bold text-[var(--color-brand-navy)] uppercase tracking-tight">
+            Frequently Asked Questions
           </h1>
-          <p className="text-slate-500 text-sm font-light">
-            {t("Find professional guidelines on SAVAXA products, dealer networks, and crop applications.", "సవాక్సా ఉత్పత్తులు, డీలర్ నెట్‌వర్క్‌లు మరియు అప్లికేషన్లపై సమాధానాలు ఇక్కడ పొందండి.")}
+          <div className="w-24 h-1.5 bg-[var(--color-brand-primary)] mx-auto mt-6 rounded-full mb-6" />
+          <p className="text-slate-600 text-lg max-w-2xl mx-auto">
+            Find professional guidelines on SAVAXA products, dealer networks, and crop applications.
           </p>
         </div>
 
         {/* Search */}
-        <div className="relative mb-8 max-w-md mx-auto">
-          <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
+        <div className="relative mb-12 max-w-2xl mx-auto">
+          <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
           <input
             type="text"
-            placeholder={t("Search questions...", "ప్రశ్నలను వెతకండి...")}
+            placeholder="Search questions..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white border border-slate-200 rounded-2xl pl-12 pr-4 py-3 text-xs focus:outline-none focus:border-blue-600 transition shadow-sm"
+            className="w-full bg-white border border-[var(--color-blue-100)] rounded-2xl pl-14 pr-6 py-4 text-[var(--color-brand-navy)] font-medium focus:outline-none focus:border-[var(--color-brand-primary)] focus:ring-1 focus:ring-[var(--color-brand-primary)] transition-all shadow-sm"
           />
         </div>
 
         {/* FAQ Accordion List */}
-        <div className="space-y-4">
-          {filteredFaqs.map((faq, index) => {
-            const isOpen = openIndex === index;
-            return (
-              <div 
-                key={index} 
-                className="bg-white border border-slate-200/60 rounded-2xl overflow-hidden shadow-sm transition hover:border-slate-300"
-              >
-                <button
-                  onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="w-full px-6 py-4 flex justify-between items-center text-left transition hover:bg-slate-50/50"
+        <div className="space-y-4 max-w-3xl mx-auto">
+          {filteredFaqs.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-3xl border border-[var(--color-blue-100)]">
+              <p className="text-slate-500 font-medium">No matching questions found.</p>
+            </div>
+          ) : (
+            filteredFaqs.map((faq, index) => {
+              const isOpen = openIndex === index;
+              return (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  key={index} 
+                  className={`bg-white border rounded-2xl overflow-hidden transition-all duration-300 ${isOpen ? 'border-[var(--color-brand-primary)] shadow-md' : 'border-[var(--color-blue-100)] shadow-sm hover:border-[var(--color-brand-primary)]'}`}
                 >
-                  <h3 className="font-bold text-slate-800 text-sm md:text-base font-display">
-                    {faq.q}
-                  </h3>
-                  {isOpen ? (
-                    <FiChevronUp className="text-blue-600 text-lg flex-shrink-0 ml-4" />
-                  ) : (
-                    <FiChevronDown className="text-slate-400 text-lg flex-shrink-0 ml-4" />
-                  )}
-                </button>
-                
-                {isOpen && (
-                  <div className="px-6 pb-5 pt-1 text-xs md:text-sm text-slate-650 leading-relaxed font-light font-sans border-t border-slate-50">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                  <button
+                    onClick={() => setOpenIndex(isOpen ? null : index)}
+                    className="w-full px-6 py-5 flex justify-between items-center text-left transition-colors bg-white hover:bg-[var(--color-brand-surface)]"
+                  >
+                    <h3 className={`font-montserrat font-bold text-sm md:text-base pr-8 ${isOpen ? 'text-[var(--color-brand-primary)]' : 'text-[var(--color-brand-navy)]'}`}>
+                      {faq.q}
+                    </h3>
+                    <motion.div
+                      animate={{ rotate: isOpen ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border ${isOpen ? 'bg-[var(--color-brand-primary)] text-white border-[var(--color-brand-primary)]' : 'bg-white text-slate-400 border-[var(--color-blue-100)]'}`}
+                    >
+                      <ChevronDown className="w-4 h-4" />
+                    </motion.div>
+                  </button>
+                  
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-6 pb-6 text-sm text-slate-600 leading-relaxed border-t border-[var(--color-blue-100)] pt-4 bg-white">
+                          {faq.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })
+          )}
         </div>
 
       </div>
