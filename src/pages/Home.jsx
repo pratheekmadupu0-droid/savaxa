@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import CountUp from 'react-countup'
+import ReactCountUp from 'react-countup'
+const CountUp = ReactCountUp.default || ReactCountUp
 import {
   ChevronDown,
   ArrowRight,
@@ -271,7 +272,7 @@ export default function Home() {
             ].map((stat, i) => (
               <div key={i} className="text-center px-4 space-y-2">
                 <div className="text-4xl md:text-5xl font-montserrat font-extrabold text-white">
-                  <CountUp start={0} end={stat.val} duration={2} separator="," enableScrollSpy scrollSpyOnce />
+                  <CountUp end={stat.val} duration={2} separator="," />
                   {stat.suffix}
                 </div>
                 <p className="text-sm font-bold text-blue-200 uppercase tracking-widest">{stat.label}</p>
