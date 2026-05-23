@@ -21,7 +21,7 @@ export default function Contact() {
   }
 
   return (
-    <div className="font-inter min-h-screen bg-white pt-32 pb-24">
+    <div className="font-body bg-[#020817] min-h-screen pt-32 pb-24 text-slate-300">
       <SEO 
         title="Contact Us | SAVAXA Crop Care"
         description="Get in touch with Savaxa's agricultural experts for product inquiries, dealership opportunities, or technical support."

@@ -65,7 +65,7 @@ export default function About() {
   ]
 
   return (
-    <div className="font-inter bg-white min-h-screen">
+    <div className="font-body bg-[#020817] min-h-screen text-slate-300">
       
       {/* 1. HERO BANNER */}
       <section className="relative pt-32 pb-20 bg-gradient-to-br from-[var(--color-brand-navy)] to-[var(--color-brand-primary)] overflow-hidden">
@@ -93,7 +93,7 @@ export default function About() {
       </section>
 
       {/* 2. COMPANY STORY */}
-      <section className="py-24 bg-white relative">
+      <section className="py-24 bg-[#020817] relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div 
@@ -168,7 +168,7 @@ export default function About() {
               <motion.div 
                 key={i}
                 whileHover={{ y: -5, boxShadow: '0 10px 30px -10px rgba(0,71,171,0.15)' }}
-                className="bg-white p-8 rounded-2xl border border-[var(--color-blue-100)] flex gap-6 group transition-all"
+                className="bg-slate-900/40 p-8 rounded-2xl border border-blue-500/10 flex gap-6 group transition-all"
               >
                 <div className="w-16 h-16 rounded-xl bg-[var(--color-brand-surface)] flex items-center justify-center shrink-0 group-hover:bg-[var(--color-brand-primary)] group-hover:text-white transition-colors">
                   {v.icon}
@@ -184,7 +184,7 @@ export default function About() {
       </section>
 
       {/* 4. LEADERSHIP TEAM */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-[#020817]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-montserrat font-bold text-[var(--color-brand-navy)] uppercase tracking-tight">
@@ -209,7 +209,7 @@ export default function About() {
                 <p className="text-slate-600 leading-relaxed text-lg">
                   Holding a specialized MBA in Agri-Business Management combined with a doctorate in agricultural sciences, Dr. Reddy combines advanced biochemical research insight with high-level corporate and rural strategic vision.
                 </p>
-                <div className="bg-white p-6 rounded-xl border border-[var(--color-blue-100)] shadow-sm italic text-slate-700">
+                <div className="bg-slate-900/40 p-6 rounded-xl border border-blue-500/10 shadow-sm italic text-slate-300">
                   "Our technology must always serve the farmer first. We don't just sell chemical compounds; we provide scientific shield arrays that empower farmers to cultivate rich, safe, and highly profitable harvests."
                 </div>
               </div>

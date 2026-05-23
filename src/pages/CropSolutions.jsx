@@ -92,7 +92,7 @@ export default function CropSolutions() {
   const current = cropSolutionsList[selectedCrop]
 
   return (
-    <div className="font-inter bg-white min-h-screen pt-32 pb-24">
+    <div className="font-body bg-[#020817] min-h-screen pt-32 pb-24 text-slate-300">
       <SEO 
         title="Crop Solutions | SAVAXA Crop Care"
         description="Discover targeted biological symptoms, pathogen stressors, and certified Savaxa mixing ratios for major cash crops."
