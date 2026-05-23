@@ -7,12 +7,9 @@ import {
   Mail, 
   Clock,
   Send,
-  CheckCircle2,
-  Linkedin,
-  Facebook,
-  Instagram,
-  Youtube
+  CheckCircle2
 } from 'lucide-react'
+import { FiLinkedin, FiFacebook, FiInstagram, FiYoutube } from 'react-icons/fi'
 
 export default function Contact() {
   const [formSubmitted, setFormSubmitted] = useState(false)
@@ -204,18 +201,10 @@ export default function Contact() {
             <div className="pt-8 border-t border-[var(--color-blue-100)]">
               <h4 className="font-bold text-[var(--color-brand-navy)] text-sm uppercase tracking-wider mb-4">Connect With Us</h4>
               <div className="flex gap-4">
-                <a href="#" className="w-10 h-10 bg-[var(--color-brand-surface)] text-[var(--color-brand-primary)] rounded-full flex items-center justify-center hover:bg-[var(--color-brand-primary)] hover:text-white transition-colors border border-[var(--color-blue-100)]">
-                  <Linkedin className="w-4 h-4" />
-                </a>
-                <a href="#" className="w-10 h-10 bg-[var(--color-brand-surface)] text-[var(--color-brand-primary)] rounded-full flex items-center justify-center hover:bg-[var(--color-brand-primary)] hover:text-white transition-colors border border-[var(--color-blue-100)]">
-                  <Facebook className="w-4 h-4" />
-                </a>
-                <a href="#" className="w-10 h-10 bg-[var(--color-brand-surface)] text-[var(--color-brand-primary)] rounded-full flex items-center justify-center hover:bg-[var(--color-brand-primary)] hover:text-white transition-colors border border-[var(--color-blue-100)]">
-                  <Instagram className="w-4 h-4" />
-                </a>
-                <a href="#" className="w-10 h-10 bg-[var(--color-brand-surface)] text-[var(--color-brand-primary)] rounded-full flex items-center justify-center hover:bg-[var(--color-brand-primary)] hover:text-white transition-colors border border-[var(--color-blue-100)]">
-                  <Youtube className="w-4 h-4" />
-                </a>
+                <a href="#" className="w-10 h-10 rounded-full bg-[var(--color-brand-surface)] flex items-center justify-center text-[var(--color-brand-primary)] hover:bg-[var(--color-brand-primary)] hover:text-white transition-colors border border-[var(--color-blue-100)]"><FiLinkedin className="w-5 h-5" /></a>
+                <a href="#" className="w-10 h-10 rounded-full bg-[var(--color-brand-surface)] flex items-center justify-center text-[var(--color-brand-primary)] hover:bg-[var(--color-brand-primary)] hover:text-white transition-colors border border-[var(--color-blue-100)]"><FiFacebook className="w-5 h-5" /></a>
+                <a href="#" className="w-10 h-10 rounded-full bg-[var(--color-brand-surface)] flex items-center justify-center text-[var(--color-brand-primary)] hover:bg-[var(--color-brand-primary)] hover:text-white transition-colors border border-[var(--color-blue-100)]"><FiInstagram className="w-5 h-5" /></a>
+                <a href="#" className="w-10 h-10 rounded-full bg-[var(--color-brand-surface)] flex items-center justify-center text-[var(--color-brand-primary)] hover:bg-[var(--color-brand-primary)] hover:text-white transition-colors border border-[var(--color-blue-100)]"><FiYoutube className="w-5 h-5" /></a>
               </div>
             </div>
 
