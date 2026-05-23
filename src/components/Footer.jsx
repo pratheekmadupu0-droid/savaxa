@@ -9,7 +9,7 @@ export default function Footer() {
         {/* Column 1: Logo and Tagline */}
         <div className="space-y-6">
           <Link to="/" className="inline-block">
-            <span className="font-montserrat font-bold text-3xl text-white tracking-tight">SAVAXA</span>
+            <img src="/savax-logo.png" alt="Savaxa Logo" className="h-12 object-contain brightness-0 invert" />
           </Link>
           <p className="text-sm text-blue-100/80 leading-relaxed font-light">
             Protecting Crops. Empowering Farmers. Savaxa delivers advanced scientific crop protection products trusted by agricultural professionals worldwide.

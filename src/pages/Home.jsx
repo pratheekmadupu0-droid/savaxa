@@ -46,18 +46,16 @@ export default function Home() {
       
       {/* 1. HERO SECTION */}
       <section className="relative min-h-screen flex items-center bg-white pt-20">
-        <div className="absolute inset-0 z-0 flex">
-          <div className="w-full lg:w-[55%] bg-white h-full relative z-10" />
-          <div className="hidden lg:block w-[45%] h-full relative">
-            <div className="absolute inset-0 bg-[var(--color-brand-primary)] clip-diagonal" style={{ clipPath: 'polygon(15% 0, 100% 0, 100% 100%, 0 100%)' }}>
-              <img 
-                src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1920&q=80" 
-                alt="Farmer spraying crops" 
-                className="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60"
-              />
-              <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-brand-navy)]/80 to-[var(--color-brand-primary)]/40 mix-blend-multiply" />
-            </div>
-          </div>
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            src="/savaxa-2.mp4" 
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent md:to-white/20" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full py-20 lg:py-0">

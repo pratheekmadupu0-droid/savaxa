@@ -66,7 +66,7 @@ export default function Navbar() {
             {/* Logo */}
             <div className="flex-shrink-0 flex items-center">
               <Link to="/" className="flex items-center gap-2">
-                <span className="font-montserrat font-bold text-2xl text-[var(--color-brand-primary)] tracking-tight">SAVAXA</span>
+                <img src="/savax-logo.png" alt="Savaxa Logo" className="h-10 object-contain" />
               </Link>
             </div>
 
@@ -158,7 +158,7 @@ export default function Navbar() {
             className="fixed inset-0 z-50 bg-[var(--color-brand-primary)] flex flex-col font-inter"
           >
             <div className="flex justify-between items-center p-6 border-b border-white/20">
-              <span className="font-montserrat font-bold text-2xl text-white tracking-tight">SAVAXA</span>
+              <img src="/savax-logo.png" alt="Savaxa Logo" className="h-10 object-contain brightness-0 invert" />
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-white p-2 hover:bg-white/10 rounded-full transition-colors"
