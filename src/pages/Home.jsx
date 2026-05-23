@@ -37,73 +37,75 @@ const testimonials = [
   }
 ]
 
+const cropImages = {
+  Rice: "https://images.unsplash.com/photo-1536882240095-0379873feb4e?auto=format&fit=crop&w=400&q=80",
+  Wheat: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
+  Cotton: "https://images.unsplash.com/photo-1594900222400-0e1075768808?auto=format&fit=crop&w=400&q=80",
+  Vegetables: "https://images.unsplash.com/photo-1566385273619-5f15d7b8c416?auto=format&fit=crop&w=400&q=80",
+  Pulses: "https://images.unsplash.com/photo-1585996375005-d68f94e9f52f?auto=format&fit=crop&w=400&q=80",
+  Fruits: "https://images.unsplash.com/photo-1619546813926-a78fa6372cd2?auto=format&fit=crop&w=400&q=80"
+}
+
+const blogImages = [
+  "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=600&q=80",
+  "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=600&q=80",
+  "https://images.unsplash.com/photo-1605000797499-95a51c7769ae?auto=format&fit=crop&w=600&q=80"
+]
+
 export default function Home() {
   const [statsRef, statsInView] = useInView({ triggerOnce: true, threshold: 0.5 })
   const [heroRef, heroInView] = useInView({ triggerOnce: true })
   
   return (
-    <div className="bg-white min-h-screen font-inter overflow-hidden">
+    <div className="bg-white min-h-screen font-inter">
       
-      {/* 1. HERO SECTION */}
-      <section className="relative min-h-screen flex items-center bg-white pt-20">
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
-            src="/savaxa-2.mp4" 
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent md:to-white/20" />
-        </div>
+      {/* 1. HERO VIDEO */}
+      <section className="relative w-full h-[60vh] md:h-[80vh] mt-20">
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          src="/savaxa-2.mp4" 
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-brand-navy)]/80 via-transparent to-transparent" />
+      </section>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full py-20 lg:py-0">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div 
-              ref={heroRef}
-              initial={{ opacity: 0, y: 30 }}
-              animate={heroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8 }}
-              className="max-w-xl"
-            >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-brand-surface)] border border-[var(--color-blue-100)] mb-6">
-                <BadgeCheck className="w-4 h-4 text-[var(--color-brand-primary)]" />
-                <span className="text-xs font-bold text-[var(--color-brand-primary)] tracking-wide uppercase">Trusted Crop Protection Since 2008</span>
-              </div>
-              
-              <h1 className="text-5xl md:text-7xl font-montserrat font-extrabold text-[var(--color-brand-navy)] leading-[1.1] mb-6 tracking-tight">
-                PROTECTING CROPS.<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-primary)] to-[var(--color-brand-accent)]">EMPOWERING FARMERS.</span>
-              </h1>
-              
-              <p className="text-lg text-slate-600 mb-10 leading-relaxed max-w-lg">
-                Savaxa delivers world-class, scientifically formulated agrochemicals that secure harvests and maximize yields for agricultural professionals worldwide.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/products" className="btn-premium px-8 py-4 text-center font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2">
-                  Explore Products <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link to="/dealers" className="btn-ghost px-8 py-4 text-center font-bold uppercase tracking-wider text-sm">
-                  Contact a Dealer
-                </Link>
-              </div>
-            </motion.div>
-          </div>
+      {/* 2. HERO MATTER (BELOW VIDEO) */}
+      <section className="relative bg-white py-16 md:py-24 z-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div 
+            ref={heroRef}
+            initial={{ opacity: 0, y: 30 }}
+            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-brand-surface)] border border-[var(--color-blue-100)] mb-8">
+              <BadgeCheck className="w-4 h-4 text-[var(--color-brand-primary)]" />
+              <span className="text-xs font-bold text-[var(--color-brand-primary)] tracking-wide uppercase">Trusted Crop Protection Since 2008</span>
+            </div>
+            
+            <h1 className="text-5xl md:text-7xl font-montserrat font-extrabold text-[var(--color-brand-navy)] leading-[1.1] mb-8 tracking-tight">
+              PROTECTING CROPS.<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-primary)] to-[var(--color-brand-accent)]">EMPOWERING FARMERS.</span>
+            </h1>
+            
+            <p className="text-lg md:text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
+              Savaxa delivers world-class, scientifically formulated agrochemicals that secure harvests and maximize yields for agricultural professionals worldwide.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Link to="/products" className="btn-premium px-8 py-4 text-center font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2">
+                Explore Products <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link to="/dealers" className="btn-ghost px-8 py-4 text-center font-bold uppercase tracking-wider text-sm">
+                Contact a Dealer
+              </Link>
+            </div>
+          </motion.div>
         </div>
-
-        {/* Scroll Down Indicator */}
-        <motion.div 
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-2"
-        >
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Scroll</span>
-          <div className="w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center border border-slate-100">
-            <ChevronDown className="w-4 h-4 text-[var(--color-brand-primary)]" />
-          </div>
-        </motion.div>
       </section>
 
       {/* 2. MARQUEE TRUST BAR */}
@@ -248,8 +250,15 @@ export default function Home() {
                 className="group bg-white rounded-2xl overflow-hidden border border-[var(--color-blue-100)] hover:border-[var(--color-brand-primary)] transition-all shadow-sm hover:shadow-lg"
               >
                 <div className="h-32 bg-slate-200 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-brand-primary)]/40 to-transparent mix-blend-multiply group-hover:opacity-80 transition-opacity" />
-                  <img src={`https://source.unsplash.com/400x300/?${crop.toLowerCase()},farm`} alt={crop} className="w-full h-full object-cover" onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400&q=80" }} />
+                  <img 
+                    src={cropImages[crop]} 
+                    alt={crop} 
+                    className="w-full h-full object-cover" 
+                    onError={(e) => { 
+                      e.target.onerror = null; 
+                      e.target.src = "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400&q=80"; 
+                    }} 
+                  />
                 </div>
                 <div className="p-4 text-center">
                   <h4 className="font-montserrat font-bold text-[var(--color-brand-navy)] mb-2">{crop}</h4>
@@ -329,7 +338,15 @@ export default function Home() {
             {[1, 2, 3].map((_, i) => (
               <div key={i} className="bg-white rounded-2xl overflow-hidden border border-[var(--color-blue-100)] shadow-sm hover:shadow-lg transition-shadow group">
                 <div className="h-48 bg-slate-200 relative overflow-hidden">
-                  <img src={`https://source.unsplash.com/600x400/?agriculture,farm,${i}`} alt="Blog" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&q=80" }}/>
+                  <img 
+                    src={blogImages[i]} 
+                    alt="Blog" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                    onError={(e) => { 
+                      e.target.onerror = null;
+                      e.target.src = "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&q=80"; 
+                    }}
+                  />
                   <div className="absolute top-4 left-4 bg-[var(--color-brand-primary)] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Farming Tips</div>
                 </div>
                 <div className="p-6">
