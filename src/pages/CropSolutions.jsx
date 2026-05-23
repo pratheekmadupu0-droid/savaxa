@@ -24,7 +24,7 @@ export default function CropSolutions() {
       formula: "Vanquish-X Herbicide & Savaxa BioRoot",
       mixingRatio: "Vanquish-X: 80 - 100 ml per Acre in 150L water",
       sprayingInterval: "Foliar spray 10-15 days post-transplanting when weeds are in 2-4 leaf stage.",
-      img: "https://images.unsplash.com/photo-1536882240095-0379873feb4e?auto=format&fit=crop&w=800&q=80"
+      img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&q=80"
     },
     wheat: {
       name: "Golden Wheat Protection",
