@@ -24,6 +24,9 @@ export default function Dealers() {
   // States for filter
   const [selectedState, setSelectedState] = useState('All States')
   
+  // Map interactive focus query state
+  const [mapQuery, setMapQuery] = useState('Hyderabad, Telangana')
+  
   // User/Auth states
   const [currentUser, setCurrentUser] = useState(null)
   const [isRegistering, setIsRegistering] = useState(false)
@@ -100,6 +103,26 @@ export default function Dealers() {
     return matchesState && matchesSearch;
   })
 
+  // Dynamically update the Google Map focus location when searchQuery, selectedState, or dealer matches change
+  useEffect(() => {
+    if (searchQuery) {
+      // Find the first verified dealer that matches the search query string
+      const matched = filteredDealers.find(dealer => 
+        (dealer.name && dealer.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (dealer.address && dealer.address.toLowerCase().includes(searchQuery.toLowerCase()))
+      )
+      if (matched && matched.address) {
+        setMapQuery(matched.address)
+      } else {
+        setMapQuery(searchQuery)
+      }
+    } else if (selectedState !== 'All States') {
+      setMapQuery(`${selectedState}, India`)
+    } else {
+      setMapQuery('Hyderabad, Telangana')
+    }
+  }, [searchQuery, selectedState, dealersList])
+
   return (
     <div className="font-body min-h-screen bg-[#020817] pt-32 pb-24 text-slate-300">
       <SEO 
@@ -122,10 +145,10 @@ export default function Dealers() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8 mb-16">
-          {/* LEFT: WORKING GOOGLE MAP */}
+          {/* LEFT: INTERACTIVE GOOGLE MAP */}
           <div className="lg:w-2/3 bg-slate-900/40 p-2 rounded-3xl border border-blue-500/10 shadow-xl overflow-hidden h-[500px] relative">
             <iframe 
-              src="https://maps.google.com/maps?q=Hyderabad,Telangana&z=10&output=embed" 
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=12&output=embed`}
               width="100%" 
               height="100%" 
               style={{ border: 0, borderRadius: '1.5rem' }} 
@@ -134,6 +157,11 @@ export default function Dealers() {
               className="grayscale opacity-75 hover:grayscale-0 hover:opacity-100 transition-all duration-500 invert-[90%] hue-rotate-180"
               referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
+            {/* Soft indicator of what location is loaded */}
+            <div className="absolute bottom-6 left-6 bg-slate-950/85 backdrop-blur-md border border-blue-500/20 px-4 py-2 rounded-full text-xs font-semibold text-[#38bdf8] flex items-center gap-1.5 shadow-lg max-w-[85%] truncate">
+              <MapPin className="w-3.5 h-3.5" />
+              Focus: {mapQuery}
+            </div>
           </div>
 
           {/* RIGHT: FILTERS & CTA */}
@@ -221,6 +249,14 @@ export default function Dealers() {
                       <Phone className="w-4.5 h-4.5 text-[var(--color-brand-primary)] shrink-0" />
                       <span className="font-medium">{dealer.phone}</span>
                     </div>
+                  )}
+                  {dealer.address && (
+                    <button 
+                      onClick={() => setMapQuery(dealer.address)}
+                      className="text-xs text-[#38bdf8] font-bold hover:underline flex items-center gap-1 mt-2.5 transition-all hover:scale-[1.03]"
+                    >
+                      Show on Map &rarr;
+                    </button>
                   )}
                 </div>
                 
