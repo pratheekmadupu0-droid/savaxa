@@ -57,6 +57,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/details" element={<ProductDetails />} />
+          <Route path="/products/:category" element={<Products />} />
           <Route path="/crop-solutions" element={<CropSolutions />} />
           <Route path="/pest-control" element={<PestControl />} />
           <Route path="/dealers" element={<Dealers />} />
