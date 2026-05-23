@@ -44,7 +44,7 @@ export default function CropSolutions() {
       formula: "Shield-Ultra Insecticide formulation",
       mixingRatio: "Shield-Ultra: 1.2 ml per Litre of water",
       sprayingInterval: "Apply at first square formation, repeat after 12 days to control bollworm eggs.",
-      img: "https://images.unsplash.com/photo-1605333396915-47ed6b68a00e?auto=format&fit=crop&w=800&q=80"
+      img: "https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?auto=format&fit=crop&w=800&q=80"
     },
     tomato: {
       name: "Tomato & Vegetables Protection",
@@ -54,7 +54,7 @@ export default function CropSolutions() {
       formula: "BioRoot Spore Inoculant & systemic sprays",
       mixingRatio: "BioRoot: 2.0 kg per Acre mixed with organic manure",
       sprayingInterval: "Incorporate in soil during nursery preparation or as root drench 155 days post-transplant.",
-      img: "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=800&q=80"
+      img: "https://images.unsplash.com/photo-1592892111425-15e04305f961?auto=format&fit=crop&w=800&q=80"
     },
     chili: {
       name: "Spicy Chili Crop Security",
@@ -64,7 +64,7 @@ export default function CropSolutions() {
       formula: "Shield-Ultra systemic spray & SOLVO Stimulant",
       mixingRatio: "Shield-Ultra: 150 ml/Acre + SOLVO: 200 ml/Acre",
       sprayingInterval: "First spray during pre-flowering stage, repeat at fruit set stage for maximum yield.",
-      img: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=800&q=80"
+      img: "https://images.unsplash.com/photo-1608797178974-15b35a61d121?auto=format&fit=crop&w=800&q=80"
     },
     pulses: {
       name: "Nitrogen-Fixing Pulses Protection",
@@ -74,7 +74,7 @@ export default function CropSolutions() {
       formula: "Shield-Ultra Insecticide & BioRoot Fungicide",
       mixingRatio: "Shield-Ultra: 1.5 ml/L + BioRoot: 2.5 g/L drench",
       sprayingInterval: "Spray at first appearance of flower buds, repeat during pod development to stop boring insects.",
-      img: "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?auto=format&fit=crop&w=800&q=80"
+      img: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?auto=format&fit=crop&w=800&q=80"
     },
     fruits: {
       name: "Horticulture Fruits & Orchards Security",
@@ -84,7 +84,7 @@ export default function CropSolutions() {
       formula: "BioRoot Systemic Fungicide & SOLVO Nutrition",
       mixingRatio: "BioRoot: 2.0 g/L foliar spray + SOLVO: 1.5 ml/L",
       sprayingInterval: "Foliar spray during pre-blossom stage and repeat after fruit-set to ensure spot-free yields.",
-      img: "https://images.unsplash.com/photo-1619546813926-a78fa6372cd2?auto=format&fit=crop&w=800&q=80"
+      img: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=800&q=80"
     }
   }
 
