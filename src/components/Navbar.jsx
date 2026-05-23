@@ -53,7 +53,7 @@ export default function Navbar() {
               <img 
                 src="/savax-logo.png" 
                 alt="SAVAXA Logo" 
-                className="h-10 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(6,182,212,0.35)]" 
+                className="h-14 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(6,182,212,0.35)]" 
               />
             </Link>
           </div>
@@ -87,7 +87,7 @@ export default function Navbar() {
                 <img 
                   src="/savax-logo.png" 
                   alt="SAVAXA Logo" 
-                  className="h-12 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(6,182,212,0.4)]" 
+                  className="h-18 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(6,182,212,0.4)]" 
                 />
               </Link>
             </div>
@@ -165,7 +165,7 @@ export default function Navbar() {
                 <img 
                   src="/savax-logo.png" 
                   alt="SAVAXA Logo" 
-                  className="h-10 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(6,182,212,0.35)]" 
+                  className="h-14 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(6,182,212,0.35)]" 
                 />
               </div>
               <button
