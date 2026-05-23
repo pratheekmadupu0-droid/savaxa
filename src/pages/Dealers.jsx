@@ -92,15 +92,17 @@ export default function Dealers() {
   const filteredDealers = dealersList.filter(dealer => {
     if (dealer.status !== 'Verified') return false;
     
-    const matchesState = selectedState === 'All States' || (dealer.address && dealer.address.includes(selectedState));
-    if (!searchQuery) return matchesState;
-
-    const queryStr = searchQuery.toLowerCase();
-    const matchesSearch = 
-      (dealer.name && dealer.name.toLowerCase().includes(queryStr)) || 
-      (dealer.address && dealer.address.toLowerCase().includes(queryStr));
-      
-    return matchesState && matchesSearch;
+    const queryStr = searchQuery.trim().toLowerCase();
+    if (queryStr) {
+      // Relax state dropdown checking if a search query is active
+      return (
+        (dealer.name && dealer.name.toLowerCase().includes(queryStr)) ||
+        (dealer.address && dealer.address.toLowerCase().includes(queryStr))
+      );
+    }
+    
+    // Otherwise filter strictly by State selection dropdown
+    return selectedState === 'All States' || (dealer.address && dealer.address.toLowerCase().includes(selectedState.toLowerCase()));
   })
 
   // Dynamically update the Google Map focus location when searchQuery, selectedState, or dealer matches change
@@ -239,10 +241,18 @@ export default function Dealers() {
                 
                 <div className="space-y-3 mb-6 flex-1">
                   {dealer.address && (
-                    <div className="flex items-start gap-2.5 text-sm text-slate-300">
+                    <a 
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(dealer.address)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-start gap-2.5 text-sm text-slate-300 hover:text-[#38bdf8] transition-colors group/addr"
+                      title="Open in Google Maps"
+                    >
                       <MapPin className="w-4.5 h-4.5 text-[var(--color-brand-primary)] shrink-0 mt-0.5" />
-                      <span className="leading-relaxed line-clamp-2">{dealer.address}</span>
-                    </div>
+                      <span className="leading-relaxed line-clamp-2 underline decoration-dotted decoration-slate-600 hover:decoration-[#38bdf8]">
+                        {dealer.address}
+                      </span>
+                    </a>
                   )}
                   {dealer.phone && (
                     <div className="flex items-center gap-2.5 text-sm text-slate-300">
