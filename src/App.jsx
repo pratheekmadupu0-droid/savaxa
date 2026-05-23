@@ -45,6 +45,7 @@ export default function App() {
     <>
       {/* Premium UI/UX Additions */}
       <ScrollProgress />
+      {!location.pathname.startsWith('/admin') && <ThreeCanvas />}
 
       {/* Primary Layout */}
       {!location.pathname.startsWith('/admin') && <Navbar />}

@@ -13,7 +13,7 @@ export default function ThreeCanvas() {
 
     // Scene with premium minimalist white background color
     const scene = new THREE.Scene()
-    scene.fog = new THREE.FogExp2(0xffffff, 0.02)
+    scene.fog = new THREE.FogExp2(0x020817, 0.01)
 
     // Camera
     const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000)
@@ -143,7 +143,7 @@ export default function ThreeCanvas() {
   return (
     <div 
       ref={containerRef} 
-      className="fixed inset-0 w-full h-full -z-10 pointer-events-none overflow-hidden bg-white" 
+      className="fixed inset-0 w-full h-full -z-10 pointer-events-none overflow-hidden bg-transparent" 
     />
   )
 }
