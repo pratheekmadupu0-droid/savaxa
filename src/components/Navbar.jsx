@@ -2,37 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { RiMenu3Line, RiCloseFill } from 'react-icons/ri'
-import { Leaf, LogIn, Compass } from 'lucide-react'
-
-// Elegant inline SVG logo representing agriculture, crop protection, and futuristic leaf icon.
-const SavaxaLogo = () => (
-  <svg viewBox="0 0 100 100" className="w-10 h-10 filter drop-shadow-[0_0_12px_rgba(6,182,212,0.6)] animate-pulse">
-    <defs>
-      <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#06b6d4" />
-        <stop offset="100%" stopColor="#3b82f6" />
-      </linearGradient>
-    </defs>
-    {/* Futuristic leaf geometry */}
-    <path 
-      d="M50,15 C65,35 85,45 80,75 C75,90 60,95 50,95 C40,95 25,90 20,75 C15,45 35,35 50,15 Z" 
-      fill="url(#leafGrad)" 
-      opacity="0.85"
-    />
-    <path 
-      d="M50,15 C55,40 70,55 70,75 C70,85 60,90 50,90 Z" 
-      fill="#ffffff" 
-      opacity="0.9"
-    />
-    <path 
-      d="M50,15 L50,95" 
-      stroke="#020817" 
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      opacity="0.3"
-    />
-  </svg>
-)
+import { LogIn, Compass } from 'lucide-react'
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -80,7 +50,11 @@ export default function Navbar() {
           {/* MOBILE LOGO */}
           <div className="flex-shrink-0 xl:hidden flex items-center gap-2">
             <Link to="/" className="flex items-center gap-2.5">
-              <SavaxaLogo />
+              <img 
+                src="/savax-logo.png" 
+                alt="SAVAXA Logo" 
+                className="h-10 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(6,182,212,0.35)]" 
+              />
             </Link>
           </div>
 
@@ -110,7 +84,11 @@ export default function Navbar() {
             {/* Center Logo */}
             <div className="flex-shrink-0 flex items-center justify-center">
               <Link to="/" className="flex items-center justify-center">
-                <SavaxaLogo />
+                <img 
+                  src="/savax-logo.png" 
+                  alt="SAVAXA Logo" 
+                  className="h-12 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(6,182,212,0.4)]" 
+                />
               </Link>
             </div>
 
@@ -184,7 +162,11 @@ export default function Navbar() {
           >
             <div className="flex justify-between items-center p-6 border-b border-white/5">
               <div className="flex items-center gap-2.5">
-                <SavaxaLogo />
+                <img 
+                  src="/savax-logo.png" 
+                  alt="SAVAXA Logo" 
+                  className="h-10 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(6,182,212,0.35)]" 
+                />
               </div>
               <button
                 onClick={() => setMobileMenuOpen(false)}
