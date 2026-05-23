@@ -221,3 +221,27 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Google Translate Premium CSS Overrides */
+iframe.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame,
+.goog-te-banner-frame,
+#goog-gt-tt {
+  display: none !important;
+  visibility: hidden !important;
+}
+body {
+  top: 0px !important;
+  position: static !important;
+}
+.goog-te-balloon-frame {
+  display: none !important;
+}
+.goog-text-highlight {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+font {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}

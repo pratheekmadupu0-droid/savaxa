@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { RiMenu3Line, RiCloseFill } from 'react-icons/ri'
-import { LogIn, Compass } from 'lucide-react'
+import { LogIn, Compass, Globe } from 'lucide-react'
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [currentLang, setCurrentLang] = useState('en')
   const location = useLocation()
 
   useEffect(() => {
@@ -20,6 +21,58 @@ export default function Navbar() {
   useEffect(() => {
     setMobileMenuOpen(false)
   }, [location.pathname])
+
+  // Google Translate Helper & Initialization
+  useEffect(() => {
+    const getTransCookie = () => {
+      const match = document.cookie.match(/(^| )googtrans=([^;]+)/)
+      if (match && match[2]) {
+        const val = match[2]
+        if (val.includes('/te')) return 'te'
+      }
+      return 'en'
+    }
+    setCurrentLang(getTransCookie())
+
+    // Setup invisible Google Translate elements
+    if (!window.googleTranslateElementInit) {
+      window.googleTranslateElementInit = () => {
+        new window.google.translate.TranslateElement({
+          pageLanguage: 'en',
+          includedLanguages: 'en,te',
+          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false
+        }, 'google_translate_element')
+      }
+    }
+
+    if (!document.getElementById('google-translate-script')) {
+      const addScript = document.createElement('script')
+      addScript.setAttribute('src', 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit')
+      addScript.setAttribute('id', 'google-translate-script')
+      document.body.appendChild(addScript)
+    }
+  }, [])
+
+  const toggleLanguage = () => {
+    const nextLang = currentLang === 'en' ? 'te' : 'en'
+    setCurrentLang(nextLang)
+
+    // Store state in cookies globally to keep translated layout on subsequent pages
+    const domain = window.location.hostname
+    document.cookie = `googtrans=/en/${nextLang}; path=/; domain=${domain}`
+    document.cookie = `googtrans=/en/${nextLang}; path=/; domain=.${domain}`
+    document.cookie = `googtrans=/en/${nextLang}; path=/` // Fallback
+
+    // Dispatch selection event to DOM translation combobox to change language in real time
+    const selectEl = document.querySelector('select.goog-te-combo')
+    if (selectEl) {
+      selectEl.value = nextLang
+      selectEl.dispatchEvent(new Event('change'))
+    } else {
+      window.location.reload()
+    }
+  }
 
   const leftLinks = [
     { name: 'Home', path: '/' },
@@ -47,8 +100,8 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto flex justify-between items-center h-16">
           
-          {/* MOBILE LOGO */}
-          <div className="flex-shrink-0 xl:hidden flex items-center gap-2">
+          {/* MOBILE LOGO & TRANSLATION TOGGLE COMBINED */}
+          <div className="flex-shrink-0 xl:hidden flex items-center gap-4">
             <Link to="/" className="flex items-center gap-2.5">
               <img 
                 src="/savax-logo.png" 
@@ -56,6 +109,16 @@ export default function Navbar() {
                 className="h-14 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(6,182,212,0.35)]" 
               />
             </Link>
+            
+            {/* Quick mobile language icon */}
+            <button 
+              onClick={toggleLanguage}
+              className="text-cyan-400 p-2.5 bg-slate-950/40 rounded-full border border-blue-500/10 hover:border-blue-500/35 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider transition-all"
+              title="భాషను మార్చండి / Switch Language"
+            >
+              <Globe className="w-4.5 h-4.5" />
+              <span>{currentLang === 'en' ? 'EN' : 'తెల'}</span>
+            </button>
           </div>
 
           {/* DESKTOP CENTERED NAVBAR */}
@@ -80,7 +143,7 @@ export default function Navbar() {
                 </Link>
               ))}
             </nav>
-
+            
             {/* Center Logo */}
             <div className="flex-shrink-0 flex items-center justify-center">
               <Link to="/" className="flex items-center justify-center">
@@ -115,6 +178,16 @@ export default function Navbar() {
 
               {/* Action Buttons */}
               <div className="flex items-center gap-3">
+                {/* Google Translate Switcher Button */}
+                <button 
+                  onClick={toggleLanguage}
+                  className="liquid-glass px-4 py-2.5 rounded-full text-[10px] uppercase font-extrabold tracking-widest text-[#06b6d4] border border-[#06b6d4]/20 hover:border-[#06b6d4]/50 transition-all flex items-center gap-1.5 shadow-inner hover:scale-[1.03]"
+                  title="Switch Language / భాషను మార్చండి"
+                >
+                  <Globe className="w-3.5 h-3.5 text-[#06b6d4]" />
+                  <span>{currentLang === 'en' ? 'ENG / తెల' : 'తెల / ENG'}</span>
+                </button>
+
                 {/* Dealer Login Button */}
                 <Link 
                   to="/admin/login" 
@@ -149,6 +222,9 @@ export default function Navbar() {
 
         </div>
       </header>
+
+      {/* Invisible target container required by Google Translate SDK */}
+      <div id="google_translate_element" style={{ display: 'none' }} className="hidden" />
 
       {/* Mobile Drawer */}
       <AnimatePresence>
@@ -190,6 +266,15 @@ export default function Navbar() {
               ))}
 
               <div className="pt-8 border-t border-white/5 flex flex-col gap-4">
+                {/* Mobile Language Toggle */}
+                <button 
+                  onClick={toggleLanguage}
+                  className="w-full text-center liquid-glass py-4 rounded-full text-xs font-bold uppercase tracking-widest text-[#06b6d4] flex items-center justify-center gap-2 border border-[#06b6d4]/10"
+                >
+                  <Globe className="w-4 h-4 text-[#06b6d4]" />
+                  <span>{currentLang === 'en' ? 'Language: English' : 'భాష: తెలుగు'}</span>
+                </button>
+
                 <Link 
                   to="/admin/login" 
                   className="block text-center liquid-glass py-4 rounded-full text-xs font-bold uppercase tracking-widest text-slate-300 hover:text-white"
