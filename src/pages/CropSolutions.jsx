@@ -44,7 +44,7 @@ export default function CropSolutions() {
       formula: "Shield-Ultra Insecticide formulation",
       mixingRatio: "Shield-Ultra: 1.2 ml per Litre of water",
       sprayingInterval: "Apply at first square formation, repeat after 12 days to control bollworm eggs.",
-      img: "https://images.unsplash.com/photo-1594900222400-0e1075768808?auto=format&fit=crop&w=800&q=80"
+      img: "https://images.unsplash.com/photo-1605333396915-47ed6b68a00e?auto=format&fit=crop&w=800&q=80"
     },
     tomato: {
       name: "Tomato & Vegetables Protection",
@@ -54,7 +54,7 @@ export default function CropSolutions() {
       formula: "BioRoot Spore Inoculant & systemic sprays",
       mixingRatio: "BioRoot: 2.0 kg per Acre mixed with organic manure",
       sprayingInterval: "Incorporate in soil during nursery preparation or as root drench 155 days post-transplant.",
-      img: "https://images.unsplash.com/photo-1566385273619-5f15d7b8c416?auto=format&fit=crop&w=800&q=80"
+      img: "https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&w=800&q=80"
     },
     chili: {
       name: "Spicy Chili Crop Security",
@@ -64,7 +64,7 @@ export default function CropSolutions() {
       formula: "Shield-Ultra systemic spray & SOLVO Stimulant",
       mixingRatio: "Shield-Ultra: 150 ml/Acre + SOLVO: 200 ml/Acre",
       sprayingInterval: "First spray during pre-flowering stage, repeat at fruit set stage for maximum yield.",
-      img: "https://images.unsplash.com/photo-1588145293290-7a0e3f01ef87?auto=format&fit=crop&w=800&q=80"
+      img: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=800&q=80"
     },
     pulses: {
       name: "Nitrogen-Fixing Pulses Protection",
@@ -74,7 +74,7 @@ export default function CropSolutions() {
       formula: "Shield-Ultra Insecticide & BioRoot Fungicide",
       mixingRatio: "Shield-Ultra: 1.5 ml/L + BioRoot: 2.5 g/L drench",
       sprayingInterval: "Spray at first appearance of flower buds, repeat during pod development to stop boring insects.",
-      img: "https://images.unsplash.com/photo-1585996375005-d68f94e9f52f?auto=format&fit=crop&w=800&q=80"
+      img: "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?auto=format&fit=crop&w=800&q=80"
     },
     fruits: {
       name: "Horticulture Fruits & Orchards Security",
