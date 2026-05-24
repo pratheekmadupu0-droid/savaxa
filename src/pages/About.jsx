@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import SEO from '../components/SEO'
 import {
   Leaf,
   Target,
@@ -10,7 +11,12 @@ import {
   Building2,
   Award,
   ChevronRight,
-  BadgeCheck
+  BadgeCheck,
+  Sprout,
+  TrendingUp,
+  FileText,
+  Calendar,
+  Sparkles
 } from 'lucide-react'
 
 export default function About() {
@@ -27,7 +33,7 @@ export default function About() {
         playPromise.catch(err => {
           if (videoRef.current) {
             videoRef.current.muted = true
-            videoRef.current.play().catch(e => console.error(e))
+            videoRef.current.play().catch(e => console.error("Video auto-play failed: ", e))
           }
         })
       }
@@ -37,145 +43,193 @@ export default function About() {
   const visions = [
     { 
       title: "Sustainable Agronomy", 
-      desc: "Developing selective pesticide formulations that degrade naturally in soil with zero long-term active chemical residues.", 
-      icon: <Leaf className="w-8 h-8 text-[var(--color-brand-primary)]" /> 
+      desc: "Developing selective crop protection formulations that degrade naturally in soil with zero long-term active chemical residues.", 
+      icon: <Leaf className="w-7 h-7 text-cyan-400" /> 
     },
     { 
       title: "Yield Maximization", 
-      desc: "Empowering growers to defend crops from heavy infestations, boosting farm profitability.", 
-      icon: <Target className="w-8 h-8 text-[var(--color-brand-primary)]" /> 
+      desc: "Empowering growers to defend crops from heavy infestations, substantially boosting farm profitability and security.", 
+      icon: <Target className="w-7 h-7 text-emerald-400" /> 
     },
     { 
       title: "Scientific Innovation", 
       desc: "Continuously researching active spore biological blockades and hyperbaric bio-stimulant synthesis in our R&D labs.", 
-      icon: <Microscope className="w-8 h-8 text-[var(--color-brand-primary)]" /> 
+      icon: <Microscope className="w-7 h-7 text-blue-400" /> 
     },
     { 
       title: "Grower Welfare", 
-      desc: "Delivering free diagnostic resources, crop guides, and agronomist support directly to rural farming communities.", 
-      icon: <Users className="w-8 h-8 text-[var(--color-brand-primary)]" /> 
+      desc: "Delivering free diagnostic resources, crop guides, and on-field agronomist support directly to rural farming communities.", 
+      icon: <Users className="w-7 h-7 text-purple-400" /> 
     }
   ]
 
+  const stats = [
+    { value: "500+", label: "Dealer Locations" },
+    { value: "100K+", label: "Farmers Empowered" },
+    { value: "15+", label: "Certified Formulations" },
+    { value: "10+", label: "Years of Excellence" }
+  ]
+
   const timeline = [
-    { year: "2010", title: "Inception", desc: "Savaxa started as a small research facility focused on bio-stimulants." },
-    { year: "2015", title: "Market Expansion", desc: "Launched our first proprietary line of selective herbicides across South India." },
-    { year: "2019", title: "ISO Certification", desc: "Achieved ISO 9001:2015 certification for our state-of-the-art manufacturing plants." },
-    { year: "2024", title: "Global Reach", desc: "Expanded our dealer network to over 500+ locations." }
+    { year: "2010", title: "Inception & Research", desc: "Savaxa started as a highly specialized bio-stimulant and agricultural research facility in Pedda Amberpet." },
+    { year: "2015", title: "Market Expansion", desc: "Launched our first proprietary line of selective herbicides and crop nutrition sprays across South India." },
+    { year: "2019", title: "ISO Certification", desc: "Achieved ISO 9001:2015 certification for our state-of-the-art chemical blending reactors and R&D plants." },
+    { year: "2024", title: "Global Scale & Digital", desc: "Expanded our dealer network to 500+ outlets, integrating real-time regional agronomist support." }
   ]
 
   return (
-    <div className="font-body bg-[#020817] min-h-screen text-slate-300">
-      
+    <div className="font-body bg-[#020817] min-h-screen text-slate-300 overflow-x-hidden">
+      <SEO 
+        title="About Us | SAVAXA Crop Care"
+        description="Pioneering the future of crop protection through science, innovation, and a deep commitment to farmer welfare. Explore our legacy, MD's profile, and our mission."
+      />
+
       {/* 1. HERO BANNER */}
-      <section className="relative pt-32 pb-20 bg-gradient-to-br from-[var(--color-brand-navy)] to-[var(--color-brand-primary)] overflow-hidden">
-        <div className="absolute inset-0 bg-white/5 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:20px_20px] opacity-10" />
+      <section className="relative pt-36 pb-24 bg-gradient-to-br from-[#020817] via-[#040d21] to-[#0a1530] overflow-hidden">
+        {/* Abstract light flares */}
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none" />
+        
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:40px_40px] opacity-25 pointer-events-none" />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-4"
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="space-y-6"
           >
-            <div className="flex items-center justify-center gap-2 text-blue-200 text-sm font-bold uppercase tracking-widest mb-4">
-              <Link to="/" className="hover:text-white transition-colors">Home</Link>
-              <ChevronRight className="w-4 h-4" />
-              <span className="text-white">About Us</span>
+            {/* Glass Breadcrumb */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/60 border border-blue-500/10 backdrop-blur-md shadow-inner mb-4">
+              <Link to="/" className="text-slate-400 hover:text-white text-xs uppercase tracking-widest transition-colors font-semibold">Home</Link>
+              <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+              <span className="text-[#06b6d4] text-xs uppercase tracking-widest font-semibold drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]">About Us</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-montserrat font-extrabold text-white uppercase tracking-tight">
-              About Savaxa
+
+            <h1 className="text-5xl md:text-7xl font-heading font-extrabold text-white uppercase tracking-tight">
+              About <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 text-glow">Savaxa</span>
             </h1>
-            <p className="text-blue-100 max-w-2xl mx-auto text-lg leading-relaxed">
-              Pioneering the future of crop protection through science, innovation, and a deep commitment to farmer welfare.
+            
+            <p className="text-slate-400 max-w-2xl mx-auto text-lg md:text-xl leading-relaxed">
+              Pioneering the future of crop protection through science, biochemistry, and a deep, uncompromising commitment to farmer welfare.
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* 2. COMPANY STORY */}
-      <section className="py-24 bg-[#020817] relative">
+      <section className="py-28 bg-[#020817] relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            
+            {/* Story Copy */}
             <motion.div 
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="space-y-8"
+              className="lg:col-span-7 space-y-8"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-brand-surface)] border border-[var(--color-blue-100)]">
-                <Building2 className="w-4 h-4 text-[var(--color-brand-primary)]" />
-                <span className="text-xs font-bold text-[var(--color-brand-primary)] uppercase tracking-widest">Our Legacy</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/40 border border-blue-500/10">
+                <Building2 className="w-4 h-4 text-cyan-400" />
+                <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest">Our Legacy</span>
               </div>
               
-              <h2 className="text-3xl md:text-5xl font-montserrat font-bold text-[var(--color-brand-navy)] leading-tight uppercase">
-                A Decade of <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-primary)] to-[var(--color-brand-accent)]">Agricultural Excellence</span>
+              <h2 className="text-4xl md:text-5xl font-heading font-bold text-white leading-tight uppercase">
+                A Decade of <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Agricultural Excellence</span>
               </h2>
               
-              <div className="space-y-4 text-slate-600 leading-relaxed text-lg">
+              <div className="space-y-6 text-slate-300 leading-relaxed text-lg font-normal">
                 <p>
-                  Savaxa Bio-Agri Sciences began with a vital mission: to bridge the gap between complex biochemical science and field-level crop safety. Driven by the pressing challenges of crop loss and pest mutations, we established advanced chemical blending reactors and R&D facilities to create high-efficacy pesticides.
+                  Savaxa Bio-Agri Sciences began with a vital, clear mission: to bridge the gap between complex biochemical innovations and field-level crop safety. Driven by the pressing challenges of high-intensity crop losses, pest mutations, and chemical over-spraying, we established advanced chemical blending reactors and research-grade facilities.
                 </p>
                 <p>
-                  Today, Savaxa has grown into a highly trusted agrochemical name. We produce selective herbicides, fast-acting insecticides, and organic bio-inoculants that have safeguarded thousands of cultivation acres, ensuring high yields and secure profits for crop growers.
+                  Today, Savaxa has grown into a highly trusted agrochemical name in Indian agriculture. We develop and manufacture selective herbicides, fast-acting biological insecticides, and organic bio-stimulants that have safeguarded thousands of cultivation acres, ensuring high yields and secure profits for our hard-working growers.
                 </p>
               </div>
 
-              <div className="flex gap-4 pt-4">
-                <div className="flex items-center gap-2 text-sm font-bold text-[var(--color-brand-navy)] bg-[var(--color-brand-surface)] px-5 py-3 rounded-lg border border-[var(--color-blue-100)]">
-                  <BadgeCheck className="w-5 h-5 text-[var(--color-brand-primary)]" /> ISO 9001:2015
+              {/* Core approvals/certifications badges */}
+              <div className="flex flex-wrap gap-4 pt-4">
+                <div className="flex items-center gap-2.5 text-xs font-bold text-slate-200 bg-slate-900/60 px-5 py-3.5 rounded-xl border border-blue-500/10 shadow-sm">
+                  <BadgeCheck className="w-5 h-5 text-emerald-400" /> 
+                  <span>ISO 9001:2015 CERTIFIED</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm font-bold text-[var(--color-brand-navy)] bg-[var(--color-brand-surface)] px-5 py-3 rounded-lg border border-[var(--color-blue-100)]">
-                  <ShieldCheck className="w-5 h-5 text-[var(--color-brand-primary)]" /> CIB&RC Approved
+                <div className="flex items-center gap-2.5 text-xs font-bold text-slate-200 bg-slate-900/60 px-5 py-3.5 rounded-xl border border-blue-500/10 shadow-sm">
+                  <ShieldCheck className="w-5 h-5 text-emerald-400" /> 
+                  <span>CIB&RC GOVT APPROVED</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-xs font-bold text-slate-200 bg-slate-900/60 px-5 py-3.5 rounded-xl border border-blue-500/10 shadow-sm">
+                  <Leaf className="w-5 h-5 text-emerald-400" /> 
+                  <span>ECO-SAFE CHEMISTRY</span>
                 </div>
               </div>
             </motion.div>
 
+            {/* Premium Video Block */}
             <motion.div 
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="relative aspect-square rounded-3xl overflow-hidden shadow-2xl border border-[var(--color-blue-100)]"
+              className="lg:col-span-5 relative"
             >
-              <video 
-                ref={videoRef}
-                src="/savaxa-crop.mp4" 
-                autoPlay 
-                muted 
-                loop 
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-brand-navy)]/40 to-transparent" />
+              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border border-blue-500/10 bg-slate-900 group">
+                <video 
+                  ref={videoRef}
+                  src="/savaxa-crop.mp4" 
+                  autoPlay 
+                  muted 
+                  loop 
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                />
+                {/* Beautiful overlay gradients */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#020817]/70 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-blue-500/5 mix-blend-overlay group-hover:opacity-0 transition-opacity duration-500 pointer-events-none" />
+              </div>
+              
+              {/* Decorative background glow behind the video */}
+              <div className="absolute -inset-4 bg-gradient-to-tr from-cyan-500/10 to-blue-500/10 rounded-3xl blur-2xl -z-10 opacity-70" />
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* 3. MISSION & VISION */}
-      <section className="py-24 bg-[var(--color-brand-surface)]">
+      <section className="py-28 bg-[#070f21] relative">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.06),transparent_50%)] pointer-events-none" />
+        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-montserrat font-bold text-[var(--color-brand-navy)] uppercase tracking-tight">
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/40 border border-blue-500/10 mb-4">
+              <Sparkles className="w-4 h-4 text-emerald-400" />
+              <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest">Our Blueprint</span>
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-white uppercase tracking-tight">
               Mission & Vision
             </h2>
-            <div className="w-24 h-1.5 bg-[var(--color-brand-primary)] mx-auto mt-6 rounded-full" />
+            <div className="w-24 h-1.5 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto mt-6 rounded-full" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {visions.map((v, i) => (
               <motion.div 
                 key={i}
-                whileHover={{ y: -5, boxShadow: '0 10px 30px -10px rgba(0,71,171,0.15)' }}
-                className="bg-slate-900/40 p-8 rounded-2xl border border-blue-500/10 flex gap-6 group transition-all"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                whileHover={{ y: -6, borderColor: 'rgba(6,182,212,0.35)', boxShadow: '0 20px 40px -15px rgba(6,182,212,0.1)' }}
+                className="bg-slate-900/40 p-8 rounded-2xl border border-blue-500/10 flex flex-col sm:flex-row gap-6 group transition-all duration-300"
               >
-                <div className="w-16 h-16 rounded-xl bg-[var(--color-brand-surface)] flex items-center justify-center shrink-0 group-hover:bg-[var(--color-brand-primary)] group-hover:text-white transition-colors">
+                <div className="w-14 h-14 rounded-2xl bg-[#020817] border border-blue-500/15 flex items-center justify-center shrink-0 group-hover:bg-blue-600/10 group-hover:border-cyan-500/40 transition-colors duration-300">
                   {v.icon}
                 </div>
-                <div>
-                  <h3 className="text-xl font-montserrat font-bold text-[var(--color-brand-navy)] mb-3">{v.title}</h3>
-                  <p className="text-slate-600 leading-relaxed">{v.desc}</p>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-heading font-bold text-white tracking-wide group-hover:text-cyan-300 transition-colors duration-300">{v.title}</h3>
+                  <p className="text-slate-400 leading-relaxed text-sm">{v.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -183,82 +237,222 @@ export default function About() {
         </div>
       </section>
 
-      {/* 4. LEADERSHIP TEAM */}
-      <section className="py-24 bg-[#020817]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-montserrat font-bold text-[var(--color-brand-navy)] uppercase tracking-tight">
-              Leadership
-            </h2>
-            <div className="w-24 h-1.5 bg-[var(--color-brand-primary)] mx-auto mt-6 rounded-full" />
-          </div>
-
-          <div className="max-w-4xl mx-auto bg-[var(--color-brand-surface)] rounded-3xl p-8 md:p-12 border border-[var(--color-blue-100)]">
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-              <div className="md:col-span-5">
-                <div className="aspect-[4/5] rounded-2xl overflow-hidden border-4 border-white shadow-xl relative">
-                  <img src="/md.png" alt="Dr. Narendar Reddy" className="w-full h-full object-cover" onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80" }} />
-                </div>
-              </div>
-              <div className="md:col-span-7 space-y-6">
-                <div>
-                  <h3 className="text-3xl font-montserrat font-bold text-[var(--color-brand-navy)] uppercase">Dr. Narendar Reddy</h3>
-                  <p className="text-[var(--color-brand-primary)] font-bold tracking-widest uppercase text-sm mt-2">Managing Director</p>
-                </div>
-                <div className="w-12 h-1 bg-[var(--color-brand-accent)]" />
-                <p className="text-slate-600 leading-relaxed text-lg">
-                  Holding a specialized MBA in Agri-Business Management combined with a doctorate in agricultural sciences, Dr. Reddy combines advanced biochemical research insight with high-level corporate and rural strategic vision.
-                </p>
-                <div className="bg-slate-900/40 p-6 rounded-xl border border-blue-500/10 shadow-sm italic text-slate-300">
-                  "Our technology must always serve the farmer first. We don't just sell chemical compounds; we provide scientific shield arrays that empower farmers to cultivate rich, safe, and highly profitable harvests."
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. TIMELINE */}
-      <section className="py-24 bg-[var(--color-brand-navy)] text-white">
+      {/* 4. LEADERSHIP TEAM (MD INFO) */}
+      <section className="py-28 bg-[#020817] relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-montserrat font-bold text-white uppercase tracking-tight">
-              Our Journey
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/40 border border-blue-500/10 mb-4">
+              <Users className="w-4 h-4 text-blue-400" />
+              <span className="text-xs font-bold text-blue-400 uppercase tracking-widest">Leadership</span>
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-white uppercase tracking-tight">
+              Executive Directorate
             </h2>
-            <div className="w-24 h-1.5 bg-[var(--color-brand-primary)] mx-auto mt-6 rounded-full" />
+            <div className="w-24 h-1.5 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto mt-6 rounded-full" />
           </div>
 
-          <div className="relative">
-            {/* Horizontal line for desktop */}
-            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-[var(--color-brand-primary)] -translate-y-1/2" />
+          <div className="max-w-5xl mx-auto bg-slate-900/30 rounded-3xl p-8 md:p-14 border border-blue-500/10 relative overflow-hidden shadow-2xl">
+            {/* Background lighting */}
+            <div className="absolute top-0 left-0 w-80 h-80 bg-blue-500/5 rounded-full blur-[100px] pointer-events-none" />
             
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
-              {timeline.map((item, i) => (
-                <div key={i} className="flex flex-col items-center text-center">
-                  <div className="w-20 h-20 rounded-full bg-[var(--color-brand-primary)] border-4 border-[var(--color-brand-navy)] flex items-center justify-center font-montserrat font-bold text-xl mb-6 shadow-xl">
-                    {item.year}
-                  </div>
-                  <h3 className="text-xl font-bold text-blue-100 uppercase tracking-wide mb-3">{item.title}</h3>
-                  <p className="text-blue-200/80 text-sm leading-relaxed">{item.desc}</p>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+              
+              {/* MD Photo Frame */}
+              <div className="lg:col-span-5 flex justify-center">
+                <div className="aspect-[4/5] w-full max-w-[320px] rounded-2xl overflow-hidden border-2 border-slate-700 bg-slate-950 shadow-2xl relative group">
+                  <img 
+                    src="/dr-narendar-reddy.png" 
+                    alt="Dr. Narendar Reddy" 
+                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out" 
+                    onError={(e) => { e.target.src = "/md.png" }} 
+                  />
+                  {/* Subtle tint overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent pointer-events-none" />
                 </div>
-              ))}
+              </div>
+
+              {/* MD Bio Details */}
+              <div className="lg:col-span-7 space-y-6">
+                <div>
+                  <h3 className="text-4xl font-heading font-bold text-white uppercase tracking-wide">Dr. Narendar Reddy</h3>
+                  <p className="text-cyan-400 font-bold tracking-widest uppercase text-xs mt-2 flex items-center gap-2">
+                    <span>Managing Director</span>
+                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                    <span>SAVAXA BIO-AGRI SCIENCES</span>
+                  </p>
+                </div>
+                
+                <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" />
+                
+                <p className="text-slate-300 leading-relaxed text-base font-normal">
+                  Holding a specialized MBA in Agri-Business Management combined with an honorary doctorate in agricultural sciences, Dr. Reddy brings together advanced biochemical research insight, high-level corporate agility, and structural farm diagnostics.
+                </p>
+                <p className="text-slate-300 leading-relaxed text-base font-normal">
+                  Under his scientific guidance, Savaxa has successfully transitioned from standard chemical blends to eco-safe spore inoculants, making it a highly respected and trusted label for regional growers in India.
+                </p>
+                
+                {/* Quote block */}
+                <div className="relative bg-slate-950/60 p-6 rounded-2xl border-l-4 border-cyan-500 shadow-inner text-slate-300 font-medium italic">
+                  <span className="absolute -top-4 -left-2 text-6xl text-cyan-500/20 font-serif pointer-events-none">“</span>
+                  "Our chemical formulations must always serve the farmer first. We do not simply sell crop pesticides; we engineer active scientific shields that empower growers to secure rich, clean, and highly profitable harvests."
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6. CERTIFICATIONS PREVIEW */}
-      <section className="py-20 bg-[var(--color-brand-surface)] text-center border-t border-[var(--color-blue-100)]">
+      {/* 5. STATS SUMMARY SECTION */}
+      <section className="py-20 bg-gradient-to-b from-[#020817] to-[#070f21] border-y border-blue-500/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-sm font-bold text-[var(--color-brand-primary)] tracking-widest uppercase mb-4">Quality Guaranteed</p>
-          <div className="flex flex-wrap justify-center gap-8 items-center opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
-            <Award className="w-16 h-16 text-[var(--color-brand-navy)]" />
-            <ShieldCheck className="w-16 h-16 text-[var(--color-brand-navy)]" />
-            <BadgeCheck className="w-16 h-16 text-[var(--color-brand-navy)]" />
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {stats.map((s, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="text-center space-y-2 p-6 bg-slate-900/20 rounded-2xl border border-blue-500/5 backdrop-blur-sm"
+              >
+                <h3 className="text-4xl md:text-5xl font-heading font-extrabold text-white tracking-tight">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 drop-shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+                    {s.value}
+                  </span>
+                </h3>
+                <p className="text-slate-400 text-xs uppercase tracking-widest font-semibold">{s.label}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
+      {/* 6. TIMELINE / OUR JOURNEY */}
+      <section className="py-28 bg-[#070f21] relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center mb-24">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/40 border border-blue-500/10 mb-4">
+              <Calendar className="w-4 h-4 text-emerald-400" />
+              <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest">Our Journey</span>
+            </div>
+            
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-white uppercase tracking-tight">
+              Milestones & Growth
+            </h2>
+            <div className="w-24 h-1.5 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto mt-6 rounded-full" />
+          </div>
+
+          {/* Timeline Pipeline */}
+          <div className="relative max-w-5xl mx-auto">
+            {/* Desktop Center Connector line */}
+            <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500/40 via-cyan-500/20 to-transparent -translate-x-1/2" />
+            
+            <div className="space-y-16">
+              {timeline.map((item, i) => {
+                const isEven = i % 2 === 0
+                return (
+                  <div key={i} className="flex flex-col lg:flex-row items-center relative">
+                    
+                    {/* Circle Node Center (Desktop) */}
+                    <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-[#020817] border-2 border-cyan-400/60 shadow-lg items-center justify-center font-heading font-bold text-lg text-white z-20 shadow-cyan-500/10">
+                      {item.year}
+                    </div>
+
+                    {/* Timeline card wrapper */}
+                    <div className={`w-full lg:w-1/2 flex ${isEven ? 'lg:justify-end lg:pr-14' : 'lg:justify-start lg:pl-14'}`}>
+                      <motion.div 
+                        initial={{ opacity: 0, x: isEven ? -30 : 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="w-full max-w-md bg-slate-900/40 p-8 rounded-2xl border border-blue-500/10 shadow-lg relative group hover:border-cyan-500/20 transition-all"
+                      >
+                        {/* Mobile Year Badge */}
+                        <div className="inline-flex lg:hidden bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-heading font-bold text-sm px-4 py-1.5 rounded-full mb-4 shadow-md">
+                          {item.year}
+                        </div>
+                        
+                        <h3 className="text-xl font-heading font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors duration-300">
+                          {item.title}
+                        </h3>
+                        <p className="text-slate-400 text-sm leading-relaxed font-normal">
+                          {item.desc}
+                        </p>
+                      </motion.div>
+                    </div>
+
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. CERTIFICATIONS & REGISTRATIONS PREVIEW */}
+      <section className="py-24 bg-[#020817] text-center border-t border-blue-500/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-xs font-bold text-cyan-400 tracking-widest uppercase mb-6 flex items-center justify-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <span>Highest Quality Standards Guaranteed</span>
+          </p>
+          
+          <div className="flex flex-wrap justify-center gap-12 md:gap-20 items-center opacity-40 hover:opacity-85 transition-opacity duration-500">
+            <div className="flex flex-col items-center gap-2">
+              <Award className="w-14 h-14 text-white" />
+              <span className="text-[10px] text-slate-400 tracking-wider font-semibold uppercase">ISO 9001:2015</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <ShieldCheck className="w-14 h-14 text-white" />
+              <span className="text-[10px] text-slate-400 tracking-wider font-semibold uppercase">CIB&RC Registered</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <BadgeCheck className="w-14 h-14 text-white" />
+              <span className="text-[10px] text-slate-400 tracking-wider font-semibold uppercase">Quality Assured</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. CTA SECTION */}
+      <section className="py-20 bg-gradient-to-b from-[#020817] to-[#040d21] relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(6,182,212,0.07),transparent_50%)] pointer-events-none" />
+        
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <div className="bg-slate-900/40 p-10 md:p-16 rounded-3xl border border-blue-500/10 shadow-2xl relative overflow-hidden">
+            
+            <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/5 rounded-full blur-[60px] pointer-events-none" />
+            
+            <div className="max-w-2xl mx-auto space-y-6">
+              <h2 className="text-3xl md:text-4xl font-heading font-bold text-white uppercase tracking-tight">
+                Partner with Savaxa Bio-Agri
+              </h2>
+              <p className="text-slate-400 leading-relaxed">
+                Whether you are a local dealer looking to offer certified pest protections, or a crop grower seeking diagnostic consulting, Savaxa stands ready.
+              </p>
+              
+              <div className="pt-4 flex flex-wrap justify-center gap-4">
+                <Link 
+                  to="/contact" 
+                  className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold px-8 py-3.5 rounded-full uppercase tracking-widest text-[10px] shadow-lg shadow-blue-500/10 hover:shadow-cyan-500/30 transition-all hover:scale-[1.03]"
+                >
+                  Consult our Experts
+                </Link>
+                <Link 
+                  to="/dealers" 
+                  className="bg-slate-900 text-slate-300 font-bold px-8 py-3.5 rounded-full uppercase tracking-widest text-[10px] border border-slate-700 hover:text-white hover:border-slate-500 transition-all"
+                >
+                  Locate a Dealer
+                </Link>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

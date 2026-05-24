@@ -76,6 +76,7 @@ export default function Navbar() {
 
   const leftLinks = [
     { name: 'Home', path: '/' },
+    { name: 'About Us', path: '/about' },
     { name: 'Products', path: '/products' },
     { name: 'Crop Solutions', path: '/crop-solutions' },
   ]
