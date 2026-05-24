@@ -71,10 +71,10 @@ export default function About() {
   ]
 
   const timeline = [
-    { year: "2010", title: "Inception & Research", desc: "Savaxa started as a highly specialized bio-stimulant and agricultural research facility in Pedda Amberpet." },
-    { year: "2015", title: "Market Expansion", desc: "Launched our first proprietary line of selective herbicides and crop nutrition sprays across South India." },
-    { year: "2019", title: "ISO Certification", desc: "Achieved ISO 9001:2015 certification for our state-of-the-art chemical blending reactors and R&D plants." },
-    { year: "2024", title: "Global Scale & Digital", desc: "Expanded our dealer network to 500+ outlets, integrating real-time regional agronomist support." }
+    { year: "2023", title: "Founding & Inception", desc: "Savaxa Bio-Agri Sciences was established with a vital mission to develop high-efficacy crop protections. Registered core formulations under CIB&RC India." },
+    { year: "2024", title: "Dealer Expansion", desc: "Launched selective herbicides and crop nutrition lines. Formed a strong network of 100+ authorized dealers to empower growers." },
+    { year: "2025", title: "ISO Certification", desc: "Achieved ISO 9001:2015 certification for manufacturing excellence and scaled our advanced R&D biological spore labs." },
+    { year: "2026", title: "Global Scale", desc: "Expanded the authorized dealer network to over 500+ locations, securing crop yields and profits for 100K+ farmers." }
   ]
 
   return (
