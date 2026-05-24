@@ -1,0 +1,18 @@
+{
+  "short_name": "Savaxa",
+  "name": "SAVAXA Crop Care",
+  "description": "OUR CROP CARE PORTFOLIO. Advanced crop protection formulations that address severe pest attacks, stubborn weeds, and fungal diseases.",
+  "icons": [
+    {
+      "src": "/savax-logo.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#020817",
+  "theme_color": "#020817",
+  "display": "standalone",
+  "orientation": "portrait"
+}

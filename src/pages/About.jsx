@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import SEO from '../components/SEO'
@@ -21,6 +21,7 @@ import {
 
 export default function About() {
   const videoRef = useRef(null)
+  const [isMockupDarkMode, setIsMockupDarkMode] = useState(false)
 
   useEffect(() => {
     if (videoRef.current) {
@@ -422,6 +423,116 @@ export default function About() {
               <span className="text-[10px] text-slate-400 tracking-wider font-semibold uppercase">Quality Assured</span>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* 7.5 BRAND SEARCH PRESENCE & SEO MOCKUP */}
+      <section className="py-24 bg-[#020817] relative border-t border-slate-900 overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-blue-500/10 mb-4">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-300">Brand Identity & SEO</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-heading font-extrabold text-white uppercase tracking-tight">
+              Savaxa <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Digital Rank</span>
+            </h2>
+            <div className="w-16 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto mt-4 rounded-full mb-4" />
+            <p className="text-slate-400 max-w-xl mx-auto text-sm leading-relaxed">
+              Explore how SAVAXA stands out on standard search engines, presenting a mobile-optimized, authoritative crop protection portfolio for global agronomists.
+            </p>
+
+            {/* Light/Dark Toggle */}
+            <div className="mt-8 flex justify-center">
+              <div className="bg-slate-950 p-1 rounded-xl border border-slate-800 flex gap-1">
+                <button
+                  onClick={() => setIsMockupDarkMode(false)}
+                  className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                    !isMockupDarkMode 
+                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20' 
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  Google Light
+                </button>
+                <button
+                  onClick={() => setIsMockupDarkMode(true)}
+                  className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                    isMockupDarkMode 
+                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20' 
+                      : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  Savaxa Dark
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Realistic Responsive Mockup Container */}
+          <div className="max-w-3xl mx-auto">
+            <motion.div 
+              layout
+              className={`p-6 md:p-8 rounded-3xl border transition-all duration-500 shadow-2xl flex flex-col md:flex-row gap-6 items-start md:items-center justify-between ${
+                isMockupDarkMode 
+                  ? 'bg-slate-950 border-blue-500/20 text-slate-300 shadow-blue-500/5' 
+                  : 'bg-white border-slate-200 text-slate-750 shadow-slate-950/5'
+              }`}
+            >
+              {/* Left Side listing detail */}
+              <div className="flex-1 space-y-4">
+                
+                {/* Header section (Favicon & breadcrumbs) */}
+                <div className="flex items-center gap-3">
+                  {/* Brand Logo in place of Globe Icon */}
+                  <div className="w-8 h-8 rounded-full bg-slate-950 flex items-center justify-center p-1.5 shadow-sm border border-slate-200/10">
+                    <img 
+                      src="/savax-logo.png" 
+                      alt="SAVAXA Logo Icon" 
+                      className="w-full h-full object-contain filter drop-shadow-[0_0_3px_rgba(6,182,212,0.4)]"
+                    />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <span className={`text-xs font-bold leading-none ${isMockupDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                      savaxa.in
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-medium">
+                      https://www.savaxa.in
+                    </span>
+                  </div>
+                </div>
+
+                {/* Search Title */}
+                <h3 className={`text-xl md:text-2xl font-semibold leading-snug text-left ${
+                  isMockupDarkMode 
+                    ? 'text-cyan-400 hover:underline cursor-pointer' 
+                    : 'text-[#1a0dab] hover:underline cursor-pointer'
+                }`}>
+                  SAVAXA Crop Care | Best Pesticide & Crop Protection Company
+                </h3>
+
+                {/* Snippet Description */}
+                <p className={`text-sm text-left leading-relaxed ${isMockupDarkMode ? 'text-slate-450' : 'text-slate-600'}`}>
+                  <span className="font-semibold">...</span> OUR CROP CARE PORTFOLIO. We manufacture advanced crop protection formulations that address severe pest attacks, stubborn weeds, and fungal diseases. <span className={`font-semibold cursor-pointer hover:underline ${isMockupDarkMode ? 'text-cyan-400' : 'text-[#1a0dab]'}`}>Read more</span>
+                </p>
+
+              </div>
+
+              {/* Right Side Cotton Crop Thumbnail */}
+              <div className="w-full md:w-32 h-32 md:h-32 rounded-2xl overflow-hidden shadow-lg border border-blue-500/10 bg-slate-900 flex-shrink-0 relative">
+                <img 
+                  src="/cotton_solution.png" 
+                  alt="SAVAXA Cotton Protection" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+            </motion.div>
+          </div>
+
         </div>
       </section>
 
