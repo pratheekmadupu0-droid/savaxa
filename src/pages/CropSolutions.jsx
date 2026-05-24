@@ -74,7 +74,7 @@ export default function CropSolutions() {
       formula: "Shield-Ultra Insecticide & BioRoot Fungicide",
       mixingRatio: "Shield-Ultra: 1.5 ml/L + BioRoot: 2.5 g/L drench",
       sprayingInterval: "Spray at first appearance of flower buds, repeat during pod development to stop boring insects.",
-      img: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?auto=format&fit=crop&w=800&q=80"
+      img: "/pulses_solution.png"
     },
     fruits: {
       name: "Horticulture Fruits & Orchards Security",
