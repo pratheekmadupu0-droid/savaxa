@@ -84,7 +84,7 @@ export default function CropSolutions() {
       formula: "BioRoot Systemic Fungicide & SOLVO Nutrition",
       mixingRatio: "BioRoot: 2.0 g/L foliar spray + SOLVO: 1.5 ml/L",
       sprayingInterval: "Foliar spray during pre-blossom stage and repeat after fruit-set to ensure spot-free yields.",
-      img: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=800&q=80"
+      img: "/fruits_solution.png"
     }
   }
 
