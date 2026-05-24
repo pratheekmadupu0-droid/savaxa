@@ -74,9 +74,16 @@ export default function Home() {
           loop 
           muted 
           playsInline 
+          preload="auto"
+          webkit-playsinline="true"
+          onEnded={(e) => { e.target.play(); }}
           src="/savaxa-2.mp4" 
           className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
-          style={{ willChange: 'transform' }}
+          style={{ 
+            willChange: 'transform',
+            transform: 'translate3d(0, 0, 0)',
+            backfaceVisibility: 'hidden'
+          }}
         />
 
         {/* Ambient Dark Tech Gradients & Glowing atmosphere */}
