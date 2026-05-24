@@ -11,7 +11,8 @@ import {
   Cpu, 
   RefreshCw, 
   Layers,
-  ExternalLink
+  ExternalLink,
+  X
 } from 'lucide-react'
 import SEO from '../components/SEO'
 
@@ -22,6 +23,7 @@ export default function Blog() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [isLive, setIsLive] = useState(false)
+  const [selectedPost, setSelectedPost] = useState(null)
 
   // Curated premium fallback posts in case of API rate limits or offline state
   const fallbackPosts = [
@@ -31,8 +33,18 @@ export default function Blog() {
       publishedAt: "2026-05-18T10:00:00Z",
       author: "Dr. Vikram Seth",
       source: { name: "Savaxa R&D Labs" },
-      urlToImage: "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=600&q=80",
-      url: "/crop-solutions"
+      urlToImage: "/cotton_solution.png",
+      url: "/crop-solutions",
+      fullContent: `Emergency surveillance reports from the SAVAXA R&D laboratories indicate that Fall Armyworm (Spodoptera frugiperda) populations across warm sub-tropical and tropical crop belts are developing accelerated genetic mutations. These mutations confer increased resistance to several standard organophosphates and traditional synthetic pyrethroid treatments. 
+
+Our molecular agronomy team has identified two primary genetic pathways responsible for this mutation. These pathways alter acetylcholinesterase receptor structures, rendering old-generation chemical treatments ineffective. 
+
+To mitigate these threats, SAVAXA recommends the following immediate action protocol:
+1. Alternating chemical classes by introducing Shield-Ultra, a high-targeted systemic formulation.
+2. Integrating bio-agents to target larvae during early instar stages.
+3. Conducting regular field scouting at dawn and dusk when armyworm activity peaks.
+
+Early detection combined with rapid deployment of targeted blockers remains the single most effective defense against widespread crop defoliation.`
     },
     {
       title: "Decoding Bio-agents & Active Biological Spores",
@@ -40,8 +52,13 @@ export default function Blog() {
       publishedAt: "2026-05-02T14:30:00Z",
       author: "Sarah Jenkins",
       source: { name: "Agronomy Science Quarterly" },
-      urlToImage: "https://images.unsplash.com/photo-1581093588401-f3c22d76ba0c?auto=format&fit=crop&w=600&q=80",
-      url: "/certifications"
+      urlToImage: "/tomato_solution.png",
+      url: "/crop-solutions",
+      fullContent: `Biological stimulants represent the next frontier in ecological agronomy. However, a major challenge in biological crop protection is maintaining spore viability during chemical manufacturing, storage, and field application. Active biological spores are highly sensitive to thermal fluctuations and ambient oxidation.
+
+At Savaxa, our production lines utilize hyperbaric low-temperature spray drying. This proprietary engineering process flash-freezes active bio-inoculants under pressurized nitrogen, locking them into an inert, highly stable state. 
+
+When applied to the field, these biological spores quickly hydrate and colonize root networks. They establish a symbiotic relationship, secreting natural defensive compounds that block root pathogens (like Fusarium and Pythium) while boosting overall nutrient absorption rates by up to 28%.`
     },
     {
       title: "Rising Fertilizer Costs Drive Focus on Target Efficiency",
@@ -49,8 +66,13 @@ export default function Blog() {
       publishedAt: "2026-04-22T08:15:00Z",
       author: "Dr. Koji Takahashi",
       source: { name: "Agri-Market Trends" },
-      urlToImage: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=600&q=80",
-      url: "/products"
+      urlToImage: "/pulses_solution.png",
+      url: "/crop-solutions",
+      fullContent: `Global fertilizer price volatility is forcing commercial farming operations to drastically rethink nutrient application techniques. Broad-spectrum broadcast spraying is no longer economically viable. Instead, smart farming systems are moving toward targeted spot-spraying and high-efficiency formulations.
+
+Field diagnostics spanning 15,000 acres of soybean farms have proven that low-dosage, high-concentration chemical applications delivered directly to the root zone or foliage achieve superior results at a fraction of the cost. 
+
+By applying SAVAXA's SOLVO nutrition and BioRoot stimulants in highly targeted bands, test farms reported a 28% increase in seasonal net margins. This is achieved by reducing chemical waste and preventing nutrient run-off into surrounding water systems.`
     },
     {
       title: "Preventing Barnyard Grass Encroachments in Direct Seeded Paddy",
@@ -58,8 +80,13 @@ export default function Blog() {
       publishedAt: "2026-04-08T11:45:00Z",
       author: "Amanda Sterling",
       source: { name: "Weed Control Forum" },
-      urlToImage: "https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?auto=format&fit=crop&w=600&q=80",
-      url: "/crop-solutions"
+      urlToImage: "/rice_solution.png",
+      url: "/crop-solutions",
+      fullContent: `Barnyard grass (Echinochloa crus-galli) is one of the most destructive weeds affecting direct-seeded paddy (DSR) fields, mimicking the morphology of young rice plants and stealing vital nitrogen reserves. Left unchecked, it can lead to total crop failure.
+
+Successful management requires a precise combination of chemical pre-emergence blockades and strategic water flooding. 
+
+SAVAXA’s Weed Control Forum recommends applying pre-emergence herbicides within 3 days of seeding, followed by a selective post-emergence spray when weeds reach the 2-leaf stage. Once herbicides have been absorbed, maintaining a consistent water level of 5-10 cm across paddy fields creates an anaerobic environment that naturally suppresses further weed germination while allowing the rice seedlings to flourish.`
     },
     {
       title: "Next-Gen Bio-Stimulants: Enhancing Root Architecture",
@@ -67,8 +94,13 @@ export default function Blog() {
       publishedAt: "2026-03-29T16:00:00Z",
       author: "Dr. Narendar Reddy",
       source: { name: "Savaxa Innovations" },
-      urlToImage: "https://images.unsplash.com/photo-1463936575829-25148e1db1b8?auto=format&fit=crop&w=600&q=80",
-      url: "/about"
+      urlToImage: "/chili_solution.png",
+      url: "/crop-solutions",
+      fullContent: `Drought resistance is becoming a critical parameter for survival in modern agriculture. Next-generation bio-stimulants developed by SAVAXA focus on enhancing root architecture, specifically encouraging the growth of deep lateral roots and root hairs.
+
+Our organic micro-inoculants contain plant-growth-promoting rhizobacteria (PGPR) and humic extracts. 
+
+Once applied, they alter the plant's hormonal signaling pathways, encouraging the root system to grow downwards into deeper, moisture-rich soil layers. This ensures that even during prolonged dry spells or extreme heatwaves, crops remain hydrated and continue to synthesize nutrients without entering terminal wilting phases.`
     },
     {
       title: "Technological Interventions in Smart Agri-Spraying",
@@ -76,8 +108,13 @@ export default function Blog() {
       publishedAt: "2026-03-12T09:30:00Z",
       author: "Ing. Marcus Vance",
       source: { name: "TechAgri Reviews" },
-      urlToImage: "https://images.unsplash.com/photo-1628352081506-83c43123ed6d?auto=format&fit=crop&w=600&q=80",
-      url: "/pest-control"
+      urlToImage: "/fruits_solution.png",
+      url: "/crop-solutions",
+      fullContent: `The integration of unmanned aerial vehicles (UAVs) in modern pesticide and stimulant application represents a massive technological leap forward. Traditional backpack sprayers are slow, physically demanding, and often result in uneven chemical distribution.
+
+Agri-spraying drones equipped with multispectral sensors can map weed density in real-time, applying chemical treatments only where they are actively needed. 
+
+By utilizing ultra-low volume (ULV) atomizing nozzles, these drones reduce water usage by 90% and chemical usage by 30%, while ensuring 100% leaf-surface coverage. This not only cuts input costs for growers but drastically minimizes the chemical footprint on surrounding agricultural ecosystems.`
     }
   ]
 
@@ -291,7 +328,8 @@ export default function Blog() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.4 }}
-                  className="bg-slate-900/30 border border-blue-500/10 rounded-3xl overflow-hidden shadow-lg hover:border-cyan-500/30 hover:shadow-cyan-500/5 transition-all duration-300 group flex flex-col h-[480px]"
+                  onClick={() => setSelectedPost(post)}
+                  className="bg-slate-900/30 border border-blue-500/10 rounded-3xl overflow-hidden shadow-lg hover:border-cyan-500/30 hover:shadow-cyan-500/5 transition-all duration-300 group flex flex-col h-[480px] cursor-pointer"
                 >
                   {/* Image banner */}
                   <div className="h-48 relative overflow-hidden bg-slate-950">
@@ -300,7 +338,7 @@ export default function Blog() {
                       alt={post.title} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       onError={(e) => {
-                        e.target.src = "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?auto=format&fit=crop&w=600&q=80"
+                        e.target.src = "/pulses_solution.png"
                       }}
                     />
                     
@@ -333,28 +371,17 @@ export default function Blog() {
                       </p>
                     </div>
 
-                    {/* CTA link to external full article */}
+                    {/* CTA link to open full article inside window */}
                     <div className="pt-4 border-t border-slate-800">
-                      {post.url.startsWith('/') ? (
-                        <Link 
-                          to={post.url} 
-                          className="text-cyan-400 hover:text-white font-bold text-xs uppercase tracking-widest flex items-center gap-1.5 transition-colors group-hover:translate-x-1 duration-300"
-                        >
-                          Read Savaxa Guide <ArrowRight className="w-4 h-4" />
-                        </Link>
-                      ) : (
-                        <a 
-                          href={post.url} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          className="text-cyan-400 hover:text-white font-bold text-xs uppercase tracking-widest flex items-center justify-between transition-colors group-hover:translate-x-1 duration-300"
-                        >
-                          <span className="flex items-center gap-1.5">
-                            Read Full Story <ExternalLink className="w-3.5 h-3.5" />
-                          </span>
-                          <ArrowRight className="w-4 h-4 text-cyan-400" />
-                        </a>
-                      )}
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedPost(post);
+                        }}
+                        className="text-cyan-400 hover:text-white font-bold text-xs uppercase tracking-widest flex items-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        Read Full Story <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
+                      </button>
                     </div>
 
                   </div>
@@ -365,6 +392,114 @@ export default function Blog() {
         )}
 
       </div>
+
+      {/* Dynamic News Article Details Modal */}
+      <AnimatePresence>
+        {selectedPost && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6">
+            {/* Backdrop with blur */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedPost(null)}
+              className="absolute inset-0 bg-[#020817]/90 backdrop-blur-md cursor-pointer"
+            />
+            
+            {/* Modal Body */}
+            <motion.div
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 50, scale: 0.95 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 180 }}
+              className="relative w-full max-w-3xl bg-slate-900/90 border border-blue-500/10 rounded-[2rem] overflow-hidden max-h-[85vh] flex flex-col shadow-2xl z-10 backdrop-blur-xl"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedPost(null)}
+                className="absolute top-4 right-4 z-20 p-2.5 bg-slate-950/80 border border-blue-500/10 hover:border-red-500/30 rounded-full text-slate-400 hover:text-red-400 transition-all cursor-pointer shadow-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Scrollable Container */}
+              <div className="overflow-y-auto flex-1 hide-scrollbar">
+                
+                {/* Hero Banner */}
+                <div className="h-64 md:h-80 relative overflow-hidden bg-slate-950">
+                  <img
+                    src={selectedPost.urlToImage}
+                    alt={selectedPost.title}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.src = "/pulses_solution.png"
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
+                  
+                  {/* Badge */}
+                  <div className="absolute bottom-6 left-6 md:left-8 bg-blue-600/90 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest border border-blue-500/20 shadow-lg">
+                    {selectedPost.source ? selectedPost.source.name : 'Agri News'}
+                  </div>
+                </div>
+
+                {/* Content Details */}
+                <div className="p-6 md:p-10 space-y-6">
+                  {/* Metadata */}
+                  <div className="flex flex-wrap gap-4 text-xs font-bold text-slate-500 uppercase tracking-widest">
+                    <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4 text-blue-400" /> {formatDate(selectedPost.publishedAt)}</span>
+                    {selectedPost.author && (
+                      <span className="flex items-center gap-1.5"><User className="w-4 h-4 text-blue-400" /> {selectedPost.author}</span>
+                    )}
+                  </div>
+
+                  {/* Title */}
+                  <h2 className="text-2xl md:text-4xl font-heading font-extrabold text-white leading-tight">
+                    {selectedPost.title}
+                  </h2>
+                  
+                  <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" />
+
+                  {/* Complete Body Text */}
+                  <div className="text-slate-300 text-sm md:text-base leading-relaxed whitespace-pre-line font-normal pt-2 space-y-4">
+                    {selectedPost.fullContent || selectedPost.content ? (
+                      (selectedPost.fullContent || selectedPost.content).replace(/\[\+\d+ chars\]/g, "")
+                    ) : (
+                      selectedPost.description
+                    )}
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Footer CTA Section */}
+              <div className="p-6 md:px-10 py-4 bg-slate-950/60 border-t border-slate-800 flex justify-between items-center rounded-b-[2rem]">
+                <span className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">SAVAXA INTEL NETWORK</span>
+                {selectedPost.url && (
+                  selectedPost.url.startsWith('/') ? (
+                    <Link
+                      to={selectedPost.url}
+                      onClick={() => setSelectedPost(null)}
+                      className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest shadow-lg shadow-blue-500/20 transition-all flex items-center gap-1.5 hover:scale-[1.02]"
+                    >
+                      Explore Solutions <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  ) : (
+                    <a
+                      href={selectedPost.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:scale-[1.02] text-white font-bold px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest shadow-lg transition-all flex items-center gap-1.5"
+                    >
+                      Read Original Story <ExternalLink className="w-4 h-4" />
+                    </a>
+                  )
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
