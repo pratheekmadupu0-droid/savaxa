@@ -24,7 +24,7 @@ export default function CropSolutions() {
       formula: "Vanquish-X Herbicide & Savaxa BioRoot",
       mixingRatio: "Vanquish-X: 80 - 100 ml per Acre in 150L water",
       sprayingInterval: "Foliar spray 10-15 days post-transplanting when weeds are in 2-4 leaf stage.",
-      img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=800&q=80"
+      img: "/rice_solution.png"
     },
     wheat: {
       name: "Golden Wheat Protection",
@@ -44,7 +44,7 @@ export default function CropSolutions() {
       formula: "Shield-Ultra Insecticide formulation",
       mixingRatio: "Shield-Ultra: 1.2 ml per Litre of water",
       sprayingInterval: "Apply at first square formation, repeat after 12 days to control bollworm eggs.",
-      img: "https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?auto=format&fit=crop&w=800&q=80"
+      img: "/cotton_solution.png"
     },
     tomato: {
       name: "Tomato & Vegetables Protection",
@@ -54,7 +54,7 @@ export default function CropSolutions() {
       formula: "BioRoot Spore Inoculant & systemic sprays",
       mixingRatio: "BioRoot: 2.0 kg per Acre mixed with organic manure",
       sprayingInterval: "Incorporate in soil during nursery preparation or as root drench 155 days post-transplant.",
-      img: "https://images.unsplash.com/photo-1592892111425-15e04305f961?auto=format&fit=crop&w=800&q=80"
+      img: "/tomato_solution.png"
     },
     chili: {
       name: "Spicy Chili Crop Security",
@@ -64,7 +64,7 @@ export default function CropSolutions() {
       formula: "Shield-Ultra systemic spray & SOLVO Stimulant",
       mixingRatio: "Shield-Ultra: 150 ml/Acre + SOLVO: 200 ml/Acre",
       sprayingInterval: "First spray during pre-flowering stage, repeat at fruit set stage for maximum yield.",
-      img: "https://images.unsplash.com/photo-1608797178974-15b35a61d121?auto=format&fit=crop&w=800&q=80"
+      img: "/chili_solution.png"
     },
     pulses: {
       name: "Nitrogen-Fixing Pulses Protection",
