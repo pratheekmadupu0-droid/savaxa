@@ -84,6 +84,7 @@ export default function Navbar() {
   const rightLinks = [
     { name: 'Dealers', path: '/dealers' },
     { name: 'Downloads', path: '/downloads' },
+    { name: 'Blog', path: '/blog' },
     { name: 'Contact', path: '/contact' },
   ]
 
