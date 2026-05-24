@@ -96,15 +96,11 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 font-body px-4 md:px-8 ${
-          isScrolled 
-            ? 'backdrop-blur-xl bg-[#020817]/85 border-b border-blue-500/10 py-3' 
-            : 'bg-transparent py-6'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 font-body px-4 md:px-8 py-4 ${
+          isScrolled ? 'backdrop-blur-xl bg-[#020817]/75 border-b border-blue-500/10' : 'bg-transparent'
         }`}
       >
-        <div className={`max-w-7xl mx-auto flex justify-between items-center transition-all duration-500 ${
-          isScrolled ? 'h-16' : 'h-24'
-        }`}>
+        <div className="max-w-7xl mx-auto flex justify-between items-center h-16 relative">
           
           {/* MOBILE LOGO & TRANSLATION TOGGLE COMBINED */}
           <div className="flex-shrink-0 xl:hidden flex items-center gap-4">
@@ -128,15 +124,15 @@ export default function Navbar() {
           </div>
 
           {/* DESKTOP CENTERED NAVBAR */}
-          <div className="hidden xl:flex items-center justify-between w-full">
+          <div className="hidden xl:flex items-center justify-between w-full relative">
             
             {/* Left Nav links */}
-            <nav className="flex space-x-10 items-center">
+            <nav className="flex space-x-8 items-center">
               {leftLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`relative text-[13.5px] uppercase tracking-widest font-extrabold transition-all duration-300 hover:text-white ${
+                  className={`relative text-xs uppercase tracking-widest font-semibold transition-all duration-300 hover:text-white ${
                     isActive(link.path) 
                       ? 'text-[#06b6d4] drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]' 
                       : 'text-slate-400'
@@ -144,33 +140,31 @@ export default function Navbar() {
                 >
                   {link.name}
                   {isActive(link.path) && (
-                    <motion.div layoutId="navDot" className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#06b6d4] rounded-full" />
+                    <motion.div layoutId="navDot" className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#06b6d4] rounded-full" />
                   )}
                 </Link>
               ))}
             </nav>
             
-            {/* Center Logo */}
-            <div className="flex-shrink-0 flex items-center justify-center">
+            {/* Center Logo - Perfectly Centered in Middle */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex-shrink-0 flex items-center justify-center pointer-events-auto">
               <Link to="/" className="flex items-center justify-center">
                 <img 
                   src="/savax-logo.png" 
                   alt="SAVAXA Logo" 
-                  className={`w-auto object-contain filter drop-shadow-[0_0_10px_rgba(6,182,212,0.4)] transition-all duration-500 ${
-                    isScrolled ? 'h-15' : 'h-22'
-                  }`}
+                  className="h-18 w-auto object-contain filter drop-shadow-[0_0_10px_rgba(6,182,212,0.4)]" 
                 />
               </Link>
             </div>
 
             {/* Right Nav links & CTA buttons */}
-            <div className="flex items-center space-x-10">
-              <nav className="flex space-x-10 items-center">
+            <div className="flex items-center space-x-8">
+              <nav className="flex space-x-8 items-center mr-2">
                 {rightLinks.map((link) => (
                   <Link
                     key={link.name}
                     to={link.path}
-                    className={`relative text-[13.5px] uppercase tracking-widest font-extrabold transition-all duration-300 hover:text-white ${
+                    className={`relative text-xs uppercase tracking-widest font-semibold transition-all duration-300 hover:text-white ${
                       isActive(link.path) 
                         ? 'text-[#06b6d4] drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]' 
                         : 'text-slate-400'
@@ -178,39 +172,30 @@ export default function Navbar() {
                   >
                     {link.name}
                     {isActive(link.path) && (
-                      <motion.div layoutId="navDot2" className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#06b6d4] rounded-full" />
+                      <motion.div layoutId="navDot2" className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#06b6d4] rounded-full" />
                     )}
                   </Link>
                 ))}
               </nav>
 
               {/* Action Buttons */}
-              <div className="flex items-center gap-3.5">
+              <div className="flex items-center gap-3">
                 {/* Google Translate Switcher Button */}
                 <button 
                   onClick={toggleLanguage}
-                  className="liquid-glass px-4.5 py-3 rounded-full text-xs uppercase font-extrabold tracking-widest text-[#06b6d4] border border-[#06b6d4]/20 hover:border-[#06b6d4]/50 transition-all flex items-center gap-1.5 shadow-inner hover:scale-[1.03]"
+                  className="liquid-glass px-4 py-2.5 rounded-full text-[10px] uppercase font-extrabold tracking-widest text-[#06b6d4] border border-[#06b6d4]/20 hover:border-[#06b6d4]/50 transition-all flex items-center gap-1.5 shadow-inner hover:scale-[1.03]"
                   title="Switch Language / భాషను మార్చండి"
                 >
-                  <Globe className="w-4 h-4 text-[#06b6d4]" />
+                  <Globe className="w-3.5 h-3.5 text-[#06b6d4]" />
                   <span>{currentLang === 'en' ? 'ENG / తెల' : 'తెల / ENG'}</span>
                 </button>
-
-                {/* Dealer Login Button */}
-                <Link 
-                  to="/admin/login" 
-                  className="liquid-glass px-5.5 py-3 rounded-full text-xs uppercase font-extrabold tracking-widest text-slate-300 hover:text-white border border-white/10 hover:border-blue-500/30 transition-all flex items-center gap-1.5 group"
-                >
-                  <LogIn className="w-4 h-4 text-[#06b6d4] group-hover:scale-110 transition-transform" />
-                  Dealer Login
-                </Link>
 
                 {/* Get Started CTA */}
                 <Link 
                   to="/contact" 
-                  className="liquid-glass-strong bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-extrabold px-6.5 py-3 rounded-full text-xs uppercase tracking-widest shadow-lg shadow-blue-500/20 hover:shadow-cyan-500/35 transition-all flex items-center gap-1.5 hover:scale-102"
+                  className="liquid-glass-strong bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold px-6 py-2.5 rounded-full text-[10px] uppercase tracking-widest shadow-lg shadow-blue-500/20 hover:shadow-cyan-500/35 transition-all flex items-center gap-1.5 hover:scale-102"
                 >
-                  <Compass className="w-4 h-4 text-cyan-200" />
+                  <Compass className="w-3.5 h-3.5 text-cyan-200" />
                   Get Started
                 </Link>
               </div>
