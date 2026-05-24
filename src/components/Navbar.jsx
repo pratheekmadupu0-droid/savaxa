@@ -124,7 +124,7 @@ export default function Navbar() {
           </div>
 
           {/* DESKTOP CENTERED NAVBAR */}
-          <div className="hidden xl:flex items-center justify-between w-full relative">
+          <div className="hidden xl:flex items-center justify-between w-full">
             
             {/* Left Nav links */}
             <nav className="flex space-x-8 items-center">
@@ -134,7 +134,7 @@ export default function Navbar() {
                   to={link.path}
                   className={`relative text-xs uppercase tracking-widest font-semibold transition-all duration-300 hover:text-white ${
                     isActive(link.path) 
-                      ? 'text-[#06b6d4] drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]' 
+                      ? 'text-[#06b6d4] drop-shadow-[0_0_8px_rgba(6,182,212,0.4)] font-bold' 
                       : 'text-slate-400'
                   }`}
                 >
@@ -146,8 +146,8 @@ export default function Navbar() {
               ))}
             </nav>
             
-            {/* Center Logo - Perfectly Centered in Middle */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex-shrink-0 flex items-center justify-center pointer-events-auto">
+            {/* Center Logo - Positioned naturally in the flex flow between Left and Right links */}
+            <div className="flex-shrink-0 flex items-center justify-center mx-6">
               <Link to="/" className="flex items-center justify-center">
                 <img 
                   src="/savax-logo.png" 
@@ -166,7 +166,7 @@ export default function Navbar() {
                     to={link.path}
                     className={`relative text-xs uppercase tracking-widest font-semibold transition-all duration-300 hover:text-white ${
                       isActive(link.path) 
-                        ? 'text-[#06b6d4] drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]' 
+                        ? 'text-[#06b6d4] drop-shadow-[0_0_8px_rgba(6,182,212,0.4)] font-bold' 
                         : 'text-slate-400'
                     }`}
                   >
