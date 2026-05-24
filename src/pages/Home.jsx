@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import ReactCountUp from 'react-countup'
+import SEO from '../components/SEO'
 const CountUp = ReactCountUp.default || ReactCountUp
 import { 
   ChevronDown, 
@@ -64,6 +65,11 @@ export default function Home() {
 
   return (
     <div className="bg-[#020817] min-h-screen font-body text-slate-100 relative overflow-x-hidden">
+      <SEO 
+        title="SAVAXA Crop Care | Best Pesticide & Crop Protection Company"
+        description="OUR CROP CARE PORTFOLIO. We manufacture advanced crop protection formulations that address severe pest attacks, stubborn weeds, and fungal diseases."
+        keywords="SAVAXA Crop Care, Savaxa, crop protection, pesticide company, best pesticide, insecticides, herbicides, fungicides, biological stimulants"
+      />
       
       {/* 1. CINEMATIC FULLSCREEN HERO SECTION (VIDEO ONLY, ZERO LAG) */}
       <section className="relative w-screen h-screen overflow-hidden bg-[#020817] z-20">
