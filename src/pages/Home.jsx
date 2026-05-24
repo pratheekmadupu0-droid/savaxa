@@ -41,12 +41,12 @@ const testimonials = [
 ]
 
 const cropImages = {
-  Rice: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=400&q=80",
+  Rice: "/rice_solution.png",
   Wheat: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=400&q=80",
-  Cotton: "https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?auto=format&fit=crop&w=400&q=80",
-  Vegetables: "https://images.unsplash.com/photo-1592892111425-15e04305f961?auto=format&fit=crop&w=400&q=80",
-  Pulses: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?auto=format&fit=crop&w=400&q=80",
-  Fruits: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=400&q=80"
+  Cotton: "/cotton_solution.png",
+  Vegetables: "/tomato_solution.png",
+  Pulses: "/pulses_solution.png",
+  Fruits: "/fruits_solution.png"
 }
 
 const blogImages = [

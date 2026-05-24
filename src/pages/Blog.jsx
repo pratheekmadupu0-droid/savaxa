@@ -31,7 +31,7 @@ export default function Blog() {
       publishedAt: "2026-05-18T10:00:00Z",
       author: "Dr. Vikram Seth",
       source: { name: "Savaxa R&D Labs" },
-      urlToImage: "https://images.unsplash.com/photo-1599388330761-f402f1a30f14?auto=format&fit=crop&w=600&q=80",
+      urlToImage: "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&w=600&q=80",
       url: "/crop-solutions"
     },
     {
@@ -40,7 +40,7 @@ export default function Blog() {
       publishedAt: "2026-05-02T14:30:00Z",
       author: "Sarah Jenkins",
       source: { name: "Agronomy Science Quarterly" },
-      urlToImage: "https://images.unsplash.com/photo-1532187643603-c11c5b8b1a38?auto=format&fit=crop&w=600&q=80",
+      urlToImage: "https://images.unsplash.com/photo-1581093588401-f3c22d76ba0c?auto=format&fit=crop&w=600&q=80",
       url: "/certifications"
     },
     {
@@ -49,7 +49,7 @@ export default function Blog() {
       publishedAt: "2026-04-22T08:15:00Z",
       author: "Dr. Koji Takahashi",
       source: { name: "Agri-Market Trends" },
-      urlToImage: "https://images.unsplash.com/photo-1586521995568-39abaa0c2311?auto=format&fit=crop&w=600&q=80",
+      urlToImage: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=600&q=80",
       url: "/products"
     },
     {
@@ -58,7 +58,7 @@ export default function Blog() {
       publishedAt: "2026-04-08T11:45:00Z",
       author: "Amanda Sterling",
       source: { name: "Weed Control Forum" },
-      urlToImage: "https://images.unsplash.com/photo-1588145293290-7a0e3f01ef87?auto=format&fit=crop&w=600&q=80",
+      urlToImage: "https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?auto=format&fit=crop&w=600&q=80",
       url: "/crop-solutions"
     },
     {
@@ -67,7 +67,7 @@ export default function Blog() {
       publishedAt: "2026-03-29T16:00:00Z",
       author: "Dr. Narendar Reddy",
       source: { name: "Savaxa Innovations" },
-      urlToImage: "https://images.unsplash.com/photo-1592892111425-15e04305f961?auto=format&fit=crop&w=600&q=80",
+      urlToImage: "https://images.unsplash.com/photo-1463936575829-25148e1db1b8?auto=format&fit=crop&w=600&q=80",
       url: "/about"
     },
     {
@@ -76,7 +76,7 @@ export default function Blog() {
       publishedAt: "2026-03-12T09:30:00Z",
       author: "Ing. Marcus Vance",
       source: { name: "TechAgri Reviews" },
-      urlToImage: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&q=80",
+      urlToImage: "https://images.unsplash.com/photo-1628352081506-83c43123ed6d?auto=format&fit=crop&w=600&q=80",
       url: "/pest-control"
     }
   ]
