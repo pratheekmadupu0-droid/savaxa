@@ -51,10 +51,31 @@ const cropImages = {
   Fruits: "/fruits_solution.png"
 }
 
-const blogImages = [
-  "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=600&q=80",
-  "https://images.unsplash.com/photo-1605000797499-95a51c7769ae?auto=format&fit=crop&w=600&q=80"
+const insights = [
+  {
+    title: "Mitigating Fall Armyworm Mutations in Warm Climates",
+    desc: "An in-depth review from Savaxa R&D labs detailing emerging insecticide resistances in corn crops and selective compound pathways.",
+    img: "/cotton_solution.png",
+    category: "Agronomy",
+    date: "May 18, 2026",
+    id: 0
+  },
+  {
+    title: "Decoding Bio-agents & Active Biological Spores",
+    desc: "How Savaxa processes bio-stimulants at hyperbaric low temperatures, maintaining perfect viable spore counts for root colonization.",
+    img: "/tomato_solution.png",
+    category: "Bio-Tech",
+    date: "May 2, 2026",
+    id: 1
+  },
+  {
+    title: "Rising Fertilizer Costs Drive Focus on Target Efficiency",
+    desc: "Market diagnostics proving selective low-dosage pesticide chemical applications deliver 28% higher seasonal net margins for soybean farms.",
+    img: "/pulses_solution.png",
+    category: "Markets",
+    date: "April 22, 2026",
+    id: 2
+  }
 ]
 
 export default function Home() {
@@ -351,30 +372,30 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[0, 1, 2].map((i) => (
+            {insights.map((insight) => (
               <div
-                key={i}
+                key={insight.id}
                 className="bg-slate-950/40 rounded-3xl overflow-hidden border border-blue-500/5 hover:border-cyan-500/30 shadow-2xl hover:shadow-cyan-500/5 transition-all duration-300 hover:-translate-y-1.5 group flex flex-col"
               >
                 <div className="h-52 bg-slate-900 relative overflow-hidden">
                   <img
-                    src={blogImages[i]}
-                    alt="Blog"
+                    src={insight.img}
+                    alt={insight.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     onError={(e) => {
                       e.target.onerror = null;
                       e.target.src = "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&q=80";
                     }}
                   />
-                  <div className="absolute top-4 left-4 bg-blue-600/90 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Agronomy</div>
+                  <div className="absolute top-4 left-4 bg-blue-600/90 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">{insight.category}</div>
                 </div>
                 <div className="p-8 flex-1 flex flex-col justify-between">
                   <div>
-                    <span className="text-[10px] font-bold text-slate-500 mb-2 block uppercase tracking-widest">October 12, 2024</span>
-                    <h3 className="text-xl font-heading italic font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors line-clamp-2">Maximizing Crop Yields During Monsoon Season</h3>
-                    <p className="text-slate-400 text-sm mb-6 line-clamp-2 leading-relaxed">Learn the best practices and essential preventative sprays to keep your crops safe during heavy rains.</p>
+                    <span className="text-[10px] font-bold text-slate-500 mb-2 block uppercase tracking-widest">{insight.date}</span>
+                    <h3 className="text-xl font-heading italic font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors line-clamp-2">{insight.title}</h3>
+                    <p className="text-slate-400 text-sm mb-6 line-clamp-2 leading-relaxed">{insight.desc}</p>
                   </div>
-                  <Link to="/blog/1" className="text-cyan-400 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 group-hover:gap-2.5 transition-all">Read Insight <ArrowRight className="w-4 h-4" /></Link>
+                  <Link to={`/blog/${insight.id}`} className="text-cyan-400 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 group-hover:gap-2.5 transition-all">Read Insight <ArrowRight className="w-4 h-4" /></Link>
                 </div>
               </div>
             ))}

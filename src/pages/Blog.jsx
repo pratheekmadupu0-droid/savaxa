@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { 
   Search, 
   Calendar, 
@@ -17,6 +17,8 @@ import {
 import SEO from '../components/SEO'
 
 export default function Blog() {
+  const { id } = useParams()
+  const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState('all')
   const [news, setNews] = useState([])
@@ -24,6 +26,23 @@ export default function Blog() {
   const [error, setError] = useState(false)
   const [isLive, setIsLive] = useState(false)
   const [selectedPost, setSelectedPost] = useState(null)
+
+  const handleCloseModal = () => {
+    setSelectedPost(null)
+    if (id !== undefined) {
+      navigate('/blog')
+    }
+  }
+
+  // Auto-open selected blog post if ID is in parameters
+  useEffect(() => {
+    if (id !== undefined && news.length > 0) {
+      const index = parseInt(id, 10)
+      if (!isNaN(index) && index >= 0 && index < news.length) {
+        setSelectedPost(news[index])
+      }
+    }
+  }, [id, news])
 
   // Curated premium fallback posts in case of API rate limits or offline state
   const fallbackPosts = [
@@ -402,7 +421,7 @@ By utilizing ultra-low volume (ULV) atomizing nozzles, these drones reduce water
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setSelectedPost(null)}
+              onClick={handleCloseModal}
               className="absolute inset-0 bg-[#020817]/90 backdrop-blur-md cursor-pointer"
             />
             
@@ -416,7 +435,7 @@ By utilizing ultra-low volume (ULV) atomizing nozzles, these drones reduce water
             >
               {/* Close Button */}
               <button
-                onClick={() => setSelectedPost(null)}
+                onClick={handleCloseModal}
                 className="absolute top-4 right-4 z-20 p-2.5 bg-slate-950/80 border border-blue-500/10 hover:border-red-500/30 rounded-full text-slate-400 hover:text-red-400 transition-all cursor-pointer shadow-lg"
               >
                 <X className="w-5 h-5" />
@@ -479,7 +498,7 @@ By utilizing ultra-low volume (ULV) atomizing nozzles, these drones reduce water
                   selectedPost.url.startsWith('/') ? (
                     <Link
                       to={selectedPost.url}
-                      onClick={() => setSelectedPost(null)}
+                      onClick={handleCloseModal}
                       className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest shadow-lg shadow-blue-500/20 transition-all flex items-center gap-1.5 hover:scale-[1.02]"
                     >
                       Explore Solutions <ArrowRight className="w-4 h-4" />

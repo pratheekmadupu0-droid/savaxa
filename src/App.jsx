@@ -61,6 +61,7 @@ export default function App() {
           <Route path="/pest-control" element={<PestControl />} />
           <Route path="/dealers" element={<Dealers />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<Blog />} />
           <Route path="/downloads" element={<Downloads />} />
           <Route path="/certifications" element={<Certifications />} />
           <Route path="/contact" element={<Contact />} />
