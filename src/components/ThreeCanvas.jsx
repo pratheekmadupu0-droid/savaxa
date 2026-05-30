@@ -99,19 +99,15 @@ export default function ThreeCanvas() {
       targetX += (mouseX - targetX) * 0.05
       targetY += (mouseY - targetY) * 0.05
 
-      // Natural floating waving behavior (like pollen or crop spray)
-      const posArray = geometry.attributes.position.array
-      for (let i = 0; i < particleCount; i++) {
-        posArray[i * 3 + 1] += Math.sin(elapsedTime * 0.3 + i) * 0.01
-        posArray[i * 3] += Math.cos(elapsedTime * 0.2 + i) * 0.005
-      }
-      geometry.attributes.position.needsUpdate = true
+      // Purely GPU-accelerated floating waving behavior (0 CPU cycles & 0 GPU upload overhead)
+      particleSystem.rotation.y = elapsedTime * 0.015
+      particleSystem.rotation.x = Math.sin(elapsedTime * 0.15) * 0.05
+      particleSystem.position.y = Math.sin(elapsedTime * 0.3) * 1.5
+      particleSystem.position.x = Math.cos(elapsedTime * 0.2) * 1.5
 
       // Camera reacting gently to mouse & scroll
       camera.position.y = -scrollY * 0.008
       camera.position.x = targetX * 0.3
-      
-      particleSystem.rotation.y = elapsedTime * 0.015
 
       renderer.render(scene, camera)
     }

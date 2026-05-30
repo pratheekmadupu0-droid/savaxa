@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import ReactCountUp from 'react-countup'
 import SEO from '../components/SEO'
+import SavaxaOrbit from '../components/SavaxaOrbit'
 const CountUp = ReactCountUp.default || ReactCountUp
 import { 
   ChevronDown, 
@@ -58,9 +59,17 @@ const blogImages = [
 
 export default function Home() {
   const [mounted, setMounted] = useState(false)
+  const [videoSrc, setVideoSrc] = useState("")
 
   useEffect(() => {
     setMounted(true)
+    
+    // Defer large video file request slightly to let initial page structure, CSS and critical scripts load first
+    const timer = setTimeout(() => {
+      setVideoSrc("/savaxa-2.mp4")
+    }, 100)
+    
+    return () => clearTimeout(timer)
   }, [])
 
   return (
@@ -80,10 +89,10 @@ export default function Home() {
           loop 
           muted 
           playsInline 
-          preload="auto"
+          preload="metadata"
           webkit-playsinline="true"
           onEnded={(e) => { e.target.play(); }}
-          src="/savaxa-2.mp4" 
+          src={videoSrc || undefined} 
           className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
           style={{ 
             willChange: 'transform',
@@ -198,33 +207,40 @@ export default function Home() {
       </section>
 
       {/* 4. WHY CHOOSE SAVAXA */}
-      <section className="py-28 bg-[#040d21] relative z-25">
+      <section className="py-28 bg-[#040d21] relative z-25 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-6">
-              <h2 className="text-4xl md:text-5xl font-heading italic font-bold text-white uppercase tracking-tight leading-none">
-                Why Choose <span className="text-[#06b6d4]">Savaxa?</span>
-              </h2>
-              <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full" />
-              <p className="text-slate-400 text-sm md:text-base leading-relaxed pt-4">
-                We bridge the gap between advanced scientific research and practical farming. Our formulations undergo rigorous trials to ensure they deliver maximum efficacy while preserving soil health.
-              </p>
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h2 className="text-4xl md:text-5xl font-heading italic font-bold text-white uppercase tracking-tight leading-none">
+                  Why Choose <span className="text-[#06b6d4]">Savaxa?</span>
+                </h2>
+                <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full" />
+                <p className="text-slate-400 text-sm md:text-base leading-relaxed pt-2">
+                  We bridge the gap between advanced scientific research and practical farming. Our formulations undergo rigorous trials to ensure they deliver maximum efficacy while preserving soil health.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  { title: "Scientifically Formulated", icon: <Microscope className="w-5 h-5 text-cyan-400" /> },
+                  { title: "Eco-Safe Profile", icon: <Leaf className="w-5 h-5 text-emerald-400" /> },
+                  { title: "Affordable Pricing", icon: <Award className="w-5 h-5 text-[#06b6d4]" /> },
+                  { title: "Expert Support", icon: <Users className="w-5 h-5 text-blue-400" /> }
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3.5 p-4 bg-slate-900/35 rounded-xl border border-blue-500/5 hover:border-blue-500/15 transition-all duration-300">
+                    <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center border border-blue-500/15 flex-shrink-0">
+                      {item.icon}
+                    </div>
+                    <h4 className="font-heading italic font-bold text-white text-sm">{item.title}</h4>
+                  </div>
+                ))}
+              </div>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {[
-                { title: "Scientifically Formulated", icon: <Microscope className="w-6 h-6 text-cyan-400" /> },
-                { title: "Eco-Safe Profile", icon: <Leaf className="w-6 h-6 text-emerald-400" /> },
-                { title: "Affordable Pricing", icon: <Award className="w-6 h-6 text-[#06b6d4]" /> },
-                { title: "Expert Support", icon: <Users className="w-6 h-6 text-blue-400" /> }
-              ].map((item, i) => (
-                <div key={i} className="flex flex-col space-y-4 p-6 bg-slate-900/30 rounded-2xl border border-blue-500/5 hover:border-blue-500/20 transition-all duration-300">
-                  <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center border border-blue-500/15">
-                    {item.icon}
-                  </div>
-                  <h4 className="font-heading italic font-bold text-white text-lg">{item.title}</h4>
-                </div>
-              ))}
+            {/* Right side interactive orbiting ecosystem */}
+            <div className="flex items-center justify-center w-full">
+              <SavaxaOrbit />
             </div>
           </div>
         </div>

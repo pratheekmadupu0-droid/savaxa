@@ -22,9 +22,19 @@ import {
 export default function About() {
   const videoRef = useRef(null)
   const [isMockupDarkMode, setIsMockupDarkMode] = useState(false)
+  const [videoSrc, setVideoSrc] = useState("")
 
   useEffect(() => {
-    if (videoRef.current) {
+    // Defer large video file request slightly to let initial page structure, CSS and critical scripts load first
+    const timer = setTimeout(() => {
+      setVideoSrc("/savaxa-crop.mp4")
+    }, 120)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
+    if (videoSrc && videoRef.current) {
       videoRef.current.defaultMuted = true
       videoRef.current.muted = true
       videoRef.current.loop = true
@@ -39,7 +49,7 @@ export default function About() {
         })
       }
     }
-  }, [])
+  }, [videoSrc])
 
   const visions = [
     { 
@@ -178,12 +188,12 @@ export default function About() {
               <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border border-blue-500/10 bg-slate-900 group">
                 <video 
                   ref={videoRef}
-                  src="/savaxa-crop.mp4" 
+                  src={videoSrc || undefined} 
                   autoPlay 
                   muted 
                   loop 
                   playsInline
-                  preload="auto"
+                  preload="metadata"
                   webkit-playsinline="true"
                   onEnded={(e) => { e.target.play(); }}
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
